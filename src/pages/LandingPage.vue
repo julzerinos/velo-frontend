@@ -2,7 +2,7 @@
   <div class="landing">
     <nav-menu />
     <h1>Landing Page</h1>
-    <line-chart :chart-data="chartData" />
+    <line-chart v-if="false" :chart-data="chartData" />
     <button @click="fillData">Generate LineChart</button>
   </div>
 </template>
