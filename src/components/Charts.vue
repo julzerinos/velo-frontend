@@ -1,25 +1,61 @@
 <template>
-  <div class="landing">
-    <nav-menu />
-    <h1>Landing Page</h1>
-    <line-chart v-if="false" :chart-data="chartData" />
-    <button @click="fillData">Generate LineChart</button>
-  </div>
+  <v-container>
+    <v-row>
+      <v-col>
+        <v-card class="pa-2" outlined tile>
+          <line-chart :chartData="chartData" />
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
+/* eslint-disable vue/no-unused-components */
+
 import LineChart from "../components/charts/LineChart.js";
-import NavMenu from "../components/NavMenu";
+import axios from "axios";
 
 export default {
-  name: "LandingPage",
-  components: { LineChart, NavMenu },
+  name: "Charts",
+  components: { LineChart },
   data() {
     return {
       chartData: {},
     };
   },
+  mounted() {
+    this.retrieveData();
+  },
   methods: {
+    retrieveData() {
+      axios
+        .get("http://localhost:8081/mock-workout")
+        .then((response) => this.storeData(response));
+    },
+
+    storeData(serverData) {
+      if (serverData == undefined) {
+        this.fillData();
+        return;
+      }
+
+      let tmp = [];
+      for (let i = 0; i < serverData.data.workoutRecords.length; i++) {
+        tmp.push(serverData.data.workoutRecords[i].power);
+      }
+
+      this.chartData = {
+        labels: ["Data"],
+        datasets: [
+          {
+            label: "Pawa",
+            data: tmp,
+          },
+        ],
+      };
+    },
+
     getRandomInt() {
       return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
     },
@@ -66,10 +102,10 @@ export default {
         ),
       };
     },
-
   },
 };
 </script>
 
 <style scoped>
+@import "../assets/styles/charts.css";
 </style>

@@ -8,18 +8,24 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.20.0",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
-    "vue-chartjs": "^3.5.1"
+    "vue-chartjs": "^3.5.1",
+    "vuetify": "^2.3.10"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
+    "deepmerge": "^4.2.2",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "fibers": "^5.0.0",
+    "sass": "^1.26.10",
+    "sass-loader": "^10.0.1",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
@@ -35,8 +41,7 @@
       "parser": "babel-eslint"
     },
     "rules": {
-      "no-unused-vars": "off",
-      "no-unused-components": "off" 
+      "no-unused-vars": "off"
     }
   },
   "browserslist": [

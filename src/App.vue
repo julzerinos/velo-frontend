@@ -1,24 +1,19 @@
 <template>
   <div id="app">
-    <splash :isLoading="isLoading" :loadPercent="loadPercent" />
-    <landing-page v-if="!isLoading" />
+    <layout />
   </div>
 </template>
 
 <script>
-import LandingPage from "./pages/LandingPage";
-import Splash from "./pages/Splash";
+import Layout from "./pages/Layout";
 
 export default {
   name: "App",
   components: {
-    LandingPage,
-    Splash,
+    Layout,
   },
   data() {
     return {
-      isLoading: true,
-      loadPercent: 0,
     };
   },
   methods: {
@@ -27,14 +22,11 @@ export default {
     },
     async load() {
       for (let i = 0; i <= 10; i++) {
-        this.loadPercent = (i*10).toString() + "%";
+        this.loadPercent = (i * 10).toString() + "%";
         await this.sleep(500);
       }
       this.isLoading = false;
     },
-  },
-  mounted() {
-    this.load();
   },
 };
 </script>
@@ -42,6 +34,23 @@ export default {
 <style>
 @font-face {
   font-family: Gloria-Hallelujah;
-  src: url('./assets/fonts/gloria.ttf');
+  src: url("./assets/fonts/gloria.ttf");
+}
+
+:root {
+  --cp1-primary: #206a5d;
+  --cp1-secondary: #81b214;
+  --cp1-accent: #bfdcae;
+  --cp1-contrast: #f1f1e8;
+
+  --cp2-primary: #00ad7c;
+  --cp2-secondary: #52d681;
+  --cp2-accent: #b5ff7d;
+  --cp2-contrast: #fff8b5;
+
+  --primary: var(--cp1-primary);
+  --secondary: var(--cp1-secondary);
+  --accent: var(--cp1-accent);
+  --contrast: var(--cp1-contrast);
 }
 </style>
