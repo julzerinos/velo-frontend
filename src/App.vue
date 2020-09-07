@@ -1,18 +1,12 @@
 <template>
   <v-app>
-    <layout v-if="false"/>
     <router-view/>
   </v-app>
 </template>
 
 <script>
-    import Layout from "./pages/Layout";
-
     export default {
         name: "App",
-        components: {
-            Layout,
-        },
         mounted() {
             document.title = "Velo";
         }

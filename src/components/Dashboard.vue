@@ -3,7 +3,7 @@
     <v-list dense>
       <v-subheader>Pages</v-subheader>
 
-      <v-list-item @click="$router.push({ path: '/' })" link>
+      <v-list-item :to="{ name: 'maincontent' }" link>
         <v-list-item-action>
           <v-icon>show_chart</v-icon>
         </v-list-item-action>
@@ -21,7 +21,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item @click="$router.push({ path: '/settings' })" link>
+      <v-list-item :to="{ name: 'settings' }" link>
         <v-list-item-action>
           <v-icon>settings</v-icon>
         </v-list-item-action>

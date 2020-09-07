@@ -15,8 +15,10 @@ https://www.reddit.com/r/vuetifyjs/comments/cixlfr/vuetify_20_darklight_backgrou
       <v-icon>directions_bike</v-icon>
     </v-app-bar>
 
-    <!-- Todo add transitions -->
-    <router-view/>
+    <v-main>
+      <!-- Todo add transitions -->
+      <router-view/>
+    </v-main>
 
     <v-footer app>
       <span>App in development</span>

@@ -32,7 +32,7 @@ const opts = {
                     name: 'settings',
                     component: Settings
                 }
-            ] // This will be used for routes inside of layout - ie. main content
+            ]
         },
     ]
 }

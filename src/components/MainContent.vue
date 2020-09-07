@@ -1,22 +1,16 @@
 <template>
-  <v-main>
-    <v-container class="grid" fill-height fluid>
-      <v-row>
-        <v-col id="athlete">
-
-          <v-card class="pa-2" outlined tile>test</v-card>
-
-        </v-col>
-        <v-col id="charts">
-
-          <v-card outlined tile>
-            <charts/>
-          </v-card>
-
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-main>
+  <v-container class="grid" fill-height fluid>
+    <v-row>
+      <v-col id="athlete">
+        <v-card class="pa-2" outlined tile>test</v-card>
+      </v-col>
+      <v-col id="charts">
+        <v-card outlined tile>
+          <charts/>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
