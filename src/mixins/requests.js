@@ -23,7 +23,7 @@ export default {
         });
     },
     methods: {
-        get(url, onSuccess, onFailure, retries = 3, retryDelay = 1000) {
+        async get(url, onSuccess, onFailure, retries = 3, retryDelay = 1000) {
             axios
                 .get(url, {retry: retries, retryDelay: retryDelay})
                 .then(response => onSuccess(response), response => onFailure(response));

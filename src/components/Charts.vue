@@ -20,7 +20,7 @@
     /* eslint-disable vue/no-unused-components */
 
     import LineChart from "../components/charts/LineChart.js";
-    import Requests from '../mixins/Requests'
+    import Requests from '../mixins/requests'
 
     export default {
         name: "Charts",
