@@ -12,12 +12,12 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item link disabled>
+      <v-list-item :to="{ name: 'profile' }" link>
         <v-list-item-action>
           <v-icon>directions_bike</v-icon>
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title>Account</v-list-item-title>
+          <v-list-item-title>Profile</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 

@@ -4,8 +4,9 @@ import VueRouter from "vue-router";
 import Splash from "../../pages/Splash";
 import Layout from "../../pages/Layout";
 
-import MainContent from "../../components/MainContent";
-import Settings from "../../components/Settings";
+import MainContent from "../../pages/MainContent";
+import Settings from "../../pages/Settings";
+import Profile from "../../pages/Profile";
 
 Vue.use(VueRouter)
 
@@ -23,7 +24,7 @@ const opts = {
             component: Layout,
             children: [
                 {
-                    path: '/',
+                    path: '/maincontent',
                     name: 'maincontent',
                     component: MainContent
                 },
@@ -31,6 +32,16 @@ const opts = {
                     path: '/settings',
                     name: 'settings',
                     component: Settings
+                },
+                {
+                    path: '/profile',
+                    name: 'profile',
+                    component: Profile,
+                    props: true
+                },
+                {
+                    path: '*',
+                    redirect: '/maincontent'
                 }
             ]
         },

@@ -15,7 +15,7 @@
 
 <script>
     /* eslint-disable vue/no-unused-components */
-    import Charts from "../components/Charts";
+    import Charts from "../components/charts/Charts";
 
     export default {
         name: "MainContent",

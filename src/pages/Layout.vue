@@ -6,13 +6,20 @@ https://www.reddit.com/r/vuetifyjs/comments/cixlfr/vuetify_20_darklight_backgrou
     <dashboard v-model="drawer"/>
 
     <v-app-bar app>
-      <v-btn text @click.stop="drawer = !drawer">Dashboard</v-btn>
+      <v-btn @click.stop="drawer = !drawer" text>
+        <v-icon left>dashboard</v-icon>
+        Dashboard
+      </v-btn>
 
       <v-spacer/>
-      <v-toolbar-title class="app-name-title">Velo</v-toolbar-title>
+      <v-toolbar-title class="app-name-title">
+        <router-link style="text-decoration: none; color: inherit;" to="/maincontent">Velo</router-link>
+      </v-toolbar-title>
 
       <v-spacer/>
-      <v-icon>directions_bike</v-icon>
+
+      <app-bar-profile/>
+
     </v-app-bar>
 
     <v-main>
@@ -28,12 +35,18 @@ https://www.reddit.com/r/vuetifyjs/comments/cixlfr/vuetify_20_darklight_backgrou
 
 <script>
     /* eslint-disable vue/no-unused-components */
-    import MainContent from "../components/MainContent";
-    import Dashboard from "../components/Dashboard";
+    import MainContent from "./MainContent";
+    import Dashboard from "./Dashboard";
+
+    import AppBarProfile from '../components/profile/appbar/AppBarProfile'
 
     export default {
         name: "Layout",
-        components: {MainContent, Dashboard},
+        components: {
+            MainContent,
+            Dashboard,
+            AppBarProfile
+        },
         data() {
             return {
                 drawer: false,
