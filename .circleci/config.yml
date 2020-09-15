@@ -1,0 +1,17 @@
+jobs:
+  test:
+    executor:
+      name: node/default
+      tag: '14.9.0'
+    steps:
+      - checkout
+      - node/install-packages
+      - run:
+          command: npm run test:unit
+orbs:
+  node: circleci/node@4.0.0
+version: 2.1
+workflows:
+  test_velo_frontend:
+    jobs:
+      - test

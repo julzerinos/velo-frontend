@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -20,7 +21,10 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-unit-jest": "^4.5.4",
     "@vue/cli-service": "~4.5.0",
+    "@vue/test-utils": "^1.0.5",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "deepmerge": "^4.2.2",
     "eslint": "^6.7.2",
@@ -28,6 +32,7 @@
     "fibers": "^5.0.0",
     "sass": "^1.26.10",
     "sass-loader": "^10.0.1",
+    "vue-jest": "^3.0.6",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
@@ -44,11 +49,37 @@
     },
     "rules": {
       "no-unused-vars": "off"
-    }
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
   },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      ".*\\.(vue)$": "vue-jest"
+    },
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "setupFiles": ["./tests/setup.js"],
+    "preset": "@vue/cli-plugin-unit-jest"
+  }
 }
