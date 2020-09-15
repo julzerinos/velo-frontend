@@ -1,42 +1,35 @@
 <template>
   <v-card
-          tile
+          class="fill-height"
+          outlined
   >
     <v-img
-            height="100%"
-            src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg"
+            SameSite=Lax
+            max-height="300"
+            src="https://source.unsplash.com/1600x900/?bike,cycling"
     >
-      <v-row
-              align="end"
-              class="fill-height"
-      >
-        <v-col
-                align-self="start"
-                class="pa-0"
-                cols="12"
-        >
-          <v-avatar
-                  class="profile"
-                  color="grey"
-                  size="164"
-                  tile
-          >
-            <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>
-          </v-avatar>
-        </v-col>
-        <v-col class="py-0">
-          <v-list-item
-                  color="rgba(0, 0, 0, .4)"
-                  dark
-          >
-            <v-list-item-content>
-              <v-list-item-title class="title">Marcus Obrien</v-list-item-title>
-              <v-list-item-subtitle>Network Engineer</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </v-col>
-      </v-row>
     </v-img>
+    <v-row
+            align="end"
+            class="fill-height"
+    >
+      <v-col>
+        <v-avatar
+                class="profile"
+                size="164"
+
+        >
+          <v-img :src="profile.profileImagePath"></v-img>
+        </v-avatar>
+        <v-list-item
+        >
+          <v-list-item-content>
+            <v-list-item-title class="title">{{profile.name.firstName}} {{profile.name.lastName}}</v-list-item-title>
+            <v-list-item-subtitle>Coach of {{profile.athletes.length}} athlete(s)</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
@@ -46,8 +39,10 @@
         computed: {
             profile() {
                 return this.$store.state.profile;
-            }
+            },
+
         },
+
 
     }
 </script>

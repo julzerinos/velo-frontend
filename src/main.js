@@ -7,14 +7,18 @@ import router from './plugins/router/routes'
 import mockData from "./plugins/mockdata/mockdata";
 import requests from "./plugins/requests/requests";
 
+import pageTitle from "./mixins/pageTitle";
+
 import App from './App.vue'
 
 Vue.use(requests);
 Vue.use(mockData);
+
+Vue.mixin(pageTitle);
 
 new Vue({
     router,
     vuetify,
     store,
     render: h => h(App),
-}).$mount('#app')
+}).$mount('#app');

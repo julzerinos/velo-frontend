@@ -19,16 +19,11 @@
 
     export default {
         name: "MainContent",
+        title: "Charts",
         components: {Charts},
-        data() {
-            return {};
-        },
-        methods: {},
     };
 </script>
 
 <style scoped>
-  .grid * {
-    min-height: 100%;
-  }
+
 </style>

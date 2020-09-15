@@ -33,6 +33,7 @@
 
     export default {
         name: 'Profile',
+        title: "Profile",
         components: {
             SignIn,
             SignUp,
