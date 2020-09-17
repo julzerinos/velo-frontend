@@ -4,27 +4,28 @@
           outlined
   >
     <v-img
-            SameSite=Lax
-            max-height="300"
+            SameSite=Lax height="300" max-height="300"
             src="https://source.unsplash.com/1600x900/?bike,cycling"
     >
+
     </v-img>
     <v-row
             align="end"
             class="fill-height"
     >
       <v-col>
-        <v-avatar
-                class="profile"
-                size="164"
 
-        >
-          <v-img :src="profile.profileImagePath"></v-img>
-        </v-avatar>
-        <v-list-item
-        >
+
+        <v-list-item>
           <v-list-item-content>
-            <v-list-item-title class="title">{{profile.name.firstName}} {{profile.name.lastName}}</v-list-item-title>
+            <v-list-item-avatar
+                    class="profile"
+                    max-width="164"
+                    size="164">
+              <v-img :src="profile.profileImagePath"></v-img>
+
+            </v-list-item-avatar>
+            <v-list-item-title>{{profile.name.firstName}} {{profile.name.lastName}}</v-list-item-title>
             <v-list-item-subtitle>Coach of {{profile.athletes.length}} athlete(s)</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>

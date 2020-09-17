@@ -127,7 +127,7 @@
             }
         },
         data: () => ({
-            athleteItems: ['Kornel Skórka', 'Twój Stary'],
+            athleteItems: ['Kornel Skórka', 'January Coach'],
 
             openSignUp: false,
             openSignUpAdvanced: false,
