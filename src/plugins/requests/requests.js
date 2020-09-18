@@ -21,13 +21,25 @@ axios.interceptors.response.use(undefined, function axiosRetryInterceptor(err) {
 });
 
 export default {
-    install(Vue, options) {
-        Vue.get = function (url, onSuccess, onFailure, retries = 3, retryDelay = 1000) {
+    methods: {
+        get(url, onSuccess, onFailure, retries = 3, retryDelay = 1000) {
             axios
                 .get(url, {retry: retries, retryDelay: retryDelay})
                 .then(response => onSuccess(response), response => onFailure(response));
+        },
+
+        post(url, onSuccess, onFailure, retries = 3, retryDelay = 1000) {
+            axios
+                .post(url, {retry: retries, retryDelay: retryDelay})
+                .then(response => onSuccess(response), response => onFailure(response));
         }
+    },
+
+    install(Vue, options) {
+        Vue.get = this.methods.get;
+        Vue.post = this.methods.post;
 
         Vue.prototype.$get = Vue.get;
+        Vue.prototype.$post = Vue.post;
     }
 }

@@ -33,16 +33,6 @@
                 default: false,
             },
         },
-        methods: {
-            login() {
-                this.$store.commit('login', this.$createMockProfile());
-            }
-        },
-        computed: {
-            loggedIn() {
-                return this.$store.state.loggedIn;
-            }
-        }
     }
 </script>
 

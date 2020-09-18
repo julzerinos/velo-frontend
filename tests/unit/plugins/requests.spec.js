@@ -1,4 +1,4 @@
-import requests from "@/mixins/requests";
+import requests from '@/plugins/requests/requests';
 
 describe("requests", () => {
     test("should make a get request", async () => {

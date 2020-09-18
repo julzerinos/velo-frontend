@@ -29,7 +29,7 @@
                         :rules="emailRules"
                         label="E-mail"
                         required
-                        v-model="email"
+                        v-model="profile.email"
                 ></v-text-field>
               </v-col>
 
@@ -42,7 +42,7 @@
                         label="Password"
                         required
                         type="password"
-                        v-model="password"
+                        v-model="profile.password"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -70,34 +70,15 @@
             openSignIn: false,
             valid: false,
 
-            email: '',
-            emailRules: [
-                v => !!v || "Required.",
-                v => {
-                    if (v.length < 1) return false;
-                    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                    return re.test(String(v).toLowerCase()) || "Invalid email format";
-                }
-            ],
-
-            password: '',
-            passRules: [
-                v => !!v || "Required.",
-                v => v.length >= 8 || "Password is too short"
-            ]
-
-
+            profile: {
+                email: '',
+                password: '',
+            }
         }),
-        methods: {
-            login() {
-                this.$store.commit('login', this.$createMockProfile());
-            },
-        },
         created() {
             this.openSignIn = this.redirected;
         }
     }
-
 </script>
 
 <style scoped>

@@ -28,7 +28,7 @@
                         :rules="nameRules"
                         label="First Name"
                         required
-                        v-model="fName"
+                        v-model="createdProfile.name.firstName"
                 ></v-text-field>
               </v-col>
 
@@ -40,7 +40,7 @@
                         :rules="nameRules"
                         label="Last Name"
                         required
-                        v-model="lName"
+                        v-model="createdProfile.name.lastName"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -53,7 +53,7 @@
                         :rules="emailRules"
                         label="E-mail"
                         required
-                        v-model="email"
+                        v-model="createdProfile.email"
                 ></v-text-field>
               </v-col>
 
@@ -66,7 +66,7 @@
                         label="Password"
                         required
                         type="password"
-                        v-model="password"
+                        v-model="createdProfile.password"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -74,7 +74,7 @@
         </v-form>
 
         <v-card-actions class="justify-center">
-          <v-btn :disabled="!valid" @click="signup" v-show="!openSignUpAdvanced">Sign up</v-btn>
+          <v-btn :disabled="!valid" @click="signupWrapper" v-show="!openSignUpAdvanced">Sign up</v-btn>
           <v-btn
                   @click="openSignUpAdvanced = !openSignUpAdvanced"
                   text
@@ -107,7 +107,7 @@
             </v-container>
 
             <v-card-actions class="justify-center">
-              <v-btn :disabled="!valid" @click="signup">Sign up</v-btn>
+              <v-btn :disabled="!valid" @click="signupWrapper">Sign up</v-btn>
             </v-card-actions>
           </div>
         </v-expand-transition>
@@ -126,6 +126,11 @@
                 default: false
             }
         },
+        methods: {
+            signupWrapper() {
+                this.signup(this.createdProfile)
+            }
+        },
         data: () => ({
             athleteItems: ['Kornel Skórka', 'January Coach'],
 
@@ -133,35 +138,23 @@
             openSignUpAdvanced: false,
             valid: false,
 
-            fName: '',
-            lName: '',
-            nameRules: [
-                v => !!v || "Required."
-            ],
+            createdProfile: {
 
-            email: '',
-            emailRules: [
-                v => !!v || "Required.",
-                v => {
-                    if (v.length < 1) return false;
-                    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                    return re.test(String(v).toLowerCase()) || "Invalid email format";
-                }
-            ],
+                name: {
+                    firstName: '',
+                    lastName: ''
+                },
+                email: '',
+                password: '',
+                athletes: []
 
-            password: '',
-            passRules: [
-                v => !!v || "Required.",
-                v => v.length >= 8 || "Password is too short"
-            ]
-
-
+            }
+            // fName: '',
+            // lName: '',
+            // email: '',
+            // password: '',
         }),
-        methods: {
-            signup() {
-                this.$store.commit('login', this.$createMockProfile());
-            },
-        },
+        computed: {},
         created() {
             this.openSignUp = this.redirected;
         }

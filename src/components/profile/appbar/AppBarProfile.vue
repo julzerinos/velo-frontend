@@ -22,8 +22,6 @@
 </template>
 
 <script>
-    /* eslint-disable vue/no-unused-components */
-
     import ProfileLoggedIn from "./ProfileLoggedIn";
     import ProfileLoggedOut from "./ProfileLoggedOut";
 
@@ -36,11 +34,6 @@
         data: () => ({
             open: false
         }),
-        computed: {
-            loggedIn() {
-                return this.$store.state.loggedIn;
-            }
-        }
     }
 </script>
 

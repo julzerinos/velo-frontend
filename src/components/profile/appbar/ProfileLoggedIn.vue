@@ -40,22 +40,11 @@
             }
         },
         methods: {
-            logout() {
-                this.$store.commit('logout');
-            },
             emitInputWrapper(event, f) {
                 this.$emit('input', event.target.value)
                 f();
             }
         },
-        computed: {
-            loggedIn() {
-                return this.$store.state.loggedIn;
-            },
-            profile() {
-                return this.$store.state.profile;
-            }
-        }
     }
 </script>
 

@@ -22,8 +22,8 @@
                     class="profile"
                     max-width="164"
                     size="164">
-              <v-img :src="profile.profileImagePath"></v-img>
-
+              <v-img :src="profile.profileImagePath" v-if="!!profile.profileImagePath"></v-img>
+              <v-icon size="120" v-else>person</v-icon>
             </v-list-item-avatar>
             <v-list-item-title>{{profile.name.firstName}} {{profile.name.lastName}}</v-list-item-title>
             <v-list-item-subtitle>Coach of {{profile.athletes.length}} athlete(s)</v-list-item-subtitle>
@@ -36,15 +36,7 @@
 
 <script>
     export default {
-        name: "ProfileManagement",
-        computed: {
-            profile() {
-                return this.$store.state.profile;
-            },
-
-        },
-
-
+        name: "ProfileManagement"
     }
 </script>
 
