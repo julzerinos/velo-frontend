@@ -1,15 +1,15 @@
 <template>
   <v-container>
-    <v-overlay :absolute="true" :value="loadingOverlay" z-index="1">
+    <v-overlay :absolute="true" :value="loadingOverlay && false" z-index="1">
       <v-progress-circular color="amber" indeterminate width="10" size="64"></v-progress-circular>
     </v-overlay>
-    <v-overlay :absolute="true" :value="failedOverlay" opacity="1.0" z-index="1">
+    <v-overlay :absolute="true" :value="failedOverlay && false" opacity="1.0" z-index="1">
       Fetch failure
     </v-overlay>
     <v-row>
       <v-col>
         <v-card class="pa-2" outlined tile>
-          <line-chart :chartData="chartData"/>
+          <line-chart :chartData="chartData" v-if="!!chartData"/>
         </v-card>
       </v-col>
     </v-row>
@@ -19,14 +19,14 @@
 <script>
     /* eslint-disable vue/no-unused-components */
 
-    import LineChart from "./LineChart.js";
+    import LineChart from "./LineChart";
 
     export default {
         name: "Charts",
         components: {LineChart},
         data() {
             return {
-                chartData: {},
+                chartData: [],
                 loadingOverlay: false,
                 failedOverlay: false,
             };
@@ -51,6 +51,15 @@
             },
 
             storeData(serverData) {
+                // TODO: change to sexy map
+                // console.log(serverData);
+                // this.chartData = Object.values(Object.values(serverData.data.workoutRecords).map(x => x['power'])); //.map(x => x.power);
+                // console.log(this.chartData);
+                // console.log(typeof this.chartData);
+
+                let a = []
+                Object.values(serverData.data['workoutRecords']).forEach(x => a.push(x['power']))
+                this.chartData = a
             },
         },
     };

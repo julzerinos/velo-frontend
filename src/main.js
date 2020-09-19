@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import ChartLib from 'vue-apexcharts'
 
 import store from './plugins/vuex/vuex'
 import vuetify from './plugins/vuetify/vuetify'
@@ -13,6 +14,9 @@ import validationRuleset from "./mixins/validationRuleset";
 import asyncResults from "./mixins/asyncResults";
 
 import App from './App.vue'
+
+Vue.use(ChartLib);
+Vue.component('apexchart', ChartLib)
 
 Vue.use(requests);
 Vue.use(mockData);
