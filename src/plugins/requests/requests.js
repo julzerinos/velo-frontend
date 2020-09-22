@@ -20,18 +20,42 @@ axios.interceptors.response.use(undefined, function axiosRetryInterceptor(err) {
     });
 });
 
+// TODO
+// axios.defaults.headers.common['header1'] = 'value' // for all requests
+
 export default {
     methods: {
-        get(url, onSuccess, onFailure, retries = 3, retryDelay = 1000) {
+        get(
+            url,
+            headers,
+            onSuccess,
+            onFailure,
+            retries = 3,
+            retryDelay = 1000
+        ) {
             axios
-                .get(url, {retry: retries, retryDelay: retryDelay})
-                .then(response => onSuccess(response), response => onFailure(response));
+                .get(url, {headers, retry: retries, retryDelay: retryDelay})
+                .then(
+                    response => onSuccess(response),
+                    response => onFailure(response)
+                );
         },
 
-        post(url, onSuccess, onFailure, retries = 3, retryDelay = 1000) {
+        post(
+            url,
+            headers,
+            body,
+            onSuccess,
+            onFailure,
+            retries = 3,
+            retryDelay = 1000
+        ) {
             axios
-                .post(url, {retry: retries, retryDelay: retryDelay})
-                .then(response => onSuccess(response), response => onFailure(response));
+                .post(url, body, {headers, retry: retries, retryDelay: retryDelay})
+                .then(
+                    response => onSuccess(response),
+                    response => onFailure(response)
+                );
         }
     },
 

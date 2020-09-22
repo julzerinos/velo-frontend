@@ -28,7 +28,7 @@
                         :rules="nameRules"
                         label="First Name"
                         required
-                        v-model="createdProfile.name.firstName"
+                        v-model="signupProfile.name.firstName"
                 ></v-text-field>
               </v-col>
 
@@ -40,7 +40,7 @@
                         :rules="nameRules"
                         label="Last Name"
                         required
-                        v-model="createdProfile.name.lastName"
+                        v-model="signupProfile.name.lastName"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -53,7 +53,7 @@
                         :rules="emailRules"
                         label="E-mail"
                         required
-                        v-model="createdProfile.email"
+                        v-model="signupProfile.email"
                 ></v-text-field>
               </v-col>
 
@@ -66,7 +66,7 @@
                         label="Password"
                         required
                         type="password"
-                        v-model="createdProfile.password"
+                        v-model="signupProfile.password"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -74,7 +74,7 @@
         </v-form>
 
         <v-card-actions class="justify-center">
-          <v-btn :disabled="!valid" @click="signupWrapper" v-show="!openSignUpAdvanced">Sign up</v-btn>
+          <v-btn :disabled="!valid" @click="signup(signupProfile)" v-show="!openSignUpAdvanced">Sign up</v-btn>
           <v-btn
                   @click="openSignUpAdvanced = !openSignUpAdvanced"
                   text
@@ -128,7 +128,7 @@
         },
         methods: {
             signupWrapper() {
-                this.signup(this.createdProfile)
+                this.signup(this.signupProfile)
             }
         },
         data: () => ({
@@ -138,7 +138,7 @@
             openSignUpAdvanced: false,
             valid: false,
 
-            createdProfile: {
+            signupProfile: {
 
                 name: {
                     firstName: '',

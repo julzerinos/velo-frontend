@@ -29,7 +29,7 @@
                         :rules="emailRules"
                         label="E-mail"
                         required
-                        v-model="profile.email"
+                        v-model="loginProfile.email"
                 ></v-text-field>
               </v-col>
 
@@ -42,7 +42,7 @@
                         label="Password"
                         required
                         type="password"
-                        v-model="profile.password"
+                        v-model="loginProfile.password"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -50,7 +50,7 @@
         </v-form>
 
         <v-card-actions class="justify-center">
-          <v-btn :disabled="!valid" @click="login">Sign in</v-btn>
+          <v-btn :disabled="!valid" @click="login(loginProfile)">Sign in</v-btn>
         </v-card-actions>
       </div>
     </v-expand-transition>
@@ -70,7 +70,7 @@
             openSignIn: false,
             valid: false,
 
-            profile: {
+            loginProfile: {
                 email: '',
                 password: '',
             }
