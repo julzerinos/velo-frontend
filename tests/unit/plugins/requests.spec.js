@@ -1,8 +1,30 @@
-import requests from '@/plugins/requests/requests';
+import {axiosMethods} from '@/plugins/requests/requests';
 
 describe("requests", () => {
-    test("should make a get request", async () => {
-        const response = await requests.methods.get("https://www.passwordrandom.com/query?command=int&min=0&max=50&count=1",
-                response=>{expect(response).toBeLessThan(51)},null)
+    test("test get request", async () => {
+        const r = await axiosMethods.get(
+            "https://httpbin.org/headers",
+            {"Jest-Test-Value": "69"},
+            response => response,
+            () => "fail")
+
+        expect(r).toHaveProperty('data')
+        expect(r.data).toHaveProperty('headers')
+        expect(r.data.headers).toHaveProperty('Jest-Test-Value')
+        expect(r.data.headers['Jest-Test-Value']).toMatch("69")
+    });
+
+    test("test post request", async () => {
+        const r = await axiosMethods.post(
+            "https://httpbin.org/post",
+            {"Jest-Test-Value": "69"},
+            {},
+            response => response,
+            () => "fail")
+
+        expect(r).toHaveProperty('data')
+        expect(r.data).toHaveProperty('headers')
+        expect(r.data.headers).toHaveProperty('Jest-Test-Value')
+        expect(r.data.headers['Jest-Test-Value']).toMatch("69")
     });
 });

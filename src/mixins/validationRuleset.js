@@ -7,12 +7,12 @@ export default {
         ],
         emailRules: [
             v => !!v || "Required",
-            v => email_regex.test(String(v).toLowerCase()) || "Invalid email format"
+            // v => email_regex.test(String(v).toLowerCase()) || "Invalid email format"
         ],
         passRules: [
             v => !!v || "Required",
-            v => v.length >= 8 || "Password is too short",
-            v => v.length <= 30 || "Password is too long",
+            // v => v.length >= 8 || "Password is too short",
+            // v => v.length <= 30 || "Password is too long",
             // v => /(?=.*[a-z])/.test(String(v)) || "Must contain lowercase letter",
             // v => /(?=.*[A-Z])/.test(String(v)) || "Must contain uppercase letter",
             // v => /(?=.*[0-9])/.test(String(v)) || "Must contain number",

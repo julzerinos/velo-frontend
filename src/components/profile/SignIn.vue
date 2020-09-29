@@ -49,6 +49,18 @@
           </v-container>
         </v-form>
 
+        <v-alert :key="value" :value="true"
+                 border="bottom"
+                 close-icon="highlight_off"
+                 color="red"
+                 dark
+                 dismissible
+                 transition="scroll-y-transition"
+                 v-for="(key, value) in results('signin')"
+        >
+          {{key.message}}
+        </v-alert>
+
         <v-card-actions class="justify-center">
           <v-btn :disabled="!valid" @click="login(loginProfile)">Sign in</v-btn>
         </v-card-actions>
@@ -58,6 +70,8 @@
 </template>
 
 <script>
+    import {mapGetters} from 'vuex';
+
     export default {
         name: "SignIn",
         props: {
@@ -77,6 +91,12 @@
         }),
         created() {
             this.openSignIn = this.redirected;
+        },
+        computed: {
+            ...mapGetters(['results'])
+        },
+        mounted() {
+            console.log(this.results('signup'))
         }
     }
 </script>

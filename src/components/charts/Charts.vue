@@ -39,6 +39,7 @@
                 this.loadingOverlay = true;
                 this.$get(
                     'http://localhost:8081/mock-workout',
+                    {},
                     (response) => {
                         this.loadingOverlay = false;
                         this.storeData(response);

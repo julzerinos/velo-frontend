@@ -1,3 +1,7 @@
+import jwt_decode from 'jwt-decode';
+import {resultMessages} from "../plugins/dictionary/dictionary";
+// TODO switch to vuex getters
+
 export default {
     computed: {
         loggedIn() {
@@ -9,25 +13,27 @@ export default {
     },
     methods: {
         signup(signupProfile) {
-            console.log(signupProfile)
             this.$post(
                 "http://localhost:8081/register",
                 {
-                    username: signupProfile.email,
+                    firstName: signupProfile.name.firstName,
+                    lastName: signupProfile.name.lastName,
+                    email: signupProfile.email,
                     password: signupProfile.password
                 },
                 {},
                 (response) => {
-                    console.log(response);
-                    // this.$store.commit('login', signupProfile);
+                    this.addSuccessAsync("signup", "yes is signup good");
                 },
                 (response) => {
-                    console.log(response);
+                    this.addErrorAsync(
+                        "signup",
+                        resultMessages.connectionRefusedMessage.alert
+                    );
                 }
             )
         },
         login(loginProfile) {
-            console.log(loginProfile);
             this.$post(
                 "http://localhost:8081/authenticate",
                 {
@@ -36,21 +42,39 @@ export default {
                 },
                 {},
                 (response) => {
-                    console.log(response);
-                    if ('Authorization' in response.headers)
-                        this.$store.dispatch('loginAsync', {})
-                            .then(
-                                r => console.log(r),
-                                r => console.log(r)
-                            );
+                    let token;
+                    if ((token = response.headers['authorization']) !== undefined) {
+                        const decoded = jwt_decode(token);
+                        // TODO: use decoded profile once fields are populated in BE
+                        const profile = this.$createMockProfile();
+                        profile.token = token;
+                        this.$store.dispatch('loginAsync', profile).then(r => r);
+                    }
                 },
                 (response) => {
-                    console.log(response);
+                    this.addErrorAsync(
+                        "signin",
+                        resultMessages.connectionRefusedMessage.alert
+                    );
                 }
             )
         },
-        logout() {
-            this.$store.commit('logout');
+        logout(profile) {
+            this.$store.dispatch('logoutAsync').then(r => r);
+            this.$post(
+                "http://localhost:8081/logout",
+                {
+                    authorization: profile.token
+                },
+                {},
+                (response) => {
+                    this.$store.dispatch('logoutAsync').then(r => r);
+                },
+                (response) => {
+                    console.log(response);
+                    // TODO: vuex error object for error handling
+                }
+            )
         },
     }
 }

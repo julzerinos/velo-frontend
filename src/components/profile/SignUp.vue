@@ -73,44 +73,25 @@
           </v-container>
         </v-form>
 
+
+        <v-alert :key="value" :value="true"
+                 border="bottom"
+                 close-icon="highlight_off"
+                 :color="key.type === 'error' ? 'red' : 'green'"
+                 dark
+                 dismissible
+                 transition="scroll-y-transition"
+                 v-for="(key, value) in this.$store.state.asyncResults.signup"
+        >
+          {{value.message}} {{key.message}}
+        </v-alert>
+
         <v-card-actions class="justify-center">
-          <v-btn :disabled="!valid" @click="signup(signupProfile)" v-show="!openSignUpAdvanced">Sign up</v-btn>
-          <v-btn
-                  @click="openSignUpAdvanced = !openSignUpAdvanced"
-                  text
-          >
-            Advanced
+          <v-btn :disabled="!valid" :loading="waiting" @click="signup(signupProfile)">
+            Sign up
           </v-btn>
+
         </v-card-actions>
-
-        <v-expand-transition>
-          <div v-show="openSignUpAdvanced">
-            <v-divider></v-divider>
-            <v-card-subtitle>Advanced options</v-card-subtitle>
-
-
-            <v-container>
-              <v-row>
-                <v-col
-                        cols="12"
-                        md="6"
-                >
-                  <v-autocomplete
-                          :items="athleteItems"
-                          chips
-                          color="white"
-                          label="Athletes"
-                          multiple
-                  ></v-autocomplete>
-                </v-col>
-              </v-row>
-            </v-container>
-
-            <v-card-actions class="justify-center">
-              <v-btn :disabled="!valid" @click="signupWrapper">Sign up</v-btn>
-            </v-card-actions>
-          </div>
-        </v-expand-transition>
 
       </div>
     </v-expand-transition>
@@ -126,35 +107,24 @@
                 default: false
             }
         },
-        methods: {
-            signupWrapper() {
-                this.signup(this.signupProfile)
-            }
-        },
+        watch: {},
         data: () => ({
             athleteItems: ['Kornel Skórka', 'January Coach'],
 
             openSignUp: false,
-            openSignUpAdvanced: false,
             valid: false,
 
             signupProfile: {
-
                 name: {
                     firstName: '',
                     lastName: ''
                 },
                 email: '',
                 password: '',
-                athletes: []
+            },
 
-            }
-            // fName: '',
-            // lName: '',
-            // email: '',
-            // password: '',
+            waiting: false
         }),
-        computed: {},
         created() {
             this.openSignUp = this.redirected;
         }
