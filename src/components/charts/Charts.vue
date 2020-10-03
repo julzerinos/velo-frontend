@@ -9,7 +9,7 @@
     <v-row>
       <v-col>
         <v-card class="pa-2" outlined tile>
-          <line-chart :chartData="chartData" v-if="!!chartData"/>
+          <line-chart :data="chartData"/>
         </v-card>
       </v-col>
     </v-row>
@@ -26,7 +26,10 @@
         components: {LineChart},
         data() {
             return {
-                chartData: [],
+                chartData: {
+                    x: this.$mockTraining().training.dataSeries.time,
+                    y: this.$mockTraining().training.dataSeries.power
+                },
                 loadingOverlay: false,
                 failedOverlay: false,
             };

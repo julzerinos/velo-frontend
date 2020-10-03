@@ -1,56 +1,88 @@
 <template>
-  <apexchart :options="chartOptions" :series="series" height="350" type="line"/>
+    <svg :width="width" :height="height" ref="svg">
+        <g ref="chart">
+            <path :d="path" stroke="#ff6347" strokeWidth="3" fill="none" />
+        </g>
+        <g ref="circle"></g>
+        <g ref="axis"></g>
+    </svg>
 </template>
 
 <script>
-    export default {
-        name: 'LineChart',
-        props: {
-            chartData: {
-                default: () => ([1, 2, 3, 4])
-            }
+import * as d3 from 'd3';
+
+export const xSelector = d => d.x;
+export const ySelector = d => d.y;
+
+export default {
+    name: 'LineChart',
+    props: ['data'],
+    data() {
+        return {
+            width: 500,
+            height: 500,
+            path: '',
+            selected: null
+        }
+    },
+    mounted() {
+        console.log(this.data)
+
+        const xScale = d3
+            .scaleLinear()
+            .range(d3.extent(this.data.x))
+            .domain([0, this.data.length]);
+        const yScale = d3
+            .scaleLinear()
+            .range(d3.extent(this.data.y))
+            .domain([500, 0]);
+        const path = d3
+            .line()
+            .x(d => xScale(xSelector(d)))
+            .y(d => yScale(ySelector(d)))
+            .curve(d3.curveStepAfter);
+        this.path = path(this.data);
+        const margin = { top: 40, left: 40, bottom: 40, right: 0 };
+        const yAxis = d3.axisLeft(yScale).tickSizeInner(-420);
+        const xAxis = d3.axisBottom(xScale);
+        const chartWidth = this.width - (margin.left + margin.right);
+        const chartHeight = this.height - (margin.top + margin.bottom);
+        d3
+            .select(this.$refs.chart)
+            .attr('width', chartWidth)
+            .attr('height', chartHeight)
+            .attr('transform', `translate(${margin.left}, ${margin.top})`);
+        d3
+            .select(this.$refs.axis)
+            .append('g')
+            .attr('transform', `translate(${margin.left}, ${margin.top})`)
+            .attr('class', 'axis y')
+            .call(yAxis);
+        d3
+            .select(this.$refs.axis)
+            .append('g')
+            .attr(
+                'transform',
+                `translate(${margin.left}, ${chartHeight + margin.top})`
+            )
+            .attr('class', 'axis x')
+            .call(xAxis);
+    },
+    methods: {
+        xPoint(d) {
+            const yScale = d3
+                .scaleLinear()
+                .range([0, 420])
+                .domain([0, 500]);
+            return yScale(ySelector(d));
         },
-        data() {
-            return {
-
-
-                series: [{
-                    name: "Desktops",
-                    data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
-                }],
-                chartOptions: {
-                    chart: {
-                        height: 350,
-                        type: 'line',
-                        zoom: {
-                            enabled: true
-                        }
-                    },
-                    dataLabels: {
-                        enabled: true
-                    },
-                    stroke: {
-                        curve: 'straight'
-                    },
-                    title: {
-                        text: 'Product Trends by Month',
-                        align: 'left'
-                    },
-                    grid: {
-                        row: {
-                            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-                            opacity: 0.5
-                        },
-                    },
-                    xaxis: {
-                        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-                    }
-                }
-            }
+        yPoint(d) {
+            const xScale = d3
+                .scaleLinear()
+                .range([0, 400])
+                .domain([0, 10]);
+            return xScale(xSelector(d));
         }
     }
-
+};
 </script>
-
-<style scoped>
-</style>
