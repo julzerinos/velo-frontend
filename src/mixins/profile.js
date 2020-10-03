@@ -18,7 +18,7 @@ export default {
                 {
                     firstName: signupProfile.name.firstName,
                     lastName: signupProfile.name.lastName,
-                    email: signupProfile.email,
+                    username: signupProfile.email,
                     password: signupProfile.password
                 },
                 {},
@@ -26,9 +26,14 @@ export default {
                     this.addSuccessAsync("signup", "yes is signup good");
                 },
                 (response) => {
+                    let message = resultMessages.connectionRefusedMessage.alert
+
+                    if (response.code < 500 && response.code >= 400)
+                        message = response.error.errors[0].message
+
                     this.addErrorAsync(
                         "signup",
-                        resultMessages.connectionRefusedMessage.alert
+                        message
                     );
                 }
             )
