@@ -8,31 +8,49 @@
     </v-overlay>
     <v-row>
       <v-col>
+        <v-select
+                :items="Object.keys(training.dataSeries)"
+                label="Raw training attribute"
+                outlined
+                v-model="select"
+        />
         <v-card class="pa-2" outlined tile>
-          <line-chart :data="chartData"/>
+          <multi-line-chart :chartData="multiLineChartData"/>
         </v-card>
+
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-    /* eslint-disable vue/no-unused-components */
-
-    import LineChart from "./LineChart";
+    import MultiLineChart from "./MultiLineChart";
 
     export default {
         name: "Charts",
-        components: {LineChart},
+        components: {MultiLineChart},
         data() {
             return {
-                chartData: {
-                    x: this.$mockTraining().training.dataSeries.time,
-                    y: this.$mockTraining().training.dataSeries.power
-                },
+                select: "power",
+                training: this.$mockTraining().training,
                 loadingOverlay: false,
                 failedOverlay: false,
             };
+        },
+        computed: {
+            // TODO: extract to mixin with error throwing
+            multiLineChartData: function () {
+                if (!this.training)
+                    return undefined
+                return {
+                    y: this.select,
+                    dates: this.training.dataSeries.time,
+                    series: [{
+                        name: "mockAthlete1",
+                        values: this.training.dataSeries[this.select]
+                    }]
+                }
+            }
         },
         mounted() {
             this.retrieveData();

@@ -38,20 +38,20 @@
 </template>
 
 <script>
-import * as d3 from "d3";
+    import * as d3 from "d3";
 
-export default {
-    name: "GoogleFinanceLineChart",
-    data() {
-        return {
-            width: 0,
-            height: 0,
-            margin: {
-                left: 20,
-                right: 10,
-                bottom: 10,
-                top: 20
-            },
+    export default {
+        name: "LineChart",
+        data() {
+            return {
+                width: 0,
+                height: 0,
+                margin: {
+                    left: 20,
+                    right: 10,
+                    bottom: 10,
+                    top: 20
+                },
             scales: {
                 x: null,
                 y: null
@@ -80,7 +80,7 @@ export default {
                 return {x: t, y: data.dataSeries.power[i]}
             })
 
-            console.log(this.data)
+            // console.log(this.data)
         },
         /**
          * setSize: This method will set the width, height
