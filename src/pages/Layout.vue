@@ -1,6 +1,3 @@
-For theme color control
-https://www.reddit.com/r/vuetifyjs/comments/cixlfr/vuetify_20_darklight_background_swap/
-
 <template>
   <div id="landing">
     <dashboard v-model="drawer"/>
@@ -34,8 +31,8 @@ https://www.reddit.com/r/vuetifyjs/comments/cixlfr/vuetify_20_darklight_backgrou
 </template>
 
 <script>
-    /* eslint-disable vue/no-unused-components */
-    import MainContent from "./MainContent";
+    // TODO: Theme control (https://www.reddit.com/r/vuetifyjs/comments/cixlfr/vuetify_20_darklight_background_swap/)
+
     import Dashboard from "./Dashboard";
 
     import AppBarProfile from '../components/profile/appbar/AppBarProfile'
@@ -43,7 +40,6 @@ https://www.reddit.com/r/vuetifyjs/comments/cixlfr/vuetify_20_darklight_backgrou
     export default {
         name: "Layout",
         components: {
-            MainContent,
             Dashboard,
             AppBarProfile
         },

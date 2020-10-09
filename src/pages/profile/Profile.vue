@@ -26,9 +26,9 @@
 </template>
 
 <script>
-    import SignIn from '../components/profile/SignIn'
-    import SignUp from '../components/profile/SignUp'
-    import ProfileManagement from '../components/profile/ProfileManagement'
+    import SignIn from '../../components/profile/SignIn'
+    import SignUp from '../../components/profile/SignUp'
+    import ProfileManagement from '../../components/profile/ProfileManagement'
 
 
     export default {
