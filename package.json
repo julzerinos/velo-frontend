@@ -12,11 +12,16 @@
     "axios": "^0.20.0",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
+    "es6-promise": "^4.2.8",
+    "js-cookie": "^2.2.1",
+    "jwt-decode": "^3.0.0-beta.2",
     "material-design-icons-iconfont": "^6.1.0",
     "vue": "^2.6.11",
     "vue-chartjs": "^3.5.1",
     "vue-router": "^3.4.3",
-    "vuetify": "^2.3.10"
+    "vuetify": "^2.3.10",
+    "vuex": "^3.5.1",
+    "vuex-persist": "^2.2.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -79,7 +84,9 @@
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1"
     },
-    "setupFiles": ["./tests/setup.js"],
+    "setupFiles": [
+      "./tests/setup.js"
+    ],
     "preset": "@vue/cli-plugin-unit-jest"
   }
 }

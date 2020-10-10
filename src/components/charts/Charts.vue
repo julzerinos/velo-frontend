@@ -1,9 +1,9 @@
 <template>
   <v-container>
-    <v-overlay :absolute="true" :value="loadingOverlay">
+    <v-overlay :absolute="true" :value="loadingOverlay" z-index="1">
       <v-progress-circular color="amber" indeterminate width="10" size="64"></v-progress-circular>
     </v-overlay>
-    <v-overlay :absolute="true" :value="failedOverlay" opacity="1.0">
+    <v-overlay :absolute="true" :value="failedOverlay" opacity="1.0" z-index="1">
       Fetch failure
     </v-overlay>
     <v-row>
@@ -19,13 +19,11 @@
 <script>
     /* eslint-disable vue/no-unused-components */
 
-    import LineChart from "../components/charts/LineChart.js";
-    import Requests from '../mixins/requests'
+    import LineChart from "./LineChart.js";
 
     export default {
         name: "Charts",
         components: {LineChart},
-        mixins: [Requests],
         data() {
             return {
                 chartData: {},
@@ -39,8 +37,9 @@
         methods: {
             retrieveData() {
                 this.loadingOverlay = true;
-                Requests.methods.get(
+                this.$get(
                     'http://localhost:8081/mock-workout',
+                    {},
                     (response) => {
                         this.loadingOverlay = false;
                         this.storeData(response);
@@ -58,5 +57,5 @@
 </script>
 
 <style scoped>
-  @import "../assets/styles/charts.css";
+  @import "../../assets/styles/charts.css";
 </style>

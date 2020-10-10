@@ -7,9 +7,6 @@
 <script>
     export default {
         name: "App",
-        mounted() {
-            document.title = "Velo";
-        }
     };
 </script>
 
