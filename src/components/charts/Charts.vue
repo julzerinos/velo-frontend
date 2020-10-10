@@ -6,29 +6,36 @@
     <v-overlay :absolute="true" :value="failedOverlay && false" opacity="1.0" z-index="1">
       Fetch failure
     </v-overlay>
-    <v-row>
-      <v-col>
-        <v-select
-                :items="Object.keys(training.dataSeries)"
-                label="Raw training attribute"
-                outlined
-                v-model="select"
-        />
-        <v-card class="pa-2" outlined tile>
-          <multi-line-chart :chartData="multiLineChartData"/>
-        </v-card>
-
-      </v-col>
-    </v-row>
+    <v-card class="pa-2" outlined tile>
+      <v-select
+              :items="Object.keys(training.dataSeries)"
+              label="Raw training attribute"
+              outlined
+              v-model="select"
+      />
+      <multi-line-chart :training="training"/>
+    </v-card>
+    <v-card class="pa-2" outlined tile>
+      <BarChart
+              :bar-padding="0.5"
+              :data-set="barChartData"
+              :margin-left="40"
+              :margin-top="40"
+              :tick-count="5"
+              class="chart"
+      />
+    </v-card>
   </v-container>
 </template>
 
 <script>
-    import MultiLineChart from "./MultiLineChart";
+    import MultiLineChart from "./line-charts/MultiLineChart";
+    import BarChart from "./bar-charts/BarChart";
 
     export default {
         name: "Charts",
-        components: {MultiLineChart},
+        components: {MultiLineChart, BarChart},
+        props: ['charts'],
         data() {
             return {
                 select: "power",
@@ -38,18 +45,41 @@
             };
         },
         computed: {
-            // TODO: extract to mixin with error throwing
-            multiLineChartData: function () {
+
+            barChartData: function () {
                 if (!this.training)
                     return undefined
-                return {
-                    y: this.select,
-                    dates: this.training.dataSeries.time,
-                    series: [{
-                        name: "mockAthlete1",
-                        values: this.training.dataSeries[this.select]
-                    }]
-                }
+
+                return [
+                    [
+                        "Zone 1",
+                        this.training.dataSeries.power.reduce((n, x) => n + (x < 250), 0)
+                    ],
+                    [
+                        "Zone 2",
+                        this.training.dataSeries.power.reduce((n, x) => n + (x < 270 && x >= 250), 0)
+                    ],
+                    [
+                        "Zone 3",
+                        this.training.dataSeries.power.reduce((n, x) => n + (x < 290 && x >= 270), 0)
+                    ],
+                    [
+                        "Zone 4",
+                        this.training.dataSeries.power.reduce((n, x) => n + (x < 310 && x >= 290), 0)
+                    ],
+                    [
+                        "Zone 5",
+                        this.training.dataSeries.power.reduce((n, x) => n + (x < 330 && x >= 310), 0)
+                    ],
+                    [
+                        "Zone 6",
+                        this.training.dataSeries.power.reduce((n, x) => n + (x < 350 && x >= 330), 0)
+                    ],
+                    [
+                        "Zone 7",
+                        this.training.dataSeries.power.reduce((n, x) => n + (x >= 350), 0)
+                    ],
+                ]
             }
         },
         mounted() {

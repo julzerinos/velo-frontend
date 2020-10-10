@@ -1,5 +1,8 @@
 <template>
-  <svg></svg>
+  <div>
+
+    <svg ref="chart"></svg>
+  </div>
 </template>
 
 <script>
@@ -11,38 +14,44 @@
     export default {
         name: "MultiLineChart",
         props: {
-            chartData: {default: {}}
+            training: {default: null},
+            params: {default: null}
         },
         data() {
             return {
-                width: 500,
-                height: 500,
+                // select: this.rawAttr,
+                // training: this.$mockTraining().training,
+                width: 1000,
+                height: 200,
             }
         },
-
+        computed: {
+            select() {
+                if (this.params === null)
+                    return 'power'
+                return this.params.rawAttr
+            }
+        },
         mounted() {
-            this.generateChart(this.chartData)
-        },
-
-        watch: {
-            chartData: function () {
-                this.generateChart(this.chartData)
-            }
+            this.generateChart()
         },
 
         methods: {
-            generateChart(mockData) {
-                if (mockData === undefined)
+            generateChart() {
+                const data = this.formatData()
+
+                if (data === undefined)
                     return
 
-                d3.selectAll("svg > *").remove();
+                // TODO: better clear method
+                while (this.$refs['chart'].firstChild) {
+                    parent.firstChild.remove()
+                }
 
-                const svg = d3.select("svg")
+                const svg = d3.select(this.$refs['chart'])
 
-                const data = mockData
-
-                const w = 500
-                const h = 500
+                const w = this.width
+                const h = this.height
                 const margin = ({top: 20, right: 20, bottom: 30, left: 30})
 
                 svg
@@ -144,9 +153,19 @@
                 }
 
                 svg.call(hover, path);
-
+            },
+            formatData() {
+                if (!this.training)
+                    return undefined
+                return {
+                    y: this.select,
+                    dates: this.training.dataSeries.time,
+                    series: [{
+                        name: "mockAthlete1",
+                        values: this.training.dataSeries[this.select]
+                    }]
+                }
             }
-
         }
 
     }
