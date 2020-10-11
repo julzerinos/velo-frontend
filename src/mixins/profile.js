@@ -5,7 +5,7 @@ import {resultMessages} from "../plugins/dictionary/dictionary";
 export default {
     computed: {
         loggedIn() {
-            return this.$store.state.loggedIn;
+            return this.$store.state.profile !== null;
         },
         profile() {
             return this.$store.state.profile;
