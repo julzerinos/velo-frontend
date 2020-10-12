@@ -30,7 +30,6 @@
     import SignUp from '../../components/profile/SignUp'
     import ProfileManagement from '../../components/profile/ProfileManagement'
 
-
     export default {
         name: 'Profile',
         title: "Profile",
@@ -46,9 +45,6 @@
             }
         },
         computed: {
-            loggedIn() {
-                return this.$store.state.loggedIn;
-            },
             redirectTypeCheck() {
                 if ('redirectType' in this.$route.query)
                     return this.$route.query.redirectType;

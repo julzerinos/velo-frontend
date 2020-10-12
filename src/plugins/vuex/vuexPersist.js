@@ -7,7 +7,7 @@ export const vuexCookie = new VuexPersistence({
         expires: 3
     }),
     restoreState: (key) => Cookies.getJSON(key),
-    filter: (mutation) => mutation.type === 'login' || mutation.type === 'logout'
+    filter: (mutation) => ['login', 'logout', 'profileChangeProperty'].includes(mutation.type)
 })
 
 // TODO: add function for checking if token is fresh
