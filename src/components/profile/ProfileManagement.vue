@@ -14,8 +14,7 @@
             class="fill-height"
     >
       <v-col>
-
-
+<!-- TODO: add v-list -->
         <v-list-item>
           <v-list-item-content>
             <v-list-item-avatar

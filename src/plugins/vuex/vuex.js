@@ -25,14 +25,18 @@ export const state = {
     asyncResults: {
         signup: {},
         signin: {}
-    }
+    },
+
+    dataBricks: []
 }
 
 export const getters = {
     loggedIn: state => state.loggedIn,
     profile: state => state.profile,
 
-    results: state => blame => (state.asyncResults[blame] || null)
+    results: state => blame => (state.asyncResults[blame] || null),
+
+    dataBricks: state => state.dataBricks
 }
 
 export const mutations = {
@@ -58,6 +62,12 @@ export const mutations = {
             {},
             state.asyncResults[payload.blame]
         )
+    },
+    addDataBrick(state, payload) {
+        state.dataBricks.push({
+            brickConfig: payload.brickConfig,
+            dataConfig: payload.dataConfig
+        })
     }
 }
 
@@ -76,8 +86,10 @@ export const actions = {
             setTimeout(function () {
                 commit('removeResult', {blame: resultObject.blame, id: ts});
             }, resultObject.lifetime);
+    },
+    addDataBrickAsync({commit}, payload) {
+        commit('addDataBrick', payload)
     }
-
 }
 
 export default new Vuex.Store({

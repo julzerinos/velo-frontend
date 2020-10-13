@@ -1,3 +1,5 @@
+import mocktraining from './mocktraining'
+
 export default {
     methods: {
         createMockProfile() {
@@ -16,7 +18,11 @@ export default {
 
     install(Vue, options) {
         Vue.createMockProfile = this.methods.createMockProfile;
+        Vue.mockTraining = function () {
+            return mocktraining
+        }
 
         Vue.prototype.$createMockProfile = Vue.createMockProfile;
+        Vue.prototype.$mockTraining = Vue.mockTraining;
     }
 }

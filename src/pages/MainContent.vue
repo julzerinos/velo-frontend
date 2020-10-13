@@ -1,26 +1,26 @@
 <template>
   <v-container class="grid" fill-height fluid>
     <v-row>
-      <v-col id="athlete">
-        <v-card class="pa-2" outlined tile>test</v-card>
+      <v-col cols="12">
+        <data-bricks-setup/>
       </v-col>
-      <v-col id="charts">
-        <v-card outlined tile>
-          <charts/>
-        </v-card>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <data-bricks/>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-    /* eslint-disable vue/no-unused-components */
-    import Charts from "../components/charts/Charts";
+    import DataBricksSetup from "../components/main-content/DataBricksSetup";
+    import DataBricks from "../components/main-content/DataBricks";
 
     export default {
         name: "MainContent",
         title: "Charts",
-        components: {Charts},
+        components: {DataBricksSetup, DataBricks},
     };
 </script>
 
