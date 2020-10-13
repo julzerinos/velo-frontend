@@ -46,24 +46,27 @@ export const user = function (
     return axiosMethods.get(
         "http://localhost:8081/user",
         {
-            Authorization: profile.token
+            authorization: profile.token
         },
         {
             email: profile.username
         },
         (response) => {
-            const {firstName, lastName, email, athleteUUIDs, profileImg} = response.data
+            const {
+                firstName, lastName, email,
+                athleteUUIDs, profileImg,
+                stravaConnected
+            } = response.data
 
             response['profile'] = {
                 name: {
                     firstName: firstName,
                     lastName: lastName
                 },
-                id: "id",
                 email: email,
                 athletes: athleteUUIDs,
                 profileImagePath: profileImg,
-                isStravaConnected: false,
+                isStravaConnected: stravaConnected,
                 token: profile.token
             }
 
