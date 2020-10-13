@@ -1,4 +1,4 @@
-import {authenticate, logout, register, user} from "./profile/profile";
+import {authenticate, logout, register, reset, user} from "./profile/profile";
 import jwt from 'jwt-decode'
 
 // TODO: Add error-specific messages
@@ -58,6 +58,21 @@ export const actions = {
             },
             r => {
                 commit('addResult', {resultObject: {blame: 'login', message: r.message}})
+            }
+        )
+    },
+
+    resetPasswordAsync({commit}, {email, onSuccess, onFail}) {
+        commit('removeResult', {blame: 'reset'})
+
+        reset({email},
+            r => {
+                commit('addResult', {resultObject: {blame: 'reset', message: r.message}})
+                onSuccess()
+            },
+            r => {
+                commit('addResult', {resultObject: {blame: 'reset', message: r.message}})
+                onFail()
             }
         )
     },

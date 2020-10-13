@@ -1,17 +1,17 @@
-import {axiosMethods} from "@/plugins/requests/requests";
+import {methods} from "@/plugins/requests/requests";
 
 export const register = function (
-    profile,
+    {name, email, password},
     onSuccess = r => r,
     onFail = r => r
 ) {
-    return axiosMethods.post(
+    return methods.post(
         "http://localhost:8081/register",
         {
-            firstName: profile.name.firstName,
-            lastName: profile.name.lastName,
-            username: profile.email,
-            password: profile.password
+            firstName: name.firstName,
+            lastName: name.lastName,
+            username: email,
+            password: password
         },
         {},
         {},
@@ -21,15 +21,15 @@ export const register = function (
 }
 
 export const authenticate = function (
-    profile,
+    {email, password},
     onSuccess = r => r,
     onFail = r => r
 ) {
-    return axiosMethods.post(
+    return methods.post(
         "http://localhost:8081/authenticate",
         {
-            username: profile.email,
-            password: profile.password
+            username: email,
+            password: password
         },
         {},
         {},
@@ -39,17 +39,17 @@ export const authenticate = function (
 }
 
 export const user = function (
-    profile,
+    {token, username},
     onSuccess = r => r,
     onFail = r => r
 ) {
-    return axiosMethods.get(
+    return methods.get(
         "http://localhost:8081/user",
         {
-            Authorization: profile.token
+            Authorization: token
         },
         {
-            email: profile.username
+            email: username
         },
         (response) => {
             const {firstName, lastName, email, athleteUUIDs, profileImg} = response.data
@@ -64,7 +64,7 @@ export const user = function (
                 athletes: athleteUUIDs,
                 profileImagePath: profileImg,
                 isStravaConnected: false,
-                token: profile.token
+                token: token
             }
 
             return onSuccess(response)
@@ -74,14 +74,31 @@ export const user = function (
 }
 
 export const logout = function (
-    profile,
+    {token},
     onSuccess = r => r,
     onFail = r => r
 ) {
-    return axiosMethods.post(
+    return methods.post(
         "http://localhost:8081/logout",
         {
-            authorization: profile.token
+            authorization: token
+        },
+        {},
+        {},
+        onSuccess,
+        onFail
+    )
+}
+
+export const reset = function (
+    {email},
+    onSuccess = r => r,
+    onFail = r => r
+) {
+    return methods.post(
+        "http://localhost:8081/reset-password",
+        {
+            email: email,
         },
         {},
         {},

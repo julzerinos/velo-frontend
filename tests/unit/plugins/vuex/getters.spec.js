@@ -1,7 +1,7 @@
 import {getters} from "@/plugins/vuex/getters";
 
 describe('vuex/getters', () => {
-    test('loggedIn when profile exists', () => {
+    test('signed when profile exists', () => {
         const state = {
             profile: "testProfile"
         }
@@ -10,7 +10,7 @@ describe('vuex/getters', () => {
         expect(res).toBeTruthy()
     });
 
-    test('loggedIn when profile is null', () => {
+    test('signed when profile is null', () => {
         const state = {
             profile: null
         }
