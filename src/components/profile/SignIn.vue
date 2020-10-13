@@ -54,7 +54,7 @@
                  dismissible
                  v-model="alert"
         >
-          {{(result('login') || '').message}}
+          {{result('login') ? result('login').message : ''}}
         </v-alert>
 
         <v-card-actions class="justify-center">

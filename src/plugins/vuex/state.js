@@ -1,7 +1,7 @@
 export const state = {
     profile: null,
 
-    asyncResults: {
+    results: {
         signup: null,
         login: null
     }

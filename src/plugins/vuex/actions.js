@@ -1,16 +1,18 @@
-import {login, logout, signup} from "./profile/profile";
+import {authenticate, logout, register, user} from "./profile/profile";
+import jwt from 'jwt-decode'
+
+// TODO: Add error-specific messages
 
 export const actions = {
     signupAsync({commit}, {profile}) {
-        // TODO: create detailed results based on response (eg. 409 => account exists)
         const onSuccess = function () {
-            commit('addResult', {resultObject: {blame: 'signup', message: 'Success!'}})
+            commit('addResult', {resultObject: {blame: 'signup', message: 'Signup success'}})
         }
         const onFail = function () {
-            commit('addResult', {resultObject: {blame: 'signup', message: 'Fail!'}})
+            commit('addResult', {resultObject: {blame: 'signup', message: 'Signup fail'}})
         }
 
-        signup(
+        register(
             profile,
             onSuccess,
             onFail
@@ -23,16 +25,41 @@ export const actions = {
     },
 
     loginAsync({commit}, {profile}) {
-        // TODO: create detailed results based on response (eg. 400 => fail)
-        const onSuccess = function (response) {
-            commit('login', response)
-            // commit('addResult', {resultObject: {blame: 'login', message: 'Success!'}})
-        }
-        const onFail = function () {
-            commit('addResult', {resultObject: {blame: 'login', message: 'Fail!'}})
-        }
+        authenticate(profile,
+            r => {
+                if (r.headers['authorization'] === undefined) {
+                    commit('addResult', {
+                        resultObject: {
+                            blame: 'login',
+                            message: "Server error: missing authorization token"
+                        }
+                    })
+                    throw new Error("missing authorization token")
+                }
 
-        login(profile, onSuccess, onFail).then()
+                user({username: jwt(r.headers.authorization).sub, token: r.headers.authorization},
+                    r => {
+                        if (r['profile'] === undefined) {
+                            commit('addResult', {
+                                resultObject: {
+                                    blame: 'login',
+                                    message: "Server error: missing profile data"
+                                }
+                            })
+                            throw new Error("missing profile")
+                        }
+
+                        commit('login', r)
+                    },
+                    r => {
+                        commit('addResult', {resultObject: {blame: 'login', message: r.message}})
+                    }
+                )
+            },
+            r => {
+                commit('addResult', {resultObject: {blame: 'login', message: r.message}})
+            }
+        )
     },
 
     addResultAsync({commit}, {resultObject}) {
