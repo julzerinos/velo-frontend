@@ -1,18 +1,20 @@
 <template>
   <div class="text-center ma-2">
     <v-snackbar
-            v-model="lastAlert"
+            timeout="10000"
+            v-model="show"
     >
-      text
+
+      {{message}}
 
       <template v-slot:action="{ attrs }">
         <v-btn
-                @click="snackbar = false"
+                @click="show = false"
                 color="pink"
-                text
+                icon
                 v-bind="attrs"
         >
-          Close
+          <v-icon>close</v-icon>
         </v-btn>
       </template>
     </v-snackbar>
@@ -25,32 +27,32 @@
 
     export default {
         name: "SnackbarAlert",
-        created() {
-            const getResult = {
-                ...mapGetters({
-                    result: 'result'
-                })
-            }.result
 
-            console.log(state.results)
+        computed: {
+            ...mapGetters({
+                results: 'results'
+            }),
+            message() {
+                if (this.lastAlert === null)
+                    return ''
 
-            for (const result in state.results) {
-                console.log(result)
-                this.computed[result] = () => getResult(result)
-                this.watch[result] = (v) => this.lastAlert = v
+                return `${this.lastAlert.blame} | ${this.lastAlert.message}`
             }
+        },
+        created() {
+            for (const r in state.results)
+                this.$watch(`results.${r}`, function (v) {
+                    this.lastAlert = v
+                    this.show = true
+                })
         },
         data() {
             return {
-                lastAlert: null
+                show: false,
+                lastAlert: null,
             }
         }
-        ,
-        watch: {
-            signup: v => this.lastAlert = v,
-            login: v => this.lastAlert = v,
 
-        }
     }
 </script>
 

@@ -9,10 +9,9 @@ export const mutations = {
     },
     addResult(state, {resultObject}) {
         Vue.set(state.results, resultObject.blame, resultObject)
-        // state.results[resultObject.blame] = resultObject
     },
     removeResult(state, {blame}) {
-        state.results[blame] = null;
+        Vue.set(state.results, blame, null)
     },
     profileChangeProperty(state, {property, value}) {
         if (property in state.profile)

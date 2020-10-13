@@ -73,15 +73,6 @@
           </v-container>
         </v-form>
 
-
-        <v-alert color="error"
-                 close-icon="highlight_off"
-                 dismissible
-                 v-model="alert"
-        >
-          {{result('signup') ? result('signup').message : ''}}
-        </v-alert>
-
         <v-card-actions class="justify-center">
           <v-btn :disabled="!valid" :loading="waiting" @click="signup({profile: signupProfile})">
             Sign up

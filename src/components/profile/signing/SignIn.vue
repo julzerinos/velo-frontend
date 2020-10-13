@@ -51,15 +51,6 @@
           </v-container>
         </v-form>
 
-        <v-alert color="error"
-                 close-icon="highlight_off"
-                 dismissible
-                 v-model="alert"
-        >
-          {{result('login') ? result('login').message : ''}}
-        </v-alert>
-
-
         <v-card-actions class="justify-center">
           <v-btn :disabled="!valid" @click="login({profile: loginProfile})">Sign in</v-btn>
         </v-card-actions>
