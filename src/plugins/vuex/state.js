@@ -3,6 +3,7 @@ export const state = {
 
     results: {
         signup: null,
-        login: null
+        login: null,
+        strava: null
     }
 }
