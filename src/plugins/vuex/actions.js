@@ -98,5 +98,10 @@ export const actions = {
 
     profileChangePropertyAsync({commit}, {property, value}) {
         commit('profileChangeProperty', {property, value})
+    },
+
+
+    addDataBrickAsync({commit}, payload) {
+        commit('addDataBrick', payload)
     }
 }
