@@ -40,7 +40,6 @@
 
             populate() {
                 let ComponentClass = Vue.extend(this.components[this.config.type])
-                console.log(this.config)
                 let instance = new ComponentClass({
                     propsData: {
                         training: this.training,

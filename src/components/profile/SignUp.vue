@@ -74,20 +74,16 @@
         </v-form>
 
 
-        <v-alert :key="value" :value="true"
-                 border="bottom"
+        <v-alert color="error"
                  close-icon="highlight_off"
-                 :color="key.type === 'error' ? 'red' : 'green'"
-                 dark
                  dismissible
-                 transition="scroll-y-transition"
-                 v-for="(key, value) in this.$store.state.asyncResults.signup"
+                 v-model="alert"
         >
-          {{value.message}} {{key.message}}
+          {{result('signup') ? result('signup').message : ''}}
         </v-alert>
 
         <v-card-actions class="justify-center">
-          <v-btn :disabled="!valid" :loading="waiting" @click="signup(signupProfile)">
+          <v-btn :disabled="!valid" :loading="waiting" @click="signup({profile: signupProfile})">
             Sign up
           </v-btn>
 
@@ -99,6 +95,8 @@
 </template>
 
 <script>
+    import {mapActions, mapGetters} from "vuex";
+
     export default {
         name: "SignUp",
         props: {
@@ -107,7 +105,6 @@
                 default: false
             }
         },
-        watch: {},
         data: () => ({
             athleteItems: ['Kornel Skórka', 'January Coach'],
 
@@ -127,6 +124,26 @@
         }),
         created() {
             this.openSignUp = this.redirected;
+        },
+        methods: {
+            ...mapActions({
+                removeResult: 'removeResultAsync'
+            })
+        },
+        computed: {
+            ...mapGetters({
+                result: 'result'
+            }),
+            alert: {
+                get() {
+                    return this.result('signup') !== null
+                },
+                set(v) {
+                    if (!v) {
+                        this.removeResult({blame: 'signup'})
+                    }
+                }
+            }
         }
     }
 

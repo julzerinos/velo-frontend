@@ -49,20 +49,16 @@
           </v-container>
         </v-form>
 
-        <v-alert :key="value" :value="true"
-                 border="bottom"
+        <v-alert color="error"
                  close-icon="highlight_off"
-                 color="red"
-                 dark
                  dismissible
-                 transition="scroll-y-transition"
-                 v-for="(key, value) in results('signin')"
+                 v-model="alert"
         >
-          {{key.message}}
+          {{result('login') ? result('login').message : ''}}
         </v-alert>
 
         <v-card-actions class="justify-center">
-          <v-btn :disabled="!valid" @click="login(loginProfile)">Sign in</v-btn>
+          <v-btn :disabled="!valid" @click="login({profile: loginProfile})">Sign in</v-btn>
         </v-card-actions>
       </div>
     </v-expand-transition>
@@ -70,7 +66,7 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
+    import {mapActions, mapGetters} from 'vuex';
 
     export default {
         name: "SignIn",
@@ -92,11 +88,25 @@
         created() {
             this.openSignIn = this.redirected;
         },
-        computed: {
-            ...mapGetters(['results'])
+        methods: {
+            ...mapActions({
+                removeResult: 'removeResultAsync'
+            })
         },
-        mounted() {
-            console.log(this.results('signup'))
+        computed: {
+            ...mapGetters({
+                result: 'result'
+            }),
+            alert: {
+                get() {
+                    return this.result('login') !== null
+                },
+                set(v) {
+                    if (!v) {
+                        this.removeResult({blame: 'login'})
+                    }
+                }
+            }
         }
     }
 </script>

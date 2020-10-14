@@ -27,13 +27,14 @@ export const axiosMethods = {
     get(
         url,
         headers,
+        params,
         onSuccess,
         onFailure,
         retries = 3,
         retryDelay = 1000
     ) {
         return axios
-            .get(url, {headers, retry: retries, retryDelay: retryDelay})
+            .get(url, {headers, params, retry: retries, retryDelay: retryDelay})
             .then(
                 response => {
                     onSuccess(response);
@@ -49,6 +50,7 @@ export const axiosMethods = {
     post(
         url,
         headers,
+        params,
         body,
         onSuccess,
         onFailure,
@@ -56,7 +58,7 @@ export const axiosMethods = {
         retryDelay = 1000
     ) {
         return axios
-            .post(url, body, {headers, retry: retries, retryDelay: retryDelay})
+            .post(url, body, {headers, params, retry: retries, retryDelay: retryDelay})
             .then(
                 response => {
                     onSuccess(response);
