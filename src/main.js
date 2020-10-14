@@ -6,11 +6,10 @@ import router from './plugins/router/routes'
 
 import mockData from "./plugins/mockdata/mockdata";
 import requests from "./plugins/requests/requests";
-import statistics from "./plugins/calculator/statistics";
+import statistics from "./plugins/maths/statistics";
 
 import profile from "./mixins/profile";
 import validationRuleset from "./mixins/validationRuleset";
-import asyncResults from "./mixins/asyncResults";
 
 import App from './App.vue'
 
@@ -20,7 +19,6 @@ Vue.use(statistics);
 
 Vue.mixin(profile);
 Vue.mixin(validationRuleset);
-Vue.mixin(asyncResults);
 
 new Vue({
     router,

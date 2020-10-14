@@ -8,20 +8,32 @@ export const actions = {
         register(
             profile,
             r => {
-                commit('setResult', {resultObject: {blame: 'signup', message: 'Signup success'}})
-                onSuccess()
+                commit('setResult', {resultObject: {blame: 'signup', message: r.message}})
+                return onSuccess()
             },
             r => {
-                commit('setResult', {resultObject: {blame: 'signup', message: 'Signup fail'}})
-                onFail()
+                commit('setResult', {resultObject: {blame: 'signup', message: r.message}})
+                return onFail()
             }
         ).then()
     },
 
-    logoutAsync({commit, state}) {
-        logout(state.profile).then()
-        commit('setResult', {resultObject: {blame: 'logout', message: "Logged out"}})
-        commit('logout')
+    logoutAsync({commit, state}, {onSuccess, onFail}) {
+        const onFinish = function (r) {
+            commit('setResult', {resultObject: {blame: 'logout', message: r.message}})
+            commit('logout')
+        }
+
+        logout(state.profile,
+            r => {
+                onFinish(r)
+                return onSuccess(r)
+            },
+            r => {
+                onFinish(r)
+                return onFail(r)
+            }
+        ).then()
     },
 
     loginAsync({commit}, {profile, onSuccess, onFail}) {
@@ -59,13 +71,13 @@ export const actions = {
                         commit('setResult', {resultObject: {blame: 'login', message: r.message}})
                         onFail()
                     }
-                )
+                ).then()
             },
             r => {
                 commit('setResult', {resultObject: {blame: 'login', message: r.message}})
                 onFail()
             }
-        )
+        ).then()
     },
 
     userAsync({commit, state}) {
@@ -86,7 +98,7 @@ export const actions = {
             r => {
                 commit('addResult', {resultObject: {blame: 'login', message: r.message}})
             }
-        )
+        ).then()
     },
 
     resetPasswordAsync({commit}, {email, onSuccess, onFail}) {
@@ -99,7 +111,7 @@ export const actions = {
                 commit('setResult', {resultObject: {blame: 'reset', message: r.message}})
                 onFail()
             }
-        )
+        ).then()
     },
 
     setResultAsync({commit}, {resultObject}) {

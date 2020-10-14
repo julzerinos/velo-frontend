@@ -1,23 +1,33 @@
-import {logout, register} from "@/plugins/vuex/profile/profile";
-import {axiosMethods} from "@/plugins/requests/requests";
+import {authenticate, logout, register, reset, user} from "@/plugins/vuex/profile/profile";
+import axios from 'axios'
 
-jest.mock('@/plugins/requests/requests')
+jest.mock('axios')
+
+// TODO: add jest post/get checks on url and parameters
 
 describe('vuex/profile', () => {
-    test('logout returns response on success', () => {
-        axiosMethods.post.mockResolvedValueOnce({data: "logoutSuccess"});
+    test('logout returns server response on request success', () => {
+        expect.hasAssertions()
 
-        return logout({token: "123"}).then(r => expect(r.data).toBe("logoutSuccess"))
+        axios.post.mockResolvedValueOnce({data: "logoutSuccess"});
+
+        logout({token: "123"}, r => {
+            expect(r.data).toBe("logoutSuccess")
+        })
     });
 
-    test('logout returns response on fail', () => {
-        axiosMethods.post.mockRejectedValueOnce({data: "logoutFail"});
+    test('logout returns server response on request fail', () => {
+        expect.hasAssertions()
 
-        return logout({token: "123"}).then(null, r => expect(r.data).toBe("logoutFail"))
+        axios.post.mockRejectedValueOnce({data: "logoutFail"});
+
+        logout({token: "123"}, null, r => expect(r.data).toBe("logoutFail"))
     });
 
-    test('register returns response on success', () => {
-        axiosMethods.post.mockResolvedValueOnce({data: "registerSuccess"});
+    test('register returns server response on success', () => {
+        expect.hasAssertions()
+
+        axios.post.mockResolvedValueOnce({data: "registerSuccess"});
 
         const profile = {
             name: {firstName: "test1", lastName: "test2"},
@@ -25,11 +35,15 @@ describe('vuex/profile', () => {
             password: "test4"
         }
 
-        return register(profile).then(r => expect(r.data).toBe("registerSuccess"))
+        return register(profile, r => {
+            expect(r.data).toBe("registerSuccess")
+        })
     });
 
-    test('register returns response on fail', () => {
-        axiosMethods.post.mockRejectedValueOnce({data: "registerFail"});
+    test('register returns server response on fail', () => {
+        expect.hasAssertions()
+
+        axios.post.mockRejectedValueOnce({data: "registerFail"});
 
         const profile = {
             name: {firstName: "test1", lastName: "test2"},
@@ -37,38 +51,101 @@ describe('vuex/profile', () => {
             password: "test4"
         }
 
-        return register(profile).then(null, r => expect(r.data).toBe("registerFail"))
+        register(profile, null, r => {
+            expect(r.data).toBe("registerFail")
+        })
     });
 
-    // TODO: authenticate
-    // TODO: user
+    test('authenticate returns server response on success', () => {
+        expect.hasAssertions()
 
-    // test('login returns profile and response on success', () => {
-    //     axiosMethods.post.mockResolvedValueOnce({
-    //         headers: {
-    //             authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjp7ImZpcnN0TmFtZSI6IkphbnVhcnkiLCJsYXN0TmFtZSI6IkNvYWNoIn0sImlkIjoiMTIzIiwiZW1haWwiOiJqYW51YXJ5QHJvenBsYWouZ292IiwiYXRobGV0ZXMiOltdLCJwcm9maWxlSW1hZ2VQYXRoIjoiaHR0cHM6Ly9pLnl0aW1nLmNvbS92aS9iNW1mV0pYanR5US9tYXhyZXNkZWZhdWx0LmpwZyIsImlzU3RyYXZhQ29ubmVjdGVkIjpmYWxzZX0.MTEI-7HoGmPcOsb_zX7-WCwgJ-eTPRaD1I2A_VdKWz4"
-    //         }
-    //     });
-    //
-    //     const profile = {
-    //         username: "test1",
-    //         password: "test2"
-    //     }
-    //
-    //     return login(profile).then(r => {
-    //         console.log(r)
-    //     })
-    //
-    // });
-    //
-    // test('login returns response on fail', () => {
-    //     axiosMethods.post.mockRejectedValueOnce({data: "loginFail"});
-    //
-    //     const profile = {
-    //         username: "test1",
-    //         password: "test2"
-    //     }
-    //
-    //     return login(profile).then(null, r => expect(r.data).toBe("loginFail"))
-    // });
+        axios.post.mockResolvedValueOnce({data: "authSuccess"});
+
+        const profile = {
+            email: "a@b.c",
+            password: "password"
+        }
+
+        return authenticate(profile, r => {
+            expect(r.data).toBe("authSuccess")
+        })
+    });
+
+    test('authenticate returns server response on fail', () => {
+        expect.hasAssertions()
+
+        axios.post.mockRejectedValueOnce({data: "authFail"});
+
+        const profile = {
+            email: "a@b.c",
+            password: "password"
+        }
+
+        authenticate(profile, null, r => {
+            expect(r).toHaveProperty('data')
+            expect(r.data).toBe("authFail")
+        })
+    });
+
+    test('user returns user profile together with server response on success', () => {
+        expect.hasAssertions()
+
+        axios.get.mockResolvedValueOnce({
+            data: {
+                firstName: "firstName", lastName: "lastName", email: "email",
+                athleteUUIDs: [], profileImg: "profileImg",
+                stravaConnected: true
+            }
+        });
+
+        const token = "123"
+        user({username: "abc", token: token},
+            r => {
+                expect(r).toHaveProperty('profile')
+                expect(r.profile).toEqual({
+                    name: {
+                        firstName: "firstName",
+                        lastName: "lastName"
+                    },
+                    email: "email",
+                    athletes: [],
+                    profileImagePath: "profileImg",
+                    isStravaConnected: true,
+                    token: token
+                })
+            }, null)
+    });
+
+    test('user returns server response on success', () => {
+        expect.hasAssertions()
+
+        axios.get.mockRejectedValue({
+            data: "userFail"
+        });
+
+        const token = "123"
+        user({username: "abc", token: token},
+            null,
+            r => {
+                expect(r).toHaveProperty('data')
+                expect(r.data).toBe("userFail")
+            })
+    });
+
+    test('reset returns server response on success', () => {
+        expect.hasAssertions()
+
+        axios.post.mockResolvedValueOnce({data: "resetSuccess"});
+
+        reset({email: "123"}, r => expect(r.data).toBe("resetSuccess"))
+    });
+
+    test('reset returns server response on fail', () => {
+        expect.hasAssertions()
+
+        axios.post.mockRejectedValueOnce({data: "resetFail"});
+
+        reset({email: "123"}, null, r => expect(r.data).toBe("resetFail"))
+    });
+
 });

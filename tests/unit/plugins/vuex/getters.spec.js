@@ -1,7 +1,7 @@
 import {getters} from "@/plugins/vuex/getters";
 
 describe('vuex/getters', () => {
-    test('signed when profile exists', () => {
+    test('loggedIn returns true when profile exists in state', () => {
         const state = {
             profile: "testProfile"
         }
@@ -10,7 +10,7 @@ describe('vuex/getters', () => {
         expect(res).toBeTruthy()
     });
 
-    test('signed when profile is null', () => {
+    test('loggedIn returns false when profile does not exist in state', () => {
         const state = {
             profile: null
         }
@@ -19,7 +19,7 @@ describe('vuex/getters', () => {
         expect(res).toBeFalsy()
     });
 
-    test('profile when profile exists', () => {
+    test('profile returns profile if profile exists', () => {
         const state = {
             profile: "testProfile"
         }
@@ -28,7 +28,7 @@ describe('vuex/getters', () => {
         expect(res).toEqual(state.profile)
     });
 
-    test('profile when profile is null', () => {
+    test('profile returns null when profile is null', () => {
         const state = {
             profile: null
         }
@@ -37,36 +37,53 @@ describe('vuex/getters', () => {
         expect(res).toBeNull()
     });
 
-    test('result when exists', () => {
+    test('result returns result if result exists', () => {
         const state = {
-            results: {
-                blame: "test"
+            result: {
+                blame: "test",
+                message: "test"
             }
         }
 
-        const res = getters.result(state)('blame')
-        expect(res).toBe("test")
+        const res = getters.result(state)
+        expect(res).toHaveProperty('blame')
+        expect(res).toHaveProperty('message')
+        expect(res.blame).toBe("test")
+        expect(res.message).toBe("test")
     });
 
-    test('result when null', () => {
+    test('result returns null when result is null', () => {
         const state = {
-            results: {
-                blame: null
-            }
+            result: null
         }
 
-        const res = getters.result(state)('blame')
+        const res = getters.result(state)
         expect(res).toBeNull()
     });
 
-    test('result when wrong blame', () => {
+    test('dataBricks returns empty array when no dataBricks are stored', () => {
         const state = {
-            results: {
-                blame1: "test"
-            }
+            dataBricks: []
         }
 
-        const res = getters.result(state)('blame2')
-        expect(res).toBeUndefined()
+        const res = getters.dataBricks(state)
+        expect(res).toHaveLength(0)
+        expect(res).toEqual([])
+    });
+
+    test('dataBricks returns array of dataBricks configs when dataBricks are nonempty', () => {
+        const state = {
+            dataBricks: [{
+                brickConfig: "test",
+                dataConfig: "test"
+            }]
+        }
+
+        const res = getters.dataBricks(state)
+        expect(res).toHaveLength(1)
+        expect(res[0]).toHaveProperty('brickConfig')
+        expect(res[0]).toHaveProperty('dataConfig')
+        expect(res[0].brickConfig).toBe('test')
+        expect(res[0].dataConfig).toBe('test')
     });
 });

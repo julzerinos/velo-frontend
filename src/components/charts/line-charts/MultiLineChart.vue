@@ -33,6 +33,7 @@
             }
         },
         mounted() {
+            console.log(this.training)
             this.generateChart()
         },
 
