@@ -1,7 +1,7 @@
 export default {
     methods: {
         addErrorAsync(blame, message, lifetime = -1) {
-            this.$store.dispatch('addResultAsync', {
+            this.$store.dispatch('setResultAsync', {
                 blame: blame,
                 type: "error",
                 lifetime: lifetime,
@@ -9,7 +9,7 @@ export default {
             }).then(r => r);
         },
         addSuccessAsync(blame, message, lifetime = -1) {
-            this.$store.dispatch('addResultAsync', {
+            this.$store.dispatch('setResultAsync', {
                 blame: blame,
                 type: "success",
                 lifetime: lifetime,

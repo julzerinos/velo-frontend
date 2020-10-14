@@ -36,7 +36,7 @@ describe('vuex/mutations', () => {
             }
         }
 
-        mutations.addResult(state, {resultObject})
+        mutations.setResult(state, {resultObject})
 
         expect(state.results.test).toEqual(resultObject)
     });

@@ -52,7 +52,13 @@
         </v-form>
 
         <v-card-actions class="justify-center">
-          <v-btn :disabled="!valid" @click="login({profile: loginProfile})">Sign in</v-btn>
+          <v-btn
+                  :disabled="!valid"
+                  :loading="loading"
+                  @click="submit"
+          >
+            Sign in
+          </v-btn>
         </v-card-actions>
       </div>
     </v-expand-transition>
@@ -60,7 +66,6 @@
 </template>
 
 <script>
-    import {mapActions, mapGetters} from 'vuex';
     import PassResetModal from "../password/PassResetModal";
 
     export default {
@@ -74,36 +79,30 @@
                 default: false
             }
         },
-        data: () => ({
-            openSignIn: false,
-            valid: false,
+        data: function () {
+            return {
+                openSignIn: this.redirected,
 
-            loginProfile: {
-                email: '',
-                password: '',
+                valid: false,
+                loading: false,
+
+                loginProfile: {
+                    email: '',
+                    password: '',
+                }
             }
-        }),
-        created() {
-            this.openSignIn = this.redirected;
         },
         methods: {
-            ...mapActions({
-                removeResult: 'removeResultAsync'
-            })
-        },
-        computed: {
-            ...mapGetters({
-                result: 'result'
-            }),
-            alert: {
-                get() {
-                    return this.result('login') !== null
-                },
-                set(v) {
-                    if (!v) {
-                        this.removeResult({blame: 'login'})
-                    }
-                }
+            submit: function () {
+                const onFinish = () => this.loading = false
+
+                this.loading = true
+
+                this.login({
+                    profile: this.loginProfile,
+                    onSuccess: onFinish.bind(this),
+                    onFail: onFinish.bind(this)
+                })
             }
         }
     }
