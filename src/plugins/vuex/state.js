@@ -1,4 +1,5 @@
 export const state = {
     profile: null,
-    result: null
+    result: null,
+    dataBricks: []
 }

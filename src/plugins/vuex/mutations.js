@@ -16,5 +16,11 @@ export const mutations = {
     profileChangeProperty(state, {property, value}) {
         if (property in state.profile)
             Vue.set(state.profile, property, value)
+    },
+    addDataBrick(state, payload) {
+        state.dataBricks.push({
+            brickConfig: payload.brickConfig,
+            dataConfig: payload.dataConfig
+        })
     }
 }

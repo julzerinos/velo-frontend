@@ -1,3 +1,5 @@
+import mocktraining from './mocktraining'
+
 export const createMockProfile = function () {
     return {
         "name": {
@@ -15,7 +17,11 @@ export const createMockProfile = function () {
 export default {
     install(Vue, options) {
         Vue.createMockProfile = createMockProfile;
+        Vue.mockTraining = function () {
+            return mocktraining
+        }
 
         Vue.prototype.$createMockProfile = Vue.createMockProfile;
+        Vue.prototype.$mockTraining = Vue.mockTraining;
     }
 }

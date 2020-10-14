@@ -38,12 +38,12 @@ https://www.strava.com/oauth/authorize
 &redirect_uri=${this.redirectURI}
 &response_type=code
 &scope=profile:read_all,activity:read_all
-&state=user_id:${this.profile.id}`
+&state=user_email:${this.profile.email}`
             }
         },
         methods: {
             ...mapActions({
-                profileChangeProperty: 'profileChangePropertyAsync'
+                userRefresh: 'userAsync'
             }),
             openPopup() {
                 const newWindow = window.open(
@@ -54,10 +54,7 @@ https://www.strava.com/oauth/authorize
                 const check = function () {
                     if (newWindow.closed) {
                         clearInterval(timer);
-
-                        // TODO: Change to backend get for updating on strava
-                        // TODO: Create profile function for updating this value
-                        this.profileChangeProperty({property: 'isStravaConnected', value: true})
+                        this.userRefresh()
                     }
                 }
 
