@@ -52,18 +52,21 @@ export const user = function (
             email: username
         },
         (response) => {
-            const {firstName, lastName, email, athleteUUIDs, profileImg} = response.data
+            const {
+                firstName, lastName, email,
+                athleteUUIDs, profileImg,
+                stravaConnected
+            } = response.data
 
             response['profile'] = {
                 name: {
                     firstName: firstName,
                     lastName: lastName
                 },
-                id: "id",
                 email: email,
                 athletes: athleteUUIDs,
                 profileImagePath: profileImg,
-                isStravaConnected: false,
+                isStravaConnected: stravaConnected,
                 token: token
             }
 

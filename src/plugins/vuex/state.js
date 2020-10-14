@@ -4,5 +4,7 @@ export const state = {
     results: {
         signup: null,
         login: null
-    }
+    },
+
+    dataBricks: []
 }

@@ -62,6 +62,27 @@ export const actions = {
         )
     },
 
+    userAsync({commit, state}) {
+        user({username: state.profile.email, token: state.profile.token},
+            r => {
+                if (r['profile'] === undefined) {
+                    commit('addResult', {
+                        resultObject: {
+                            blame: 'login',
+                            message: "Server error: missing profile data"
+                        }
+                    })
+                    throw new Error("missing profile")
+                }
+
+                commit('login', r)
+            },
+            r => {
+                commit('addResult', {resultObject: {blame: 'login', message: r.message}})
+            }
+        )
+    },
+
     resetPasswordAsync({commit}, {email, onSuccess, onFail}) {
         commit('removeResult', {blame: 'reset'})
 
@@ -92,5 +113,9 @@ export const actions = {
 
     profileChangePropertyAsync({commit}, {property, value}) {
         commit('profileChangeProperty', {property, value})
+    },
+
+    addDataBrickAsync({commit}, payload) {
+        commit('addDataBrick', payload)
     }
 }
