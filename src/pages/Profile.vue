@@ -22,13 +22,12 @@
       </v-row>
     </v-container>
   </div>
-
 </template>
 
 <script>
-    import SignIn from '../../components/profile/SignIn'
-    import SignUp from '../../components/profile/SignUp'
-    import ProfileManagement from '../../components/profile/ProfileManagement'
+    import SignIn from '../components/profile/signing/SignIn'
+    import SignUp from '../components/profile/signing/SignUp'
+    import ProfileManagement from '../components/profile/signed/ProfileManagement'
 
     export default {
         name: 'Profile',

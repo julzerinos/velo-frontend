@@ -1,4 +1,4 @@
-import {authenticate, logout, register, user} from "./profile/profile";
+import {authenticate, logout, register, reset, user} from "./profile/profile";
 import jwt from 'jwt-decode'
 
 // TODO: Add error-specific messages
@@ -83,6 +83,21 @@ export const actions = {
         )
     },
 
+    resetPasswordAsync({commit}, {email, onSuccess, onFail}) {
+        commit('removeResult', {blame: 'reset'})
+
+        reset({email},
+            r => {
+                commit('addResult', {resultObject: {blame: 'reset', message: r.message}})
+                onSuccess()
+            },
+            r => {
+                commit('addResult', {resultObject: {blame: 'reset', message: r.message}})
+                onFail()
+            }
+        )
+    },
+
     addResultAsync({commit}, {resultObject}) {
         commit('addResult', {resultObject: resultObject});
 
@@ -99,7 +114,6 @@ export const actions = {
     profileChangePropertyAsync({commit}, {property, value}) {
         commit('profileChangeProperty', {property, value})
     },
-
 
     addDataBrickAsync({commit}, payload) {
         commit('addDataBrick', payload)

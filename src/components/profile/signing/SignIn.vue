@@ -44,6 +44,8 @@
                         type="password"
                         v-model="loginProfile.password"
                 ></v-text-field>
+                <pass-reset-modal/>
+
               </v-col>
             </v-row>
           </v-container>
@@ -57,6 +59,7 @@
           {{result('login') ? result('login').message : ''}}
         </v-alert>
 
+
         <v-card-actions class="justify-center">
           <v-btn :disabled="!valid" @click="login({profile: loginProfile})">Sign in</v-btn>
         </v-card-actions>
@@ -67,9 +70,13 @@
 
 <script>
     import {mapActions, mapGetters} from 'vuex';
+    import PassResetModal from "../password/PassResetModal";
 
     export default {
         name: "SignIn",
+        components: {
+            PassResetModal
+        },
         props: {
             redirected: {
                 type: Boolean,
