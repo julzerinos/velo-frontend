@@ -71,7 +71,7 @@ export const post = function (
 }
 
 export const methods = {
-    get, post
+    get: get, post: post
 }
 
 export default {

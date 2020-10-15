@@ -1,11 +1,11 @@
-import {methods} from "@/plugins/requests/requests";
+import {get, post} from "../../requests/requests";
 
 export const register = function (
     {name, email, password},
     onSuccess = r => r,
     onFail = r => r
 ) {
-    return methods.post(
+    return post(
         "http://localhost:8081/register",
         {
             firstName: name.firstName,
@@ -25,7 +25,7 @@ export const authenticate = function (
     onSuccess = r => r,
     onFail = r => r
 ) {
-    return methods.post(
+    return post(
         "http://localhost:8081/authenticate",
         {
             username: email,
@@ -43,7 +43,7 @@ export const user = function (
     onSuccess = r => r,
     onFail = r => r
 ) {
-    return methods.get(
+    return get(
         "http://localhost:8081/user",
         {
             Authorization: token
@@ -81,7 +81,7 @@ export const logout = function (
     onSuccess = r => r,
     onFail = r => r
 ) {
-    return methods.post(
+    return post(
         "http://localhost:8081/logout",
         {
             authorization: token
@@ -98,7 +98,7 @@ export const reset = function (
     onSuccess = r => r,
     onFail = r => r
 ) {
-    return methods.post(
+    return post(
         "http://localhost:8081/reset-password",
         {
             email: email,

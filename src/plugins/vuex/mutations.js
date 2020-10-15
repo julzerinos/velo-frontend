@@ -7,12 +7,11 @@ export const mutations = {
     login(state, {profile}) {
         state.profile = profile;
     },
-    addResult(state, {resultObject}) {
-        Vue.set(state.results, resultObject.blame, resultObject)
-        // state.results[resultObject.blame] = resultObject
+    setResult(state, {resultObject}) {
+        state.result = resultObject
     },
-    removeResult(state, {blame}) {
-        state.results[blame] = null;
+    removeResult(state) {
+        state.result = null
     },
     profileChangeProperty(state, {property, value}) {
         if (property in state.profile)

@@ -73,17 +73,12 @@
           </v-container>
         </v-form>
 
-
-        <v-alert color="error"
-                 close-icon="highlight_off"
-                 dismissible
-                 v-model="alert"
-        >
-          {{result('signup') ? result('signup').message : ''}}
-        </v-alert>
-
         <v-card-actions class="justify-center">
-          <v-btn :disabled="!valid" :loading="waiting" @click="signup({profile: signupProfile})">
+          <v-btn
+                  :disabled="!valid"
+                  :loading="loading"
+                  @click="submit"
+          >
             Sign up
           </v-btn>
 
@@ -95,7 +90,6 @@
 </template>
 
 <script>
-    import {mapActions, mapGetters} from "vuex";
 
     export default {
         name: "SignUp",
@@ -105,44 +99,34 @@
                 default: false
             }
         },
-        data: () => ({
-            athleteItems: ['Kornel Skórka', 'January Coach'],
+        data: function () {
+            return {
+                openSignUp: this.redirected,
 
-            openSignUp: false,
-            valid: false,
+                valid: false,
+                loading: false,
 
-            signupProfile: {
-                name: {
-                    firstName: '',
-                    lastName: ''
+                signupProfile: {
+                    name: {
+                        firstName: '',
+                        lastName: ''
+                    },
+                    email: '',
+                    password: '',
                 },
-                email: '',
-                password: '',
-            },
-
-            waiting: false
-        }),
-        created() {
-            this.openSignUp = this.redirected;
+            }
         },
         methods: {
-            ...mapActions({
-                removeResult: 'removeResultAsync'
-            })
-        },
-        computed: {
-            ...mapGetters({
-                result: 'result'
-            }),
-            alert: {
-                get() {
-                    return this.result('signup') !== null
-                },
-                set(v) {
-                    if (!v) {
-                        this.removeResult({blame: 'signup'})
-                    }
-                }
+            submit: function () {
+                const onFinish = () => this.loading = false
+
+                this.loading = true
+
+                this.signup({
+                    profile: this.signupProfile,
+                    onSuccess: onFinish.bind(this),
+                    onFail: onFinish.bind(this)
+                })
             }
         }
     }

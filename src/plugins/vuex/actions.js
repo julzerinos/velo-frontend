@@ -4,62 +4,80 @@ import jwt from 'jwt-decode'
 // TODO: Add error-specific messages
 
 export const actions = {
-    signupAsync({commit}, {profile}) {
-        const onSuccess = function () {
-            commit('addResult', {resultObject: {blame: 'signup', message: 'Signup success'}})
-        }
-        const onFail = function () {
-            commit('addResult', {resultObject: {blame: 'signup', message: 'Signup fail'}})
-        }
-
+    signupAsync({commit}, {profile, onSuccess, onFail}) {
         register(
             profile,
-            onSuccess,
-            onFail
+            r => {
+                commit('setResult', {resultObject: {blame: 'signup', message: r.message}})
+                return onSuccess()
+            },
+            r => {
+                commit('setResult', {resultObject: {blame: 'signup', message: r.message}})
+                return onFail()
+            }
         ).then()
     },
 
-    logoutAsync({commit, state}) {
-        logout(state.profile).then()
-        commit('logout')
+    logoutAsync({commit, state}, {onSuccess, onFail}) {
+        const onFinish = function (r) {
+            commit('setResult', {resultObject: {blame: 'logout', message: r.message}})
+            commit('logout')
+        }
+
+        logout(state.profile,
+            r => {
+                onFinish(r)
+                return onSuccess(r)
+            },
+            r => {
+                onFinish(r)
+                return onFail(r)
+            }
+        ).then()
     },
 
-    loginAsync({commit}, {profile}) {
+    loginAsync({commit}, {profile, onSuccess, onFail}) {
         authenticate(profile,
             r => {
                 if (r.headers['authorization'] === undefined) {
-                    commit('addResult', {
+                    commit('setResult', {
                         resultObject: {
                             blame: 'login',
                             message: "Server error: missing authorization token"
                         }
                     })
+                    onFail()
                     throw new Error("missing authorization token")
                 }
 
                 user({username: jwt(r.headers.authorization).sub, token: r.headers.authorization},
                     r => {
                         if (r['profile'] === undefined) {
-                            commit('addResult', {
+                            commit('setResult', {
                                 resultObject: {
                                     blame: 'login',
                                     message: "Server error: missing profile data"
                                 }
                             })
+                            onFail()
                             throw new Error("missing profile")
                         }
 
+                        commit('setResult', {resultObject: {blame: 'login', message: "successfully logged in"}})
                         commit('login', r)
+                        onSuccess()
                     },
                     r => {
-                        commit('addResult', {resultObject: {blame: 'login', message: r.message}})
+                        commit('setResult', {resultObject: {blame: 'login', message: r.message}})
+                        onFail()
                     }
-                )
+                ).then()
             },
             r => {
-                commit('addResult', {resultObject: {blame: 'login', message: r.message}})
+                commit('setResult', {resultObject: {blame: 'login', message: r.message}})
+                onFail()
             }
-        )
+        ).then()
     },
 
     userAsync({commit, state}) {
@@ -80,35 +98,28 @@ export const actions = {
             r => {
                 commit('addResult', {resultObject: {blame: 'login', message: r.message}})
             }
-        )
+        ).then()
     },
 
     resetPasswordAsync({commit}, {email, onSuccess, onFail}) {
-        commit('removeResult', {blame: 'reset'})
-
         reset({email},
             r => {
-                commit('addResult', {resultObject: {blame: 'reset', message: r.message}})
+                commit('setResult', {resultObject: {blame: 'reset', message: r.message}})
                 onSuccess()
             },
             r => {
-                commit('addResult', {resultObject: {blame: 'reset', message: r.message}})
+                commit('setResult', {resultObject: {blame: 'reset', message: r.message}})
                 onFail()
             }
-        )
+        ).then()
     },
 
-    addResultAsync({commit}, {resultObject}) {
-        commit('addResult', {resultObject: resultObject});
-
-        if ('lifetime' in resultObject)
-            setTimeout(function () {
-                commit('removeResult', {blame: resultObject.blame});
-            }, resultObject.lifetime);
+    setResultAsync({commit}, {resultObject}) {
+        commit('setResult', {resultObject: resultObject});
     },
 
-    removeResultAsync({commit}, {blame}) {
-        commit('removeResult', {blame: blame});
+    removeResultAsync({commit}) {
+        commit('removeResult');
     },
 
     profileChangePropertyAsync({commit}, {property, value}) {

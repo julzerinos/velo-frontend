@@ -1,5 +1,7 @@
 <template>
   <div id="landing">
+    <snackbar-alert/>
+
     <dashboard v-model="drawer"/>
 
     <v-app-bar app>
@@ -36,10 +38,12 @@
     import Dashboard from "./Dashboard";
 
     import AppBarProfile from '../components/profile/appbar/AppBarProfile'
+    import SnackbarAlert from "../components/alerts/SnackbarAlert";
 
     export default {
         name: "Layout",
         components: {
+            SnackbarAlert,
             Dashboard,
             AppBarProfile
         },
