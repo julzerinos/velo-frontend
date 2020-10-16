@@ -4,21 +4,23 @@ import jwt from 'jwt-decode'
 // TODO: Add error-specific messages
 
 export const actions = {
-    signupAsync({commit}, {profile, onSuccess, onFail}) {
+    signupAsync({commit}, {profile, onSuccess = r => r, onFail = r => r} = {}) {
         register(
             profile,
             r => {
+                console.log(r)
                 commit('setResult', {resultObject: {blame: 'signup', message: r.message}})
-                return onSuccess()
+                return onSuccess(r)
             },
             r => {
+                console.log(r)
                 commit('setResult', {resultObject: {blame: 'signup', message: r.message}})
-                return onFail()
+                return onFail(r)
             }
         ).then()
     },
 
-    logoutAsync({commit, state}, {onSuccess, onFail}) {
+    logoutAsync({commit, state}, {onSuccess = r => r, onFail = r => r} = {}) {
         const onFinish = function (r) {
             commit('setResult', {resultObject: {blame: 'logout', message: r.message}})
             commit('logout')
@@ -27,16 +29,18 @@ export const actions = {
         logout(state.profile,
             r => {
                 onFinish(r)
-                return onSuccess(r)
+                r = onSuccess(r)
+                return r
             },
             r => {
                 onFinish(r)
-                return onFail(r)
+                r = onFail(r)
+                return r
             }
         ).then()
     },
 
-    loginAsync({commit}, {profile, onSuccess, onFail}) {
+    loginAsync({commit}, {profile, onSuccess = r => r, onFail = r => r} = {}) {
         authenticate(profile,
             r => {
                 if (r.headers['authorization'] === undefined) {
@@ -65,17 +69,17 @@ export const actions = {
 
                         commit('setResult', {resultObject: {blame: 'login', message: "successfully logged in"}})
                         commit('login', r)
-                        onSuccess()
+                        return onSuccess(r)
                     },
                     r => {
                         commit('setResult', {resultObject: {blame: 'login', message: r.message}})
-                        onFail()
+                        return onFail(r)
                     }
                 ).then()
             },
             r => {
                 commit('setResult', {resultObject: {blame: 'login', message: r.message}})
-                onFail()
+                return onFail(r)
             }
         ).then()
     },
@@ -101,15 +105,15 @@ export const actions = {
         ).then()
     },
 
-    resetPasswordAsync({commit}, {email, onSuccess, onFail}) {
+    resetPasswordAsync({commit}, {email, onSuccess = r => r, onFail = r => r} = {}) {
         reset({email},
             r => {
                 commit('setResult', {resultObject: {blame: 'reset', message: r.message}})
-                onSuccess()
+                return onSuccess(r)
             },
             r => {
                 commit('setResult', {resultObject: {blame: 'reset', message: r.message}})
-                onFail()
+                return onFail(r)
             }
         ).then()
     },

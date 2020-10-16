@@ -82,7 +82,7 @@ export const logout = function (
     onFail = r => r
 ) {
     return post(
-        "http://localhost:8081/logout",
+        "http://localhost:8081/logout-user",
         {
             authorization: token
         },
