@@ -16,7 +16,7 @@
           <v-btn :to="{ name: 'profile' }" :value="value" @click="$emit('input', $event.target.value)"
                  text>View profile
           </v-btn>
-          <v-btn :value="value" @click="emitInputWrapper($event, logout)"
+          <v-btn :value="value" @click="emitInputWrapper($event)"
                  text>Log out
           </v-btn>
         </v-list-item-action>
@@ -40,9 +40,9 @@
             }
         },
         methods: {
-            emitInputWrapper(event, f) {
+            emitInputWrapper(event) {
                 this.$emit('input', event.target.value)
-                f();
+                this.logout();
             }
         },
     }
