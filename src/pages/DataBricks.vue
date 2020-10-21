@@ -14,12 +14,11 @@
 </template>
 
 <script>
-    import DataBricksSetup from "../components/main-content/DataBricksSetup";
-    import DataBricks from "../components/main-content/DataBricks";
+    import DataBricksSetup from "../components/data-bricks/DataBricksSetup";
+    import DataBricks from "../components/data-bricks/DataBricks";
 
     export default {
-        name: "MainContent",
-        title: "Charts",
+        name: "DataBricks",
         components: {DataBricksSetup, DataBricks},
     };
 </script>
