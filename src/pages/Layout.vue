@@ -22,7 +22,6 @@
     </v-app-bar>
 
     <v-main>
-      <!-- Todo add transitions -->
       <router-view/>
     </v-main>
 

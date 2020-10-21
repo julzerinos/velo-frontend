@@ -4,5 +4,5 @@ export const state = {
 
     // TODO: these should be part of profile
     dataBricks: [],
-    customScripts: []
+    dataBrickConfigs: []
 }
