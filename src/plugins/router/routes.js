@@ -7,45 +7,59 @@ import Layout from "../../pages/Layout";
 import MainContent from "../../pages/MainContent";
 import Settings from "../../pages/Settings";
 import Profile from "../../pages/Profile";
+import Scripting from "../../pages/Scripting";
 
 Vue.use(VueRouter)
 
-const opts = {
-    mode: 'history',
-    routes: [
-        {
-            path: '/bettertimes',
-            name: 'bettertimes',
-            component: Splash
-        },
-        {
-            path: '/',
-            name: 'main',
-            component: Layout,
-            children: [
-                {
-                    path: '/maincontent',
-                    name: 'maincontent',
-                    component: MainContent
-                },
-                {
-                    path: '/settings',
-                    name: 'settings',
-                    component: Settings
-                },
-                {
-                    path: '/profile',
-                    name: 'profile',
-                    component: Profile,
-                    props: true
-                },
-                {
-                    path: '*',
-                    redirect: '/maincontent'
-                }
-            ]
-        },
-    ]
-}
+export const mainAppRoutes = [
+    {
+        path: '/databricks',
+        name: 'Data Bricks',
+        icon: 'show_chart',
+        component: MainContent
+    },
+    {
+        path: '/scripting',
+        name: 'Scripting',
+        icon: 'code',
+        component: Scripting,
+    },
+    {
+        path: '/profile',
+        name: 'Profile',
+        icon: 'directions_bike',
+        component: Profile,
+        props: true
+    },
+    {
+        path: '/settings',
+        name: 'Settings',
+        icon: 'settings',
+        component: Settings
+    },
+]
 
-export default new VueRouter(opts)
+export default new VueRouter(
+    {
+        mode: 'history',
+        routes: [
+            {
+                path: '/bettertimes',
+                name: 'bettertimes',
+                component: Splash
+            },
+            {
+                path: '/',
+                name: 'main',
+                component: Layout,
+                children: [
+                    ...mainAppRoutes,
+                    {
+                        path: '*',
+                        redirect: '/databricks'
+                    }
+                ]
+            },
+        ]
+    }
+)
