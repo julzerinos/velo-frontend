@@ -3,34 +3,18 @@
     <v-list dense>
       <v-subheader>Pages</v-subheader>
 
-      <v-list-item :to="{ name: 'maincontent' }" link>
+      <v-list-item :key="route.name" :to="{ name: route.name }" link v-for="route in mainAppRoutes">
         <v-list-item-action>
-          <v-icon>show_chart</v-icon>
+          <v-icon>{{route.icon}}</v-icon>
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title>Charts</v-list-item-title>
+          <v-list-item-title>{{route.name}}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item :to="{ name: 'profile' }" link>
-        <v-list-item-action>
-          <v-icon>directions_bike</v-icon>
-        </v-list-item-action>
-        <v-list-item-content>
-          <v-list-item-title>Profile</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+      <v-divider/>
 
-      <v-list-item :to="{ name: 'settings' }" link>
-        <v-list-item-action>
-          <v-icon>settings</v-icon>
-        </v-list-item-action>
-        <v-list-item-content>
-          <v-list-item-title>Settings</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-subheader>Settings</v-subheader>
+      <v-subheader>Appearance</v-subheader>
 
       <v-list-item>
         <v-list-item-content>
@@ -45,6 +29,8 @@
 </template>
 
 <script>
+    import {mainAppRoutes} from "../plugins/router/routes";
+
     export default {
         name: "Dashboard",
         props: {
@@ -53,6 +39,9 @@
                 type: Boolean,
                 default: false,
             },
+        },
+        computed: {
+            mainAppRoutes: () => mainAppRoutes
         },
         data() {
             return {
