@@ -1,5 +1,5 @@
 <template>
-  <v-card max-height="500px" min-height="500px">
+  <v-card>
     <v-toolbar
             color="green accent-5"
             dark
@@ -35,7 +35,7 @@
                       v-bind="attrs"
                       v-on="on"
               >
-                all
+                More
                 <v-icon right>
                   mdi-menu-down
                 </v-icon>
@@ -58,25 +58,34 @@
 
     <v-tabs-items v-model="currentItem">
       <v-tab-item
-              :key="item.name"
-              :value="`tab-${item.id}`"
-              v-for="item in athletes.concat(more)"
+              :key="athlete.id"
+              :value="`tab-${athlete.id}`"
+              v-for="athlete in athletes.concat(more)"
       >
-        <v-card class="overflow-auto" flat>
-          <v-list style="max-height: 500px" three-line>
-            <v-list-item :key="training.id" v-for="training in item.trainings">
-              <v-list-item-content>
-                <v-list-item-title>{{training.name}}</v-list-item-title>
-                <v-list-item-subtitle>{{new Date(training.startDateTime).toUTCString()}}</v-list-item-subtitle>
+        <v-card flat>
+          <!-- TODO: buffering list on scroll -->
+          <v-virtual-scroll
+                  :height="height"
+                  :items="athlete.trainings"
+                  bench="5"
+                  item-height="100"
+          >
+
+            <template v-slot:default="{ item }">
+              <v-list-item :key="item.id">
                 <v-list-item-content>
+                  <v-list-item-title>{{item.name}}</v-list-item-title>
+                  <v-list-item-subtitle>{{new Date(item.startDateTime).toUTCString()}}</v-list-item-subtitle>
+                  <v-list-item-content>
                   <span style="white-space: pre;">
-                  Total Km: {{training.totalDistance}} <br/>
-                  Total Time: {{new Date(training.totalTime.seconds * 1000).toISOString().substr(11, 8)}}
+                  Total Km: {{item.totalDistance}} <br/>
+                  Total Time: {{new Date(item.totalTime.seconds * 1000).toISOString().substr(11, 8)}}
                   </span>
+                  </v-list-item-content>
                 </v-list-item-content>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
+              </v-list-item>
+            </template>
+          </v-virtual-scroll>
         </v-card>
       </v-tab-item>
     </v-tabs-items>
@@ -154,10 +163,111 @@
                                 },
                                 "totalDistance": 69
                             },
+                            {
+                                "name": "vroom vroom",
+                                "id": "3fa85f6ss4-dw5717-4562-b3fc-2c963f66afa6",
+                                "athleteId": "3fa85f64-5717-4562-b3fc-2c96ssl3f66afa6",
+                                "startDateTime": "2020-12-21T15:16:19.102Z",
+                                "totalTime": {
+                                    "seconds": 100000000,
+                                    "nano": 0,
+                                    "negative": true,
+                                    "zero": true,
+                                    "units": [
+                                        {
+                                            "dateBased": true,
+                                            "timeBased": true,
+                                            "durationEstimated": true
+                                        }
+                                    ]
+                                },
+                                "totalDistance": 69
+                            },
+                            {
+                                "name": "vroom vroom",
+                                "id": "3fa8awdd5f6ss4-5717-4562-b3fc-2c963f66afa6",
+                                "athleteId": "3fa85f64-5717-4562-b3fc-2c96ssl3f66afa6",
+                                "startDateTime": "2020-12-21T15:16:19.102Z",
+                                "totalTime": {
+                                    "seconds": 100000000,
+                                    "nano": 0,
+                                    "negative": true,
+                                    "zero": true,
+                                    "units": [
+                                        {
+                                            "dateBased": true,
+                                            "timeBased": true,
+                                            "durationEstimated": true
+                                        }
+                                    ]
+                                },
+                                "totalDistance": 69
+                            },
+                            {
+                                "name": "vroom vroom",
+                                "id": "3fa8awdd5f6ssefs4-5717-4562-b3fc-2c963f66afa6",
+                                "athleteId": "3fa85f64-5717-4562-b3fc-2c96ssl3f66afa6",
+                                "startDateTime": "2020-12-21T15:16:19.102Z",
+                                "totalTime": {
+                                    "seconds": 100000000,
+                                    "nano": 0,
+                                    "negative": true,
+                                    "zero": true,
+                                    "units": [
+                                        {
+                                            "dateBased": true,
+                                            "timeBased": true,
+                                            "durationEstimated": true
+                                        }
+                                    ]
+                                },
+                                "totalDistance": 69
+                            },
+                            {
+                                "name": "vroom vroom",
+                                "id": "3fa8awdd5f6ssfse4-5717-4562-b3fc-2c963f66afa6",
+                                "athleteId": "3fa85f64-5717-4562-b3fc-2c96ssl3f66afa6",
+                                "startDateTime": "2020-12-21T15:16:19.102Z",
+                                "totalTime": {
+                                    "seconds": 100000000,
+                                    "nano": 0,
+                                    "negative": true,
+                                    "zero": true,
+                                    "units": [
+                                        {
+                                            "dateBased": true,
+                                            "timeBased": true,
+                                            "durationEstimated": true
+                                        }
+                                    ]
+                                },
+                                "totalDistance": 69
+                            },
+                            {
+                                "name": "vroom vroom",
+                                "id": "3fa8awdd5f6sews4-5717-4562-b3fc-2c963f66afa6",
+                                "athleteId": "3fa85f64-5717-4562-b3fc-2c96ssl3f66afa6",
+                                "startDateTime": "2020-12-21T15:16:19.102Z",
+                                "totalTime": {
+                                    "seconds": 100000000,
+                                    "nano": 0,
+                                    "negative": true,
+                                    "zero": true,
+                                    "units": [
+                                        {
+                                            "dateBased": true,
+                                            "timeBased": true,
+                                            "durationEstimated": true
+                                        }
+                                    ]
+                                },
+                                "totalDistance": 69
+                            },
                         ],
                     }
                 ],
 
+                height: 500,
                 currentItem: '',
                 more: [
                     {
