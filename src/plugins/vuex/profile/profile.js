@@ -1,16 +1,18 @@
 import {get, post} from "../../requests/requests";
 
+const base_url = 'http://localhost:8081'
+
 export const register = function (
     {name, email, password},
     onSuccess = r => r,
     onFail = r => r
 ) {
     return post(
-        "http://localhost:8081/register",
+        `${base_url}/register`,
         {
             firstName: name.firstName,
             lastName: name.lastName,
-            username: email,
+            email: email,
             password: password
         },
         {},
@@ -26,9 +28,9 @@ export const authenticate = function (
     onFail = r => r
 ) {
     return post(
-        "http://localhost:8081/authenticate",
+        `${base_url}/authenticate`,
         {
-            username: email,
+            email: email,
             password: password
         },
         {},
@@ -44,7 +46,7 @@ export const user = function (
     onFail = r => r
 ) {
     return get(
-        "http://localhost:8081/user",
+        `${base_url}/user`,
         {
             Authorization: token
         },
@@ -82,9 +84,9 @@ export const logout = function (
     onFail = r => r
 ) {
     return post(
-        "http://localhost:8081/logout-user",
+        `${base_url}/logout-user`,
         {
-            authorization: token
+            Authorization: token
         },
         {},
         {},
@@ -99,12 +101,48 @@ export const reset = function (
     onFail = r => r
 ) {
     return post(
-        "http://localhost:8081/reset-password",
+        `${base_url}/reset-password`,
         {
             email: email,
         },
         {},
         {},
+        onSuccess,
+        onFail
+    )
+}
+
+export const workoutsMetadata = function (
+    {athleteId, token},
+    onSuccess = r => r,
+    onFail = r => r
+) {
+    return get(
+        `${base_url}/workouts-metadata`,
+        {
+            Authorization: token
+        },
+        {
+            athleteId: athleteId
+        },
+        onSuccess,
+        onFail
+    )
+}
+
+export const workout = function (
+    {workoutId, token},
+    onSuccess = r => r,
+    onFail = r => r
+) {
+    return get(
+        `${base_url}/workout`,
+        {
+            Authorization: token
+        },
+        {
+            workoutId: workoutId
+        },
         onSuccess,
         onFail
     )

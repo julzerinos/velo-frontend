@@ -8,12 +8,10 @@ export const actions = {
         register(
             profile,
             r => {
-                console.log(r)
                 commit('setResult', {resultObject: {blame: 'signup', message: r.message}})
                 return onSuccess(r)
             },
             r => {
-                console.log(r)
                 commit('setResult', {resultObject: {blame: 'signup', message: r.message}})
                 return onFail(r)
             }
