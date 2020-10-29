@@ -92,6 +92,8 @@
   </v-card>
 </template>
 <script>
+    import {mapActions} from "vuex";
+
     export default {
         name: 'Athletes',
         data() {
@@ -308,6 +310,9 @@
                     this.currentItem = 'tab-' + item.id
                 })
             },
+            ...mapActions({
+                workoutsMetadata: 'workoutsMetadataAsync'
+            })
         }
     }
 </script>

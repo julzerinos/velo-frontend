@@ -1,4 +1,4 @@
-import {authenticate, logout, register, reset, user} from "./profile/profile";
+import {authenticate, logout, register, reset, user, workoutsMetadata} from "./profile/profile";
 import jwt from 'jwt-decode'
 
 // TODO: Add error-specific messages
@@ -111,6 +111,20 @@ export const actions = {
             },
             r => {
                 commit('setResult', {resultObject: {blame: 'reset', message: r.message}})
+                return onFail(r)
+            }
+        ).then()
+    },
+
+    workoutsMetadataAsync({commit, state}, {athleteId, onSuccess = r => r, onFail = r => r} = {}) {
+        workoutsMetadata(
+            {athleteId, token: state.profile.token},
+            r => {
+                // commit('setResult', {resultObject: {blame: 'reset', message: r.message}})
+                return onSuccess(r)
+            },
+            r => {
+                // commit('setResult', {resultObject: {blame: 'reset', message: r.message}})
                 return onFail(r)
             }
         ).then()
