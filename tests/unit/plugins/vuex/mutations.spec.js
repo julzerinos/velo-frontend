@@ -79,17 +79,17 @@ describe('vuex/mutations', () => {
         expect(state.profile.property1).toBe("value")
     });
 
-    test('addDataBrick pushes a data brick to dataBricks array', () => {
-        const state = {
-            dataBricks: []
-        }
-
-        mutations.addDataBrick(state, {brickConfig: "brick", dataConfig: "data"})
-
-        expect(state.dataBricks).toHaveLength(1)
-        expect(state.dataBricks[0]).toHaveProperty('brickConfig')
-        expect(state.dataBricks[0]).toHaveProperty('dataConfig')
-        expect(state.dataBricks[0].brickConfig).toBe('brick')
-        expect(state.dataBricks[0].dataConfig).toBe('data')
-    });
+    // test('addDataBrick pushes a data brick to dataBricks array', () => {
+    //     const state = {
+    //         dataBricks: []
+    //     }
+    //
+    //     mutations.addDataBrick(state, {brickConfig: "brick", dataConfig: "data"})
+    //
+    //     expect(state.dataBricks).toHaveLength(1)
+    //     expect(state.dataBricks[0]).toHaveProperty('brickConfig')
+    //     expect(state.dataBricks[0]).toHaveProperty('dataConfig')
+    //     expect(state.dataBricks[0].brickConfig).toBe('brick')
+    //     expect(state.dataBricks[0].dataConfig).toBe('data')
+    // });
 });

@@ -61,29 +61,29 @@ describe('vuex/getters', () => {
         expect(res).toBeNull()
     });
 
-    test('dataBricks returns empty array when no dataBricks are stored', () => {
-        const state = {
-            dataBricks: []
-        }
-
-        const res = getters.dataBricks(state)
-        expect(res).toHaveLength(0)
-        expect(res).toEqual([])
-    });
-
-    test('dataBricks returns array of dataBricks configs when dataBricks are nonempty', () => {
-        const state = {
-            dataBricks: [{
-                brickConfig: "test",
-                dataConfig: "test"
-            }]
-        }
-
-        const res = getters.dataBricks(state)
-        expect(res).toHaveLength(1)
-        expect(res[0]).toHaveProperty('brickConfig')
-        expect(res[0]).toHaveProperty('dataConfig')
-        expect(res[0].brickConfig).toBe('test')
-        expect(res[0].dataConfig).toBe('test')
-    });
+    // test('dataBricks returns empty array when no dataBricks are stored', () => {
+    //     const state = {
+    //         dataBricks: []
+    //     }
+    //
+    //     const res = getters.dataBricks(state)
+    //     expect(res).toHaveLength(0)
+    //     expect(res).toEqual([])
+    // });
+    //
+    // test('dataBricks returns array of dataBricks configs when dataBricks are nonempty', () => {
+    //     const state = {
+    //         dataBricks: [{
+    //             brickConfig: "test",
+    //             dataConfig: "test"
+    //         }]
+    //     }
+    //
+    //     const res = getters.dataBricks(state)
+    //     expect(res).toHaveLength(1)
+    //     expect(res[0]).toHaveProperty('brickConfig')
+    //     expect(res[0]).toHaveProperty('dataConfig')
+    //     expect(res[0].brickConfig).toBe('test')
+    //     expect(res[0].dataConfig).toBe('test')
+    // });
 });
