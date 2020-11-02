@@ -1,5 +1,7 @@
 import Vue from 'vue'
 
+import Ace from 'vue2-ace-editor'
+
 import store from './plugins/vuex/vuex'
 import vuetify from './plugins/vuetify/vuetify'
 import router from './plugins/router/routes'
@@ -12,6 +14,8 @@ import profile from "./mixins/profile";
 import validationRuleset from "./mixins/validationRuleset";
 
 import App from './App.vue'
+
+Vue.use(Ace)
 
 Vue.use(requests);
 Vue.use(mockData);
