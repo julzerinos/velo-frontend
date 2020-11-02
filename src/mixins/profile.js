@@ -4,7 +4,7 @@ export default {
     computed: {
         ...mapGetters({
             loggedIn: 'loggedIn',
-            profile: 'profile'
+            profile: 'profile',
         })
     },
     methods: {

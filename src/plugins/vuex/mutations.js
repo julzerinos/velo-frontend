@@ -18,9 +18,33 @@ export const mutations = {
             Vue.set(state.profile, property, value)
     },
     addDataBrick(state, payload) {
-        state.dataBricks.push({
-            brickConfig: payload.brickConfig,
-            dataConfig: payload.dataConfig
-        })
+        if (state.profile === null)
+            return
+
+        state.profile.dataBricks.bricks.push(payload)
+    },
+    removeDataBrick(state, payload) {
+        if (state.profile === null)
+            return
+
+        state.profile.dataBricks.bricks.splice(payload.index, 1);
+    },
+    replaceDataBrick(state, payload) {
+        if (state.profile === null)
+            return
+
+        Vue.set(state.profile.dataBricks.bricks, payload.index, payload.brick)
+    },
+    addDataBrickConfig(state, payload) {
+        if (state.profile === null)
+            return
+
+        state.profile.dataBricks.configs.push(payload.config)
+    },
+    removeDataBrickConfig(state, payload) {
+        if (state.profile === null)
+            return
+
+        state.profile.dataBricks.configs.splice(payload.index, 1);
     }
 }

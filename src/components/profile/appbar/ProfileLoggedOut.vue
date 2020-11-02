@@ -9,11 +9,11 @@
     </v-list>
     <v-card-actions>
 
-      <v-btn :to="{ name: 'profile', params: {redirectType: 1} }"
+      <v-btn :to="{ name: 'Profile', params: {redirectType: 1} }"
              :value="value"
              @click="$emit('input', $event.target.value)" text>Sign in
       </v-btn>
-      <v-btn :to="{ name: 'profile', params: {redirectType: 2} }"
+      <v-btn :to="{ name: 'Profile', params: {redirectType: 2} }"
              :value="value"
              @click="$emit('input', $event.target.value)" text>Sign up
       </v-btn>

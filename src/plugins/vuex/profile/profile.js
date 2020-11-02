@@ -41,7 +41,7 @@ export const authenticate = function (
 }
 
 export const user = function (
-    {token, username},
+    {token, email},
     onSuccess = r => r,
     onFail = r => r
 ) {
@@ -51,7 +51,7 @@ export const user = function (
             Authorization: token
         },
         {
-            email: username
+            email: email
         },
         (response) => {
             const {
@@ -69,7 +69,8 @@ export const user = function (
                 athletes: athleteUUIDs,
                 profileImagePath: profileImg,
                 isStravaConnected: stravaConnected,
-                token: token
+                token: token,
+                dataBricks: {configs: [], bricks: []},
             }
 
             return onSuccess(response)

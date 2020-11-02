@@ -4,7 +4,7 @@ import VueRouter from "vue-router";
 import Splash from "../../pages/Splash";
 import Layout from "../../pages/Layout";
 
-import MainContent from "../../pages/DataBricks";
+import MainContent from "../../pages/DataBricksLayout";
 import Settings from "../../pages/Settings";
 import Profile from "../../pages/Profile";
 import Scripting from "../../pages/Scripting";
