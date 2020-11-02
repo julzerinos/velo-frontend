@@ -150,15 +150,15 @@ export const actions = {
         commit('removeDataBrick', payload)
     },
 
-    replaceDataBrick({commit}, payload) {
+    replaceDataBrickAsync({commit}, payload) {
         commit('replaceDataBrick', payload)
     },
 
-    addDataBrickConfig({commit}, payload) {
+    addDataBrickConfigAsync({commit}, payload) {
         commit('addDataBrickConfig', payload)
     },
 
-    removeDataBrickConfig({commit}, payload) {
+    removeDataBrickConfigAsync({commit}, payload) {
         commit('removeDataBrickConfig', payload)
     }
 }

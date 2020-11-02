@@ -39,7 +39,7 @@ export const mutations = {
         if (state.profile === null)
             return
 
-        state.profile.dataBricks.configs.push(payload.config)
+        state.profile.dataBricks.configs.push(payload)
     },
     removeDataBrickConfig(state, payload) {
         if (state.profile === null)

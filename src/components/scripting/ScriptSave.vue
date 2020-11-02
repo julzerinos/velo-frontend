@@ -7,7 +7,7 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-btn>Save</v-btn>
+      <v-btn @click="submit">Save</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -20,7 +20,12 @@
             code: String
         },
         methods: {
-            // TODO: add configuration to configs
+            submit() {
+                this.addDataBrickConfig({
+                    config: this.config,
+                    code: this.code
+                })
+            }
         }
     }
 </script>

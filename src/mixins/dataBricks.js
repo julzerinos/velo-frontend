@@ -10,12 +10,17 @@ export default {
     methods: {
         ...mapActions({
             addDataBrickAsync: 'addDataBrickAsync',
+            addDataBrickConfigAsync: 'addDataBrickConfigAsync'
         }),
 
         addDataBrick(data, brick) {
             this.addDataBrickAsync({
                 data: data, brick: brick
             })
+        },
+
+        addDataBrickConfig(config) {
+            this.addDataBrickConfigAsync(config)
         }
     }
 }
