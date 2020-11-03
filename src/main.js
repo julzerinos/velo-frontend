@@ -11,6 +11,7 @@ import requests from "./plugins/requests/requests";
 import statistics from "./plugins/maths/statistics";
 
 import profile from "./mixins/profile";
+import dataBricks from "./mixins/dataBricks";
 import validationRuleset from "./mixins/validationRuleset";
 
 import App from './App.vue'
@@ -22,6 +23,7 @@ Vue.use(mockData);
 Vue.use(statistics);
 
 Vue.mixin(profile);
+Vue.mixin(dataBricks);
 Vue.mixin(validationRuleset);
 
 new Vue({

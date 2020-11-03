@@ -18,7 +18,7 @@
     import DataBricks from "../components/data-bricks/DataBricks";
 
     export default {
-        name: "DataBricks",
+        name: "DataBricksLayout",
         components: {DataBricksSetup, DataBricks},
     };
 </script>

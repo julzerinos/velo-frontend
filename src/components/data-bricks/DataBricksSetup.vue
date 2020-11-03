@@ -39,17 +39,7 @@
               />
             </v-card-text>
             <v-card-actions>
-              <v-btn
-                      @click="add({
-                        brickConfig:{cols: 12},
-                        dataConfig:{
-                            type: chartSelect,
-                            params: {
-                                rawAttr: auxSelect
-                            }
-                        }
-                      })"
-              >
+              <v-btn @click="submit">
                 gotta go fast
               </v-btn>
             </v-card-actions>
@@ -58,11 +48,9 @@
       </v-row>
     </v-container>
   </v-card>
-
 </template>
 
 <script>
-    import {mapActions} from "vuex";
 
     export default {
         name: "DataBricksSetup",
@@ -74,9 +62,12 @@
             }
         },
         methods: {
-            ...mapActions({
-                add: 'addDataBrickAsync'
-            })
+            submit() {
+                this.addDataBrick(
+                    {type: this.chartSelect, params: {rawAttr: this.auxSelect}},
+                    {cols: 12}
+                )
+            }
         }
     }
 </script>

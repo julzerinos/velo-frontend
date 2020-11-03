@@ -52,7 +52,7 @@ export const actions = {
                     throw new Error("missing authorization token")
                 }
 
-                user({username: jwt(r.headers.authorization).sub, token: r.headers.authorization},
+                user({email: jwt(r.headers.authorization).sub, token: r.headers.authorization},
                     r => {
                         if (r['profile'] === undefined) {
                             commit('setResult', {
@@ -83,7 +83,7 @@ export const actions = {
     },
 
     userAsync({commit, state}) {
-        user({username: state.profile.email, token: state.profile.token},
+        user({email: state.profile.email, token: state.profile.token},
             r => {
                 if (r['profile'] === undefined) {
                     commit('addResult', {
@@ -144,5 +144,21 @@ export const actions = {
 
     addDataBrickAsync({commit}, payload) {
         commit('addDataBrick', payload)
+    },
+
+    removeDataBrickAsync({commit}, payload) {
+        commit('removeDataBrick', payload)
+    },
+
+    replaceDataBrickAsync({commit}, payload) {
+        commit('replaceDataBrick', payload)
+    },
+
+    addDataBrickConfigAsync({commit}, payload) {
+        commit('addDataBrickConfig', payload)
+    },
+
+    removeDataBrickConfigAsync({commit}, payload) {
+        commit('removeDataBrickConfig', payload)
     }
 }
