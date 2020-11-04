@@ -1,22 +1,24 @@
 <template>
   <v-card class="pa-2" outlined tile>
-    <div ref="container"/>
+    <div ref="container">
+    </div>
   </v-card>
 </template>
 
 <script>
-    import Vue from "vue";
-
-    import MultiLineChart from "../charts/line-charts/MultiLineChart";
-    import BarChart from "../charts/bar-charts/BarChart";
+    const d3 = require("d3")
 
     export default {
         name: "DataBrick",
-        props: {
+        props: { // TODO: Use below props
             config: {
                 type: Object,
                 default: null
-            }
+            },
+            // data: {
+            //     type: Object,
+            //     default: null
+            // }
         },
         mounted() {
             if (!this.config)
@@ -26,28 +28,29 @@
         },
         data() {
             return {
-                training: this.$mockTraining().training,
-                components: {
-                    'line-chart': MultiLineChart,
-                    'bar-chart': BarChart
-                }
-            };
+                training: this.$mockTraining().training, // TODO: Delete
+                athletes: this.$mockAthletes(), // TODO: Replace with data prop
+                // config: {
+                //     create() {
+                //         const div = document.createElement("div")
+                //         const h1 = document.createElement("h1")
+                //         const text = document.createTextNode("test")
+                //         h1.appendChild(text)
+                //         div.appendChild(h1)
+                //         return div
+                // }
+            }
         },
         methods: {
-            getComponent() {
-                // TODO: move to general/global class
-            },
-
             populate() {
-                let ComponentClass = Vue.extend(this.components[this.config.type])
-                let instance = new ComponentClass({
-                    propsData: {
-                        training: this.training,
-                        params: this.config.params
-                    }
+                const dataBrick = this.config.create({
+                    d3: d3,
+                    svg: d3.select(this.$refs['container']).append('svg')
                 })
-                instance.$mount()
-                this.$refs['container'].appendChild(instance.$el)
+
+                // console.log(dataBrick)
+                //
+                // this.$refs['container'].appendChild(dataBrick)
             }
         }
     }
