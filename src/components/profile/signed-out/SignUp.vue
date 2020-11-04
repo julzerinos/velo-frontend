@@ -73,7 +73,7 @@
             <v-row>
               <v-col>
                 <v-fade-transition>
-                  <captcha @verify="captcha = true" v-show="valid"/>
+                  <captcha @verify="captchaVerified" v-show="valid"/>
                 </v-fade-transition>
               </v-col>
             </v-row>
@@ -124,10 +124,15 @@
                     },
                     email: '',
                     password: '',
+                    captcha: ''
                 },
             }
         },
         methods: {
+            captchaVerified: function (response) {
+                this.captcha = true
+                this.signupProfile.captcha = response
+            },
             submit: function () {
                 const onFinish = () => this.loading = false
 
