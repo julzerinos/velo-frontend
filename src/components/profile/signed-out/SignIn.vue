@@ -48,6 +48,13 @@
 
               </v-col>
             </v-row>
+            <!--            <v-row>-->
+            <!--              <v-col>-->
+            <!--                <v-fade-transition>-->
+            <!--                  <captcha v-show="valid" @verify="captcha = true"/>-->
+            <!--                </v-fade-transition>-->
+            <!--              </v-col>-->
+            <!--            </v-row>-->
           </v-container>
         </v-form>
 
@@ -67,11 +74,13 @@
 
 <script>
     import PassResetModal from "../password/PassResetModal";
+    // import Captcha from "./Captcha";
 
     export default {
         name: "SignIn",
         components: {
-            PassResetModal
+            PassResetModal,
+            // Captcha
         },
         props: {
             redirected: {
@@ -83,6 +92,7 @@
             return {
                 openSignIn: this.redirected,
 
+                // captcha: false,
                 valid: false,
                 loading: false,
 
