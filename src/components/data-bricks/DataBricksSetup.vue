@@ -58,13 +58,13 @@
             return {
                 chartSelect: 'line-chart',
                 auxSelect: 'power',
-                training: this.$mockTraining().training
+                training: this.$mockTraining()
             }
         },
         methods: {
             submit() {
                 this.addDataBrick(
-                    {type: this.chartSelect, params: {rawAttr: this.auxSelect}},
+                    {config: this.defaultConfigs()[1], athletes: this.$mockAthletes()},
                     {cols: 12}
                 )
             }

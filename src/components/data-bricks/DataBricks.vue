@@ -3,7 +3,10 @@
     <v-container class="grid" fill-height fluid v-if="loggedIn && dataBricks">
       <v-row :key="i" v-for="(db, i) in dataBricks">
         <v-col :cols="db.brick.cols">
-          <data-brick :config="config" style="overflow: hidden"/>
+          <data-brick
+                  :data="db.data"
+                  style="overflow: hidden"
+          />
         </v-col>
       </v-row>
     </v-container>
@@ -17,10 +20,10 @@
     export default {
         name: "DataBricks",
         components: {DataBrick},
-        computed: {},
         data() {
             return {
-                config: this.defaultConfigs()[0]
+                config: this.defaultConfigs()[1],
+                athletes: this.$mockAthletes()
             }
         }
     }
