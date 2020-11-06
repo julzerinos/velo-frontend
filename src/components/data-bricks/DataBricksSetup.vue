@@ -26,17 +26,19 @@
             </v-card-title>
             <v-card-text>
               <v-select
-                      :items="['line-chart', 'bar-chart']"
-                      label="Chart type"
+                      :items="configs"
+                      item-text="name"
+                      label="Configuration"
                       outlined
-                      v-model="chartSelect"
+                      return-object
+                      v-model="configSelect"
               />
-              <v-select :items="Object.keys(training.dataSeries)"
-                        label="Raw training attribute"
-                        outlined
-                        v-if="chartSelect === 'line-chart'"
-                        v-model="auxSelect"
-              />
+              <!--              <v-select :items="Object.keys(training.dataSeries)"-->
+              <!--                        label="Raw training attribute"-->
+              <!--                        outlined-->
+              <!--                        v-if="chartSelect === 'line-chart'"-->
+              <!--                        v-model="auxSelect"-->
+              <!--              />-->
             </v-card-text>
             <v-card-actions>
               <v-btn @click="submit">
@@ -56,15 +58,23 @@
         name: "DataBricksSetup",
         data() {
             return {
-                chartSelect: 'line-chart',
+                configSelect: null,
                 auxSelect: 'power',
                 training: this.$mockTraining()
+            }
+        },
+        computed: {
+            configs() {
+                return [
+                    ...this.defaultConfigs(),
+                    ...this.dataBrickConfigs
+                ]
             }
         },
         methods: {
             submit() {
                 this.addDataBrick(
-                    {config: this.defaultConfigs()[1], athletes: this.$mockAthletes()},
+                    {config: this.configSelect, athletes: this.$mockAthletes()},
                     {cols: 12}
                 )
             }

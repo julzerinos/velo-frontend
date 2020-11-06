@@ -22,18 +22,14 @@ export default {
             })
         },
 
-        addDataBrickConfig(config) {
-            this.addDataBrickConfigAsync(config)
-        },
-
         addConfiguration(name, code) {
-            return {
+            this.addDataBrickConfigAsync({
                 name,
                 code,
                 get create() {
                     return (args) => new Function(this.code).call(args)
                 }
-            }
+            })
         },
 
         defaultConfigs: () => [
