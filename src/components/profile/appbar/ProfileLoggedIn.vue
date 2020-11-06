@@ -13,7 +13,7 @@
         </v-list-item-content>
 
         <v-list-item-action>
-          <v-btn :to="{ name: 'profile' }" :value="value" @click="$emit('input', $event.target.value)"
+          <v-btn :to="{ name: 'Profile' }" :value="value" @click="$emit('input', $event.target.value)"
                  text>View profile
           </v-btn>
           <v-btn :value="value" @click="emitInputWrapper($event)"

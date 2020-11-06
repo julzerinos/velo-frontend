@@ -1,20 +1,9 @@
 import VuexPersistence from "vuex-persist";
-import Cookies from "js-cookie";
 
 export const vuexCookie = new VuexPersistence({
+    key: 'vuex',
     modules: ['profile'],
-    saveState: (key, state) => Cookies.set(key, state, {
-        expires: 3
-    }),
-    restoreState: (key) => Cookies.getJSON(key),
-    filter: (mutation) => [
-        'login',
-        'logout',
-        'profileChangeProperty',
-        'addDataBrick',
-        'removeDataBrick',
-        'replaceDataBrick'
-    ].includes(mutation.type)
+    storage: window.localStorage,
 })
 
 // TODO: add function for checking if token is fresh

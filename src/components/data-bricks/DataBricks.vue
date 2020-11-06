@@ -3,8 +3,40 @@
     <v-container class="grid" fill-height fluid v-if="loggedIn && dataBricks">
       <v-row :key="i" v-for="(db, i) in dataBricks">
         <v-col :cols="db.brick.cols">
+          <v-app-bar
+                  color="green lighten-3"
+                  dense
+                  flat
+          >
+            <v-toolbar-title>{{db.brick.name}}</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-menu
+                    bottom
+                    left
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                        icon
+                        v-bind="attrs"
+                        v-on="on"
+                >
+                  <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
+              </template>
+
+              <v-list>
+                <v-list-item
+                        :key="j"
+                        v-for="(action, j) in dataBrickActions"
+                >
+                  <v-list-item-title @click="action.action({index: i})">{{ action.name }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </v-app-bar>
           <data-brick
                   :data="db.data"
+                  :brick="db.brick"
                   style="overflow: hidden"
           />
         </v-col>
@@ -23,7 +55,11 @@
         data() {
             return {
                 config: this.defaultConfigs()[1],
-                athletes: this.$mockAthletes()
+                athletes: this.$mockAthletes(),
+
+                dataBrickActions: [
+                    {name: "Remove", action: this.removeDataBrick}
+                ]
             }
         }
     }
