@@ -70,12 +70,20 @@
                 ></v-text-field>
               </v-col>
             </v-row>
+            <v-row>
+              <v-col>
+                <v-fade-transition>
+                  <captcha @verify="captchaVerified" v-show="valid"/>
+                </v-fade-transition>
+              </v-col>
+            </v-row>
           </v-container>
         </v-form>
 
+
         <v-card-actions class="justify-center">
           <v-btn
-                  :disabled="!valid"
+                  :disabled="!valid || !captcha"
                   :loading="loading"
                   @click="submit"
           >
@@ -90,9 +98,11 @@
 </template>
 
 <script>
+    import Captcha from "./Captcha";
 
     export default {
         name: "SignUp",
+        components: {Captcha},
         props: {
             redirected: {
                 type: Boolean,
@@ -103,6 +113,7 @@
             return {
                 openSignUp: this.redirected,
 
+                captcha: false,
                 valid: false,
                 loading: false,
 
@@ -113,10 +124,15 @@
                     },
                     email: '',
                     password: '',
+                    captcha: ''
                 },
             }
         },
         methods: {
+            captchaVerified: function (response) {
+                this.captcha = true
+                this.signupProfile.captcha = response
+            },
             submit: function () {
                 const onFinish = () => this.loading = false
 

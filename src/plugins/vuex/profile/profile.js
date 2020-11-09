@@ -3,7 +3,7 @@ import {get, post} from "../../requests/requests";
 const base_url = 'http://localhost:8081'
 
 export const register = function (
-    {name, email, password},
+    {name, email, password, captcha},
     onSuccess = r => r,
     onFail = r => r
 ) {
@@ -13,7 +13,8 @@ export const register = function (
             firstName: name.firstName,
             lastName: name.lastName,
             email: email,
-            password: password
+            password: password,
+            captcha: captcha
         },
         {},
         {},
