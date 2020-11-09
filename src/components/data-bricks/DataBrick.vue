@@ -6,11 +6,14 @@
 </template>
 
 <script>
-    const d3 = require("d3")
 
     export default {
         name: "DataBrick",
         props: {
+            brick: {
+                type: Object,
+                required: true
+            },
             data: {
                 type: Object,
                 required: true
@@ -19,7 +22,7 @@
         data() {
             return {
                 config: this.data.config,
-                athletes: this.data.athletes
+                athletes: this.data.athletes,
             }
         },
         mounted() {
@@ -29,11 +32,7 @@
             populate() {
                 // TODO: Check data is correct/contains data
 
-                this.config.create({
-                    d3: d3,
-                    svg: d3.select(this.$refs['container']).append('svg'),
-                    athletes: this.athletes
-                })
+                this.initDataBrick(this.$refs['container'], this.config)
             }
         }
     }

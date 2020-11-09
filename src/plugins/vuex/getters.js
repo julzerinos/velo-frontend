@@ -4,6 +4,6 @@ export const getters = {
 
     result: state => state.result,
 
-    dataBricks: state => getters.loggedIn ? state.profile.dataBricks.bricks : null,
-    dataBrickConfigs: state => getters.loggedIn ? state.profile.dataBricks.configs : null
+    dataBricks: state => (state.profile !== null) ? state.profile.dataBricks.bricks : null,
+    dataBrickConfigs: state => (state.profile !== null) ? state.profile.dataBricks.configs : null
 }
