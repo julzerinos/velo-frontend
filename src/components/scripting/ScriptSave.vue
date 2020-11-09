@@ -21,10 +21,8 @@
         },
         methods: {
             submit() {
-                this.addDataBrickConfig({
-                    config: this.config,
-                    code: this.code
-                })
+                // TODO: Get additional settings from config eg name
+                this.addConfiguration('Test Configuration', this.code)
             }
         }
     }

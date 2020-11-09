@@ -1,4 +1,5 @@
 import mocktraining from './mocktraining'
+import athletes from "./mockathlete";
 
 export const createMockProfile = function () {
     return {
@@ -20,8 +21,10 @@ export default {
         Vue.mockTraining = function () {
             return mocktraining
         }
+        Vue.mockAthletes = () => athletes
 
         Vue.prototype.$createMockProfile = Vue.createMockProfile;
         Vue.prototype.$mockTraining = Vue.mockTraining;
+        Vue.prototype.$mockAthletes = Vue.mockAthletes;
     }
 }

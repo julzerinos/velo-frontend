@@ -1,53 +1,39 @@
 <template>
   <v-card class="pa-2" outlined tile>
-    <div ref="container"/>
+    <div ref="container">
+    </div>
   </v-card>
 </template>
 
 <script>
-    import Vue from "vue";
-
-    import MultiLineChart from "../charts/line-charts/MultiLineChart";
-    import BarChart from "../charts/bar-charts/BarChart";
+    const d3 = require("d3")
 
     export default {
         name: "DataBrick",
         props: {
-            config: {
+            data: {
                 type: Object,
-                default: null
-            }
-        },
-        mounted() {
-            if (!this.config)
-                return
-
-            this.populate()
+                required: true
+            },
         },
         data() {
             return {
-                training: this.$mockTraining().training,
-                components: {
-                    'line-chart': MultiLineChart,
-                    'bar-chart': BarChart
-                }
-            };
+                config: this.data.config,
+                athletes: this.data.athletes
+            }
+        },
+        mounted() {
+            this.populate()
         },
         methods: {
-            getComponent() {
-                // TODO: move to general/global class
-            },
-
             populate() {
-                let ComponentClass = Vue.extend(this.components[this.config.type])
-                let instance = new ComponentClass({
-                    propsData: {
-                        training: this.training,
-                        params: this.config.params
-                    }
+                // TODO: Check data is correct/contains data
+
+                this.config.create({
+                    d3: d3,
+                    svg: d3.select(this.$refs['container']).append('svg'),
+                    athletes: this.athletes
                 })
-                instance.$mount()
-                this.$refs['container'].appendChild(instance.$el)
             }
         }
     }
