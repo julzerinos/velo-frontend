@@ -149,3 +149,38 @@ export const workout = function (
         onFail
     )
 }
+
+export const athlete = function (
+    {athleteEmail, token},
+    onSuccess = r => r,
+    onFail = r => r
+) {
+    return get(
+        `${base_url}/athlete`,
+        {
+            Authorization: token
+        },
+        {
+            athleteEmail: athleteEmail
+        },
+        onSuccess,
+        onFail
+    )
+}
+
+export const addCoach = function (
+    {coachEmail},
+    onSuccess = r => r,
+    onFail = r => r
+) {
+    return post(
+        `${base_url}/athlete/add-coach`,
+        {},
+        {
+            coachEmail: coachEmail
+        },
+        {},
+        onSuccess,
+        onFail
+    )
+}

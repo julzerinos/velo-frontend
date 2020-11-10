@@ -1,4 +1,4 @@
-import {authenticate, logout, register, reset, user, workoutsMetadata} from "./profile/profile";
+import {addCoach, athlete, authenticate, logout, register, reset, user, workoutsMetadata} from "./profile/profile";
 import jwt from 'jwt-decode'
 
 // TODO: Add error-specific messages
@@ -125,6 +125,35 @@ export const actions = {
             },
             r => {
                 // commit('setResult', {resultObject: {blame: 'reset', message: r.message}})
+                return onFail(r)
+            }
+        ).then()
+    },
+
+    athletesAsync({commit, state}, {athleteEmails, onSuccess = r => r, onFail = r => r} = {}) {
+        for (const athleteEmail of athleteEmails)
+            athlete(
+                {athleteEmail, token: state.profile.token},
+                r => {
+                    commit('setResult', {resultObject: {blame: 'athlete', message: r.message}})
+                    return onSuccess(r)
+                },
+                r => {
+                    commit('setResult', {resultObject: {blame: 'athlete', message: r.message}})
+                    return onFail(r)
+                }
+            ).then()
+    },
+
+    addCoachAsync({commit}, {coachEmail, onSuccess = r => r, onFail = r => r} = {}) {
+        addCoach(
+            {coachEmail},
+            r => {
+                commit('setResult', {resultObject: {blame: 'addCoach', message: r.message}})
+                return onSuccess(r)
+            },
+            r => {
+                commit('setResult', {resultObject: {blame: 'addCoach', message: r.message}})
                 return onFail(r)
             }
         ).then()

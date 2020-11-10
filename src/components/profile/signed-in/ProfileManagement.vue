@@ -14,7 +14,7 @@
     <v-row
     >
       <v-col cols="6">
-        <athletes/>
+        <subscriptions/>
       </v-col>
       <v-col cols="6">
         <file-upload-card/>
@@ -26,11 +26,11 @@
 <script>
     import ProfileCard from "./ProfileCard";
     import FileUploadCard from "./FileUploadCard";
-    import Athletes from "./Athletes";
+    import Subscriptions from "./subscription/Subscriptions";
 
     export default {
         name: "ProfileManagement",
-        components: {Athletes, FileUploadCard, ProfileCard},
+        components: {Subscriptions, FileUploadCard, ProfileCard},
     }
 </script>
 
