@@ -5,6 +5,7 @@ export default {
         ...mapGetters({
             loggedIn: 'loggedIn',
             profile: 'profile',
+            athletes: 'athletes'
         })
     },
     methods: {
@@ -13,5 +14,7 @@ export default {
             login: 'loginAsync',
             logout: 'logoutAsync'
         }),
+
+        fullName: obj => `${obj.firstName} ${obj.lastName}`
     }
 }

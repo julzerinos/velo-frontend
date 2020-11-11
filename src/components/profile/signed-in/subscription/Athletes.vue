@@ -12,15 +12,15 @@
       <template v-slot:extension>
         <v-tabs
                 fixed-tabs
-                slider-color="white"
+                slider-color="primary"
                 v-model="currentItem"
         >
           <v-tab
                   :href="'#tab-' + item.id"
-                  :key="item.name"
-                  v-for="item in athletes"
+                  :key="item.id"
+                  v-for="item in currentAthletes"
           >
-            {{ item.name }}
+            {{ fullName(item) }}
           </v-tab>
 
           <v-menu
@@ -44,11 +44,11 @@
 
             <v-list class="lighten-3">
               <v-list-item
-                      :key="item.name"
-                      @click="addItem(item)"
+                      :key="item.id"
+                      @click="swap(item)"
                       v-for="item in more"
               >
-                {{ item.name }}
+                {{ fullName(item) }}
               </v-list-item>
             </v-list>
           </v-menu>
@@ -60,29 +60,28 @@
       <v-tab-item
               :key="athlete.id"
               :value="`tab-${athlete.id}`"
-              v-for="athlete in athletes.concat(more)"
+              v-for="athlete in currentAthletes.concat(more)"
       >
         <v-card flat>
           <!-- TODO: buffering list on scroll -->
           <v-virtual-scroll
                   :height="height"
-                  :items="athlete.trainings"
+                  :items="athlete.workoutsMetadata"
                   bench="5"
                   item-height="100"
           >
 
             <template v-slot:default="{ item }">
               <v-list-item :key="item.id">
-                <v-list-item-content>
-                  <v-list-item-title>{{item.name}}</v-list-item-title>
+                <v-list-item-title>{{item.name}}
                   <v-list-item-subtitle>{{new Date(item.startDateTime).toUTCString()}}</v-list-item-subtitle>
-                  <v-list-item-content>
+                </v-list-item-title>
+                <v-list-item-action-text>
                   <span style="white-space: pre;">
-                  Total Km: {{item.totalDistance}} <br/>
-                  Total Time: {{new Date(item.totalTime.seconds * 1000).toISOString().substr(11, 8)}}
+                  Total kilometers: {{(item.totalDistance/1000).toFixed(2)}} <br/>
+                  Total time: {{item.totalTime.replace(/PT(\d+)H(\d+)M(\d+)S/, "$1:$2")}}
                   </span>
-                  </v-list-item-content>
-                </v-list-item-content>
+                </v-list-item-action-text>
               </v-list-item>
             </template>
           </v-virtual-scroll>
@@ -98,220 +97,34 @@
         name: 'Athletes',
         data() {
             return {
-                athletes: [
-                    {
-                        name: "Athlete 1", id: "1", trainings: [
-                            {
-                                "name": "big bang theory",
-                                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                "athleteId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                "startDateTime": "2020-12-21T15:16:19.102Z",
-                                "totalTime": {
-                                    "seconds": 3600,
-                                    "nano": 0,
-                                    "negative": true,
-                                    "zero": true,
-                                    "units": [
-                                        {
-                                            "dateBased": true,
-                                            "timeBased": true,
-                                            "durationEstimated": true
-                                        }
-                                    ]
-                                },
-                                "totalDistance": 50000
-                            },
-                        ],
-                    },
-                    {
-                        name: "Athlete 2", id: "2", trainings: [
-                            {
-                                "name": "fastest led in the wild wesd",
-                                "id": "3fa85f64ss-5717-4562-b3fc-2c963f66afa6",
-                                "athleteId": "3fa85f64-5717-45ss62-b3fc-2c963f66afa6",
-                                "startDateTime": "2020-12-21T15:16:19.102Z",
-                                "totalTime": {
-                                    "seconds": 1000000,
-                                    "nano": 0,
-                                    "negative": true,
-                                    "zero": true,
-                                    "units": [
-                                        {
-                                            "dateBased": true,
-                                            "timeBased": true,
-                                            "durationEstimated": true
-                                        }
-                                    ]
-                                },
-                                "totalDistance": 3
-                            },
-                            {
-                                "name": "vroom vroom",
-                                "id": "3fa85f6ss4-5717-4562-b3fc-2c963f66afa6",
-                                "athleteId": "3fa85f64-5717-4562-b3fc-2c96ssl3f66afa6",
-                                "startDateTime": "2020-12-21T15:16:19.102Z",
-                                "totalTime": {
-                                    "seconds": 100000000,
-                                    "nano": 0,
-                                    "negative": true,
-                                    "zero": true,
-                                    "units": [
-                                        {
-                                            "dateBased": true,
-                                            "timeBased": true,
-                                            "durationEstimated": true
-                                        }
-                                    ]
-                                },
-                                "totalDistance": 69
-                            },
-                            {
-                                "name": "vroom vroom",
-                                "id": "3fa85f6ss4-dw5717-4562-b3fc-2c963f66afa6",
-                                "athleteId": "3fa85f64-5717-4562-b3fc-2c96ssl3f66afa6",
-                                "startDateTime": "2020-12-21T15:16:19.102Z",
-                                "totalTime": {
-                                    "seconds": 100000000,
-                                    "nano": 0,
-                                    "negative": true,
-                                    "zero": true,
-                                    "units": [
-                                        {
-                                            "dateBased": true,
-                                            "timeBased": true,
-                                            "durationEstimated": true
-                                        }
-                                    ]
-                                },
-                                "totalDistance": 69
-                            },
-                            {
-                                "name": "vroom vroom",
-                                "id": "3fa8awdd5f6ss4-5717-4562-b3fc-2c963f66afa6",
-                                "athleteId": "3fa85f64-5717-4562-b3fc-2c96ssl3f66afa6",
-                                "startDateTime": "2020-12-21T15:16:19.102Z",
-                                "totalTime": {
-                                    "seconds": 100000000,
-                                    "nano": 0,
-                                    "negative": true,
-                                    "zero": true,
-                                    "units": [
-                                        {
-                                            "dateBased": true,
-                                            "timeBased": true,
-                                            "durationEstimated": true
-                                        }
-                                    ]
-                                },
-                                "totalDistance": 69
-                            },
-                            {
-                                "name": "vroom vroom",
-                                "id": "3fa8awdd5f6ssefs4-5717-4562-b3fc-2c963f66afa6",
-                                "athleteId": "3fa85f64-5717-4562-b3fc-2c96ssl3f66afa6",
-                                "startDateTime": "2020-12-21T15:16:19.102Z",
-                                "totalTime": {
-                                    "seconds": 100000000,
-                                    "nano": 0,
-                                    "negative": true,
-                                    "zero": true,
-                                    "units": [
-                                        {
-                                            "dateBased": true,
-                                            "timeBased": true,
-                                            "durationEstimated": true
-                                        }
-                                    ]
-                                },
-                                "totalDistance": 69
-                            },
-                            {
-                                "name": "vroom vroom",
-                                "id": "3fa8awdd5f6ssfse4-5717-4562-b3fc-2c963f66afa6",
-                                "athleteId": "3fa85f64-5717-4562-b3fc-2c96ssl3f66afa6",
-                                "startDateTime": "2020-12-21T15:16:19.102Z",
-                                "totalTime": {
-                                    "seconds": 100000000,
-                                    "nano": 0,
-                                    "negative": true,
-                                    "zero": true,
-                                    "units": [
-                                        {
-                                            "dateBased": true,
-                                            "timeBased": true,
-                                            "durationEstimated": true
-                                        }
-                                    ]
-                                },
-                                "totalDistance": 69
-                            },
-                            {
-                                "name": "vroom vroom",
-                                "id": "3fa8awdd5f6sews4-5717-4562-b3fc-2c963f66afa6",
-                                "athleteId": "3fa85f64-5717-4562-b3fc-2c96ssl3f66afa6",
-                                "startDateTime": "2020-12-21T15:16:19.102Z",
-                                "totalTime": {
-                                    "seconds": 100000000,
-                                    "nano": 0,
-                                    "negative": true,
-                                    "zero": true,
-                                    "units": [
-                                        {
-                                            "dateBased": true,
-                                            "timeBased": true,
-                                            "durationEstimated": true
-                                        }
-                                    ]
-                                },
-                                "totalDistance": 69
-                            },
-                        ],
-                    }
-                ],
-
                 height: 500,
-                currentItem: '',
-                more: [
-                    {
-                        name: "Athlete 3", id: "3", trainings: [
-                            {
-                                "name": "test 3",
-                                "id": "3fa85f6ss4-5717-4562-b3fc-2c963f66afa6",
-                                "athleteId": "3fa85f64-5717-4562-b3fc-2c96ssl3f66afa6",
-                                "startDateTime": "2020-12-21T15:16:19.102Z",
-                                "totalTime": {
-                                    "seconds": 3,
-                                    "nano": 0,
-                                    "negative": true,
-                                    "zero": true,
-                                    "units": [
-                                        {
-                                            "dateBased": true,
-                                            "timeBased": true,
-                                            "durationEstimated": true
-                                        }
-                                    ]
-                                },
-                                "totalDistance": 420
-                            },
-                        ],
-                    }
-                ],
+                currentItem: null,
+            }
+        },
+        computed: {
+            currentAthletes() {
+                return this.athletes.slice(0, 2)
+            },
+            more() {
+                return this.athletes.slice(2)
             }
         },
         methods: {
-            addItem(item) {
-                const removed = this.athletes.splice(0, 1)
-                this.athletes.push(
-                    ...this.more.splice(this.more.indexOf(item), 1),
-                )
-                this.more.push(...removed)
-                this.$nextTick(() => {
-                    this.currentItem = 'tab-' + item.id
-                })
+            swap(athlete) {
+                this.moveAthleteToFront({athlete})
+
+                // const removed = this.athletes.splice(0, 1)
+                // this.athletes.push(
+                //     ...this.more.splice(this.more.indexOf(item), 1),
+                // )
+                // this.more.push(...removed)
+                // this.$nextTick(() => {
+                //     this.currentItem = 'tab-' + item.id
+                // })
             },
             ...mapActions({
-                workoutsMetadata: 'workoutsMetadataAsync'
+                workoutsMetadata: 'workoutsMetadataAsync',
+                moveAthleteToFront: 'moveAthleteToFrontAsync'
             })
         }
     }

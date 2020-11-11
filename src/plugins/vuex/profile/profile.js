@@ -151,7 +151,7 @@ export const workout = function (
 }
 
 export const athlete = function (
-    {athleteEmail, token},
+    {athleteId, token},
     onSuccess = r => r,
     onFail = r => r
 ) {
@@ -161,23 +161,55 @@ export const athlete = function (
             Authorization: token
         },
         {
-            athleteEmail: athleteEmail
+            athleteEmail: athleteId
         },
         onSuccess,
         onFail
     )
 }
 
+export const athletes = function (
+    {athleteIds, token},
+    onSuccess = r => r,
+    onFail = r => r
+) {
+    return get(
+        `${base_url}/athlete/athletes`,
+        {
+            Authorization: token,
+            athleteIds: athleteIds
+        },
+        {},
+        onSuccess,
+        onFail
+    )
+}
+
 export const addCoach = function (
-    {coachEmail},
+    {coachEmail, token},
     onSuccess = r => r,
     onFail = r => r
 ) {
     return post(
         `${base_url}/athlete/add-coach`,
+        {coachEmail, Authorization: token},
         {},
+        {},
+        onSuccess,
+        onFail
+    )
+}
+
+export const stravaImport = function (
+    {athleteId, from, to, token},
+    onSuccess = r => r,
+    onFail = r => r
+) {
+    return post(
+        `${base_url}/strava/import`,
+        {Authorization: token},
         {
-            coachEmail: coachEmail
+            athleteId, beforeEpoch: to, afterEpoch: from
         },
         {},
         onSuccess,
