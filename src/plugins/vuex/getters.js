@@ -1,13 +1,11 @@
-export const loggedIn = state => (state.profile !== null)
-export const profile = state => state.profile
-
-export const result = state => state.result
-
-export const dataBricks = state => getters.loggedIn(state) ? state.profile.dataBricks.bricks : null
-export const dataBrickConfigs = state => getters.loggedIn(state) ? state.profile.dataBricks.configs : null
-
-export const athletes = state => getters.loggedIn(state) ? state.athletes : null
+import * as athletes from './athletes/getters'
+import * as dataBricks from './data-bricks/getters'
+import * as profile from './profile/getters'
+import * as results from './results/getters'
 
 export const getters = {
-    loggedIn, profile, result, dataBricks, dataBrickConfigs, athletes
+    ...athletes,
+    ...dataBricks,
+    ...profile,
+    ...results
 }

@@ -16,9 +16,9 @@
                 v-model="currentItem"
         >
           <v-tab
+                  v-for="item in currentAthletes"
                   :href="'#tab-' + item.id"
                   :key="item.id"
-                  v-for="item in currentAthletes"
           >
             {{ fullName(item) }}
           </v-tab>
@@ -112,15 +112,6 @@
         methods: {
             swap(athlete) {
                 this.moveAthleteToFront({athlete})
-
-                // const removed = this.athletes.splice(0, 1)
-                // this.athletes.push(
-                //     ...this.more.splice(this.more.indexOf(item), 1),
-                // )
-                // this.more.push(...removed)
-                // this.$nextTick(() => {
-                //     this.currentItem = 'tab-' + item.id
-                // })
             },
             ...mapActions({
                 workoutsMetadata: 'workoutsMetadataAsync',

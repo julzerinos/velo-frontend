@@ -12,7 +12,8 @@ export default {
         ...mapActions({
             signup: 'signupAsync',
             login: 'loginAsync',
-            logout: 'logoutAsync'
+            logout: 'logoutAsync',
+            workout: 'workoutAsync'
         }),
 
         fullName: obj => `${obj.firstName} ${obj.lastName}`

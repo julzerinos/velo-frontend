@@ -37,7 +37,7 @@ describe('vuex/getters', () => {
         expect(res).toBeNull()
     });
 
-    test('result returns result if result exists', () => {
+    test('results returns results if results exists', () => {
         const state = {
             result: {
                 blame: "test",
@@ -52,7 +52,7 @@ describe('vuex/getters', () => {
         expect(res.message).toBe("test")
     });
 
-    test('result returns null when result is null', () => {
+    test('results returns null when results is null', () => {
         const state = {
             result: null
         }
@@ -61,29 +61,181 @@ describe('vuex/getters', () => {
         expect(res).toBeNull()
     });
 
-    // test('dataBricks returns empty array when no dataBricks are stored', () => {
+    // test('data-bricks returns empty array when no data-bricks are stored', () => {
     //     const state = {
-    //         dataBricks: []
+    //         data-bricks: []
     //     }
     //
-    //     const res = getters.dataBricks(state)
+    //     const res = getters.data-bricks(state)
     //     expect(res).toHaveLength(0)
     //     expect(res).toEqual([])
     // });
     //
-    // test('dataBricks returns array of dataBricks configs when dataBricks are nonempty', () => {
+    // test('data-bricks returns array of data-bricks configs when data-bricks are nonempty', () => {
     //     const state = {
-    //         dataBricks: [{
+    //         data-bricks: [{
     //             brickConfig: "test",
     //             dataConfig: "test"
     //         }]
     //     }
     //
-    //     const res = getters.dataBricks(state)
+    //     const res = getters.data-bricks(state)
     //     expect(res).toHaveLength(1)
     //     expect(res[0]).toHaveProperty('brickConfig')
     //     expect(res[0]).toHaveProperty('dataConfig')
     //     expect(res[0].brickConfig).toBe('test')
     //     expect(res[0].dataConfig).toBe('test')
     // });
+
+    test('workouts returns workouts in defined range - intersection', () => {
+        const state = {
+            athletes: [{
+                id: '123',
+                workouts: [{
+                    id: 4,
+                    startDateTime: 4
+                }, {
+                    id: 5,
+                    startDateTime: 5
+                }, {
+                    id: 6,
+                    startDateTime: 6
+                }]
+            }]
+        }
+
+        const res = getters.workouts(state)('123', 3, 5)
+        expect(res).toStrictEqual([{
+            id: 4, startDateTime: 4
+        }, {
+            id: 5,
+            startDateTime: 5
+        }])
+    });
+
+    test('workouts returns workouts in defined range - full overlap', () => {
+        const state = {
+            athletes: [{
+                id: '123',
+                workouts: [{
+                    id: 4,
+                    startDateTime: 4
+                }, {
+                    id: 5,
+                    startDateTime: 5
+                }, {
+                    id: 6,
+                    startDateTime: 6
+                }]
+            }]
+        }
+
+        const res = getters.workouts(state)('123', 3, 7)
+        expect(res).toStrictEqual([{
+            id: 4,
+            startDateTime: 4
+        }, {
+            id: 5,
+            startDateTime: 5
+        }, {
+            id: 6,
+            startDateTime: 6
+        }])
+    });
+
+    test('workouts returns workouts in defined range - lower edge', () => {
+        const state = {
+            athletes: [{
+                id: '123',
+                workouts: [{
+                    id: 4,
+                    startDateTime: 4
+                }, {
+                    id: 5,
+                    startDateTime: 5
+                }, {
+                    id: 6,
+                    startDateTime: 6
+                }]
+            }]
+        }
+
+        const res = getters.workouts(state)('123', 2, 4)
+        expect(res).toStrictEqual([{
+            id: 4,
+            startDateTime: 4
+        }])
+    });
+
+    test('workouts returns workouts in defined range - upper edge', () => {
+        const state = {
+            athletes: [{
+                id: '123',
+                workouts: [{
+                    id: 4,
+                    startDateTime: 4
+                }, {
+                    id: 5,
+                    startDateTime: 5
+                }, {
+                    id: 6,
+                    startDateTime: 6
+                }]
+            }]
+        }
+
+        const res = getters.workouts(state)('123', 6, 10)
+        expect(res).toStrictEqual([{
+            id: 6,
+            startDateTime: 6
+        }])
+    });
+
+    test('workouts returns empty array when no workouts in defined range - above', () => {
+        const state = {
+            athletes: [
+                {
+                    id: '123',
+                    workouts: [{
+                        id: 4,
+                        startDateTime: 4
+                    }, {
+                        id: 5,
+                        startDateTime: 5
+                    }, {
+                        id: 6,
+                        startDateTime: 6
+                    }]
+                }
+            ]
+        }
+
+        const res = getters.workouts(state)('123', 7, 10)
+        expect(res).toStrictEqual([])
+    });
+
+    test('workouts returns empty array when no workouts in defined range - below', () => {
+        const state = {
+            athletes: [
+                {
+                    id: '123',
+                    workouts: [{
+                        id: 4,
+                        startDateTime: 4
+                    }, {
+                        id: 5,
+                        startDateTime: 5
+                    }, {
+                        id: 6,
+                        startDateTime: 6
+                    }]
+                }
+            ]
+        }
+
+        const res = getters.workouts(state)('123', 0, 3)
+        expect(res).toStrictEqual([])
+    });
+
+
 });
