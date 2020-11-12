@@ -26,11 +26,11 @@ function getWorkoutObjects(workoutObjects, athlete, from, to) {
 }
 
 export const workoutsMetadata = state => (athleteId, from, to) => {
-    const athlete = athlete(state)(athleteId)
-    return getWorkoutObjects('workoutsMetadata', athlete, from, to)
+    const ath = athlete(state)(athleteId)
+    return getWorkoutObjects('workoutsMetadata', ath, from, to)
 }
 
 export const workouts = state => (athleteId, from, to) => {
-    const athlete = athlete(state)(athleteId)
-    return getWorkoutObjects('workouts', athlete, from, to)
+    const ath = athlete(state)(athleteId)
+    return getWorkoutObjects('workouts', ath, from, to)
 }
