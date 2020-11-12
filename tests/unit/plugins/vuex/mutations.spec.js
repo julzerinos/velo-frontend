@@ -1,4 +1,4 @@
-import {mutations} from '@/plugins/vuex/mutations/mutations'
+import {mutations} from '@/plugins/vuex/mutations'
 
 describe('vuex/mutations', () => {
     test('logout sets profile to null', () => {
@@ -98,19 +98,31 @@ describe('vuex/mutations', () => {
             athletes: [
                 {
                     id: '123',
-                    workouts: [{startDateTime: 0}, {startDateTime: 1}, {startDateTime: 3}, {startDateTime: 4}]
+                    workouts: [
+                        {id: 0, startDateTime: 0},
+                        {id: 1, startDateTime: 1},
+                        {id: 3, startDateTime: 3},
+                        {id: 4, startDateTime: 4}
+                    ]
                 }
             ]
         }
         const workout = {
             athleteId: '123',
+            id: 2,
             startDateTime: 2
         }
 
         mutations.workout(state, {workout})
         expect(state.athletes[0].workouts.length).toBe(5)
         expect(state.athletes[0].workouts[2]).toStrictEqual(workout)
-        expect(state.athletes[0].workouts).toStrictEqual([{startDateTime: 0}, {startDateTime: 1}, workout, {startDateTime: 3}, {startDateTime: 4}])
+        expect(state.athletes[0].workouts).toStrictEqual([
+            {id: 0, startDateTime: 0},
+            {id: 1, startDateTime: 1},
+            workout,
+            {id: 3, startDateTime: 3},
+            {id: 4, startDateTime: 4}
+        ])
     });
 
     test('workout places workout at proper index - end', () => {
@@ -118,19 +130,31 @@ describe('vuex/mutations', () => {
             athletes: [
                 {
                     id: '123',
-                    workouts: [{startDateTime: 0}, {startDateTime: 1}, {startDateTime: 3}, {startDateTime: 4}]
+                    workouts: [
+                        {id: 0, startDateTime: 0},
+                        {id: 1, startDateTime: 1},
+                        {id: 3, startDateTime: 3},
+                        {id: 4, startDateTime: 4}
+                    ]
                 }
             ]
         }
         const workout = {
             athleteId: '123',
+            id: 5,
             startDateTime: 5
         }
 
         mutations.workout(state, {workout})
         expect(state.athletes[0].workouts.length).toBe(5)
         expect(state.athletes[0].workouts[4]).toStrictEqual(workout)
-        expect(state.athletes[0].workouts).toStrictEqual([{startDateTime: 0}, {startDateTime: 1}, {startDateTime: 3}, {startDateTime: 4}, workout])
+        expect(state.athletes[0].workouts).toStrictEqual([
+            {id: 0, startDateTime: 0},
+            {id: 1, startDateTime: 1},
+            {id: 3, startDateTime: 3},
+            {id: 4, startDateTime: 4},
+            workout
+        ])
     });
 
     test('workout places workout at proper index - start', () => {
@@ -138,19 +162,27 @@ describe('vuex/mutations', () => {
             athletes: [
                 {
                     id: '123',
-                    workouts: [{startDateTime: 1}, {startDateTime: 2}, {startDateTime: 3}, {startDateTime: 4}]
+                    workouts: [
+                        {id: 1, startDateTime: 1},
+                        {id: 2, startDateTime: 2},
+                        {id: 3, startDateTime: 3},
+                        {id: 4, startDateTime: 4}
+                    ]
                 }
             ]
         }
-        const workout = {
-            athleteId: '123',
-            startDateTime: 0
-        }
+        const workout = {athleteId: '123', id: 0, startDateTime: 0}
 
         mutations.workout(state, {workout})
         expect(state.athletes[0].workouts.length).toBe(5)
         expect(state.athletes[0].workouts[0]).toStrictEqual(workout)
-        expect(state.athletes[0].workouts).toStrictEqual([workout, {startDateTime: 1}, {startDateTime: 2}, {startDateTime: 3}, {startDateTime: 4}])
+        expect(state.athletes[0].workouts).toStrictEqual([
+            workout,
+            {id: 1, startDateTime: 1},
+            {id: 2, startDateTime: 2},
+            {id: 3, startDateTime: 3},
+            {id: 4, startDateTime: 4}
+        ])
     });
 
     test('workout adds workouts if workouts do not exist in athlete', () => {
@@ -162,6 +194,7 @@ describe('vuex/mutations', () => {
             ]
         }
         const workout = {
+            id: 'xyz',
             athleteId: '123',
             startDateTime: 10
         }
@@ -188,5 +221,141 @@ describe('vuex/mutations', () => {
 
         mutations.workout(state, {workout})
         expect(state.athletes[0].workouts.length).toBe(0)
+    });
+
+    test('workout replaces workout if already in array - 1 workout', () => {
+        const state = {
+            athletes: [
+                {
+                    id: '123',
+                    workouts: [{
+                        athleteId: '123',
+                        id: 4,
+                        startDateTime: 5
+                    }]
+                }
+            ]
+        }
+        const workout = {
+            athleteId: '123',
+            id: 4,
+            startDateTime: 5
+        }
+
+        mutations.workout(state, {workout})
+        expect(state.athletes[0].workouts[0]).toStrictEqual(workout)
+        expect(state.athletes[0].workouts.length).toBe(1)
+    });
+
+    test('workout replaces workout if already in array - replace first out of two', () => {
+        const state = {
+            athletes: [
+                {
+                    id: '123',
+                    workouts: [{
+                        athleteId: '123',
+                        id: 4,
+                        startDateTime: 5
+                    }, {
+                        athleteId: '123',
+                        id: 5,
+                        startDateTime: 6
+                    }]
+                }
+            ]
+        }
+        const workout = {
+            athleteId: '123',
+            id: 4,
+            startDateTime: 5
+        }
+
+        mutations.workout(state, {workout})
+        expect(state.athletes[0].workouts[0]).toStrictEqual(workout)
+        expect(state.athletes[0].workouts.length).toBe(2)
+    });
+
+    test('workout replaces workout if already in array - replace second out of two', () => {
+        const state = {
+            athletes: [
+                {
+                    id: '123',
+                    workouts: [{
+                        athleteId: '123',
+                        id: 4,
+                        startDateTime: 5
+                    }, {
+                        athleteId: '123',
+                        id: 5,
+                        startDateTime: 6
+                    }]
+                }
+            ]
+        }
+        const workout = {
+            athleteId: '123',
+            id: 5,
+            startDateTime: 6
+        }
+
+        mutations.workout(state, {workout})
+        expect(state.athletes[0].workouts[1]).toStrictEqual(workout)
+        expect(state.athletes[0].workouts.length).toBe(2)
+    });
+
+    test('workout replaces workout if already in array - replace middle of three', () => {
+        const state = {
+            athletes: [
+                {
+                    id: '123',
+                    workouts: [{
+                        athleteId: '123',
+                        id: 4,
+                        startDateTime: 5
+                    }, {
+                        athleteId: '123',
+                        id: 5,
+                        startDateTime: 6
+                    }, {
+                        athleteId: '123',
+                        id: 6,
+                        startDateTime: 7
+                    }]
+                }
+            ]
+        }
+        const workout = {
+            athleteId: '123',
+            id: 5,
+            startDateTime: 6
+        }
+
+        mutations.workout(state, {workout})
+        expect(state.athletes[0].workouts[1]).toStrictEqual(workout)
+        expect(state.athletes[0].workouts.length).toBe(3)
+    });
+
+    test('workout correctly parses date', () => {
+        const state = {
+            athletes: [
+                {
+                    id: '123',
+                    workouts: [{
+                        athleteId: '123',
+                        id: 6,
+                        startDateTime: Date.now()
+                    }]
+                }
+            ]
+        }
+        const workout = {
+            athleteId: '123',
+            id: 5,
+            startDateTime: '2020-11-11T12:44:43'
+        }
+
+        mutations.workout(state, {workout})
+        expect(state.athletes[0].workouts[0]).toStrictEqual(workout)
+        expect(state.athletes[0].workouts.length).toBe(2)
     });
 });

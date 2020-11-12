@@ -20,19 +20,14 @@
             },
         },
         data() {
-            return {
-                config: this.data.config,
-                athletes: this.data.athletes,
-            }
+            return {}
         },
         mounted() {
             this.populate()
         },
         methods: {
             populate() {
-                // TODO: Check data is correct/contains data
-
-                this.initDataBrick(this.$refs['container'], this.config)
+                this.initDataBrick(this.$refs['container'], this.data)
             }
         }
     }

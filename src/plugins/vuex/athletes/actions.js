@@ -14,6 +14,10 @@ export const workoutsMetadataAsync = function ({commit, state}, {athleteId, onSu
     ).then()
 }
 
+export const workoutsAsync = function ({commit, state}, {start, end, onSuccess = r => r, onFail = r => r} = {}) {
+
+}
+
 export const workoutAsync = function ({commit, state}, {workoutId, onSuccess = r => r, onFail = r => r} = {}) {
     workout(
         {workoutId, token: state.profile.token},

@@ -5,7 +5,6 @@ export default {
         ...mapGetters({
             loggedIn: 'loggedIn',
             profile: 'profile',
-            athletes: 'athletes'
         })
     },
     methods: {

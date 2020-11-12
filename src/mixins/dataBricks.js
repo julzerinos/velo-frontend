@@ -9,7 +9,19 @@ export default {
         ...mapGetters({
             dataBricks: 'dataBricks',
             dataBrickConfigs: 'dataBrickConfigs',
+            athletes: 'athletes',
+            workouts: 'workouts'
         }),
+
+        timeRanges: () => [{
+            text: "Last 10 days",
+            start: Date.now() - 10 * 24 * 60 * 60 * 1000,
+            end: Date.now()
+        }, {
+            text: "Last 30 days",
+            start: Date.now() - 30 * 24 * 60 * 60 * 1000,
+            end: Date.now()
+        }]
     },
     methods: {
         ...mapActions({
@@ -31,11 +43,24 @@ export default {
             })
         },
 
-        initDataBrick(container, config) {
-            new Function(config.code).call({
+        thinAthletes(athletes, timeRange) {
+            const thinAthletes = []
+            for (const athlete of this.athletes) {
+                if (!athletes.includes(athlete.id)) continue
+
+                const {workoutMetadata, ...thinAthlete} = athlete
+
+            }
+        },
+
+        initDataBrick(container, data) {
+            // here check if workouts in athlete
+            // here update workouts in athlete
+
+            new Function(data.config.code).call({
                 d3: d3,
                 svg: d3.select(container).append('svg'),
-                athletes: this.athletes
+                athletes: data.thletes
             })
         },
 

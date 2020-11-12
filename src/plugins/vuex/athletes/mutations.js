@@ -41,5 +41,13 @@ export const workout = function (state, {workout}) {
 
     const date = new Date(workout.startDateTime)
     const index = sortedIndex(state.athletes[athlete].workouts.map(w => w.startDateTime), date)
-    state.athletes[athlete].workouts.splice(index, 0, workout)
+
+    if (index < state.athletes[athlete].workouts.length && state.athletes[athlete].workouts[index].id === workout.id)
+        Vue.set(state.athletes[athlete].workouts, index, workout)
+
+        // else if (index < state.athletes[athlete].workouts.length && state.athletes[athlete].workouts[index + 1].id === workout.id)
+    //     Vue.set(state.athletes[athlete].workouts, index + 1, workout)
+
+    else
+        state.athletes[athlete].workouts.splice(index, 0, workout)
 }
