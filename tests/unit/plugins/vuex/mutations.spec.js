@@ -205,6 +205,27 @@ describe('vuex/mutations', () => {
         expect(state.athletes[0].workouts[0]).toStrictEqual(workout)
     });
 
+    test('workout adds workout to empty workouts', () => {
+        const state = {
+            athletes: [
+                {
+                    id: '123',
+                    workouts: []
+                }
+            ]
+        }
+        const workout = {
+            id: 'xyz',
+            athleteId: '123',
+            startDateTime: 7
+        }
+
+        mutations.workout(state, {workout})
+        expect(state.athletes[0]).toHaveProperty('workouts')
+        expect(state.athletes[0].workouts.length).toBe(1)
+        expect(state.athletes[0].workouts[0]).toStrictEqual(workout)
+    });
+
     test('workout returns if does not find athlete with id', () => {
         const state = {
             athletes: [

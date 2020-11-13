@@ -19,7 +19,7 @@
                     ></v-text-field>
                   </v-col>
                   <v-col>
-                    <v-select
+                    <v-autocomplete
                             :items="configs"
                             append-icon="settings"
                             item-text="name"
@@ -35,6 +35,7 @@
                   <v-col>
                     <v-autocomplete
                             :item-text="x => fullName(x)"
+                            item-value="id"
                             :items="athletes"
                             append-icon="directions_bike"
                             chips
@@ -42,7 +43,6 @@
                             label="Athletes"
                             multiple
                             outlined
-                            return-object
                             small-chips
                             v-model="athleteSelect"
                     />
@@ -85,14 +85,7 @@
                 timeRange: null
             }
         },
-        computed: {
-            configs() {
-                return [
-                    ...this.defaultConfigs(),
-                    ...(this.loggedIn ? this.dataBrickConfigs : [])
-                ]
-            }
-        },
+        computed: {},
         methods: {
             submit() {
                 this.addDataBrick({

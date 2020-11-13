@@ -1,4 +1,4 @@
-import {addCoach, athlete, athletes, stravaImport, workout, workouts, workoutsMetadata} from "../profile/profile";
+import {addCoach, athlete, athletes, stravaImport, workout, workouts, workoutsMetadata} from "./athletes";
 
 export const workoutsMetadataAsync = function ({commit, state}, {athleteId, onSuccess = r => r, onFail = r => r} = {}) {
     workoutsMetadata(
@@ -49,7 +49,7 @@ export const athleteAsync = function ({commit, state}, {athleteId, onSuccess = r
         {athleteId, token: state.profile.token},
         r => {
             commit('setResult', {resultObject: {blame: 'athlete', message: r.message}})
-            commit('athlete', r)
+            commit('athlete', {athlete: r.data})
 
             return onSuccess(r)
         },
@@ -64,7 +64,7 @@ export const athletesAsync = function ({commit, state, dispatch}, {athleteIds, o
     athletes(
         {athleteIds, token: state.profile.token},
         r => {
-            commit('setResult', {resultObject: {blame: athletes.name, message: r.message}})
+            commit('setResult', {resultObject: {blame: 'athletes', message: r.message}})
 
             const athletesParsed = []
             for (const athlete of r.data) {
@@ -82,7 +82,7 @@ export const athletesAsync = function ({commit, state, dispatch}, {athleteIds, o
             return onSuccess(r)
         },
         r => {
-            commit('setResult', {resultObject: {blame: athletes.name, message: r.message}})
+            commit('setResult', {resultObject: {blame: 'athletes', message: r.message}})
             return onFail(r)
         }
     ).then()
@@ -102,9 +102,9 @@ export const addCoachAsync = function ({commit, state}, {coachEmail, onSuccess =
     ).then()
 }
 
-export const stravaImportAsync = function ({commit, state}, {athleteId, from, to, onSuccess = r => r, onFail = r => r} = {}) {
+export const stravaImportAsync = function ({commit, state}, {athleteId, start, end, onSuccess = r => r, onFail = r => r} = {}) {
     stravaImport(
-        {athleteId, from, to, token: state.profile.token},
+        {athleteId, start, end, token: state.profile.token},
         r => {
             commit('setResult', {resultObject: {blame: 'stravaImport', message: r.message}})
             return onSuccess(r)

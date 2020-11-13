@@ -2,6 +2,8 @@ const d3 = this.d3
 const svg = this.svg
 const athletes = this.athletes
 
+if (athletes[0].workouts.length < 0) return
+
 const param = 'distance'
 const training = athletes[0].workouts[0]
 

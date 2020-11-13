@@ -54,11 +54,17 @@
         components: {DataBrick},
         data() {
             return {
-                config: this.defaultConfigs()[1],
-
                 dataBrickActions: [
                     {name: "Remove", action: this.removeDataBrick}
                 ]
+            }
+        },
+        mounted() {
+            this.refreshWorkouts()
+        },
+        watch: {
+            dataBricks: function () {
+                this.refreshWorkouts()
             }
         }
     }

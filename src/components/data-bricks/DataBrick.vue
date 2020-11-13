@@ -19,9 +19,6 @@
                 required: true
             },
         },
-        data() {
-            return {}
-        },
         mounted() {
             this.populate()
         },

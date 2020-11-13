@@ -87,6 +87,27 @@ describe('vuex/getters', () => {
     //     expect(res[0].dataConfig).toBe('test')
     // });
 
+    test('athlete returns athlete object when it exists', () => {
+        const state = {
+            athletes: [{
+                id: '123',
+                workouts: [{
+                    id: 4,
+                    startDateTime: 4
+                }]
+            }]
+        }
+
+        const res = getters.athlete(state)('123')
+        expect(res).toStrictEqual({
+            id: '123',
+            workouts: [{
+                id: 4,
+                startDateTime: 4
+            }]
+        })
+    });
+
     test('workouts returns workouts in defined range - intersection', () => {
         const state = {
             athletes: [{
