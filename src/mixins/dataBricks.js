@@ -27,7 +27,8 @@ export default {
         ...mapActions({
             addDataBrickAsync: 'addDataBrickAsync',
             addDataBrickConfigAsync: 'addDataBrickConfigAsync',
-            removeDataBrick: 'removeDataBrickAsync'
+            removeDataBrick: 'removeDataBrickAsync',
+            getWorkouts: 'getWorkoutsForDataBrickAsync'
         }),
 
         addDataBrick(data, brick) {
@@ -54,6 +55,9 @@ export default {
         },
 
         initDataBrick(container, data) {
+            console.log(data)
+            this.getWorkouts({athleteIds: data.athletes})
+
             // here check if workouts in athlete
             // here update workouts in athlete
 

@@ -1,33 +1,44 @@
-import {addCoach, athlete, athletes, stravaImport, workout, workoutsMetadata} from "../profile/profile";
+import {addCoach, athlete, athletes, stravaImport, workout, workouts, workoutsMetadata} from "../profile/profile";
 
 export const workoutsMetadataAsync = function ({commit, state}, {athleteId, onSuccess = r => r, onFail = r => r} = {}) {
     workoutsMetadata(
         {athleteId, token: state.profile.token},
         r => {
-            // commit('setResult', {resultObject: {blame: 'reset', message: r.message}})
+            commit('setResult', {resultObject: {blame: 'workoutsMetadata', message: r.message}})
             return onSuccess(r)
         },
         r => {
-            // commit('setResult', {resultObject: {blame: 'reset', message: r.message}})
+            commit('setResult', {resultObject: {blame: 'workoutsMetadata', message: r.message}})
             return onFail(r)
         }
     ).then()
 }
 
-export const workoutsAsync = function ({commit, state}, {start, end, onSuccess = r => r, onFail = r => r} = {}) {
-
+export const workoutsAsync = function ({commit, state}, {athleteId, start, end, onSuccess = r => r, onFail = r => r} = {}) {
+    workouts(
+        {athleteId, start, end, token: state.profile.token},
+        r => {
+            commit('setResult', {resultObject: {blame: 'workouts', message: r.message}})
+            commit('workouts', {workouts: r.data})
+            return onSuccess(r)
+        },
+        r => {
+            commit('setResult', {resultObject: {blame: 'workouts', message: r.message}})
+            return onFail(r)
+        }
+    ).then()
 }
 
 export const workoutAsync = function ({commit, state}, {workoutId, onSuccess = r => r, onFail = r => r} = {}) {
     workout(
         {workoutId, token: state.profile.token},
         r => {
-            commit('setResult', {resultObject: {blame: 'reset', message: r.message}})
+            commit('setResult', {resultObject: {blame: 'workout', message: r.message}})
             commit('workout', {workout: r.data})
             return onSuccess(r)
         },
         r => {
-            commit('setResult', {resultObject: {blame: 'reset', message: r.message}})
+            commit('setResult', {resultObject: {blame: 'workout', message: r.message}})
             return onFail(r)
         }
     ).then()

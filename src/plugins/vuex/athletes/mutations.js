@@ -45,9 +45,15 @@ export const workout = function (state, {workout}) {
     if (index < state.athletes[athlete].workouts.length && state.athletes[athlete].workouts[index].id === workout.id)
         Vue.set(state.athletes[athlete].workouts, index, workout)
 
+        // TODO: double check if this is needed
         // else if (index < state.athletes[athlete].workouts.length && state.athletes[athlete].workouts[index + 1].id === workout.id)
     //     Vue.set(state.athletes[athlete].workouts, index + 1, workout)
 
     else
         state.athletes[athlete].workouts.splice(index, 0, workout)
+}
+
+export const workouts = function (state, {workouts}) {
+    for (const wrkt of workouts)
+        workout(state, {workout: wrkt})
 }

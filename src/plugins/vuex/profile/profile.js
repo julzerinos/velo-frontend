@@ -132,6 +132,26 @@ export const workoutsMetadata = function (
     )
 }
 
+export const workouts = function (
+    {athleteId, start, end, token},
+    onSuccess = r => r,
+    onFail = r => r
+) {
+    return get(
+        `${base_url}/workouts`,
+        {
+            Authorization: token
+        },
+        {
+            athleteId,
+            beforeEpoch: end,
+            afterEpoch: start
+        },
+        onSuccess,
+        onFail
+    )
+}
+
 export const workout = function (
     {workoutId, token},
     onSuccess = r => r,
