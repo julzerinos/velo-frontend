@@ -1,4 +1,15 @@
-import {authenticate, logout, register, reset, user, workoutsMetadata} from "./profile/profile";
+import {
+    addCoach,
+    athlete,
+    athletes,
+    authenticate,
+    logout,
+    register,
+    reset,
+    stravaImport,
+    user,
+    workoutsMetadata
+} from "./profile/profile";
 import jwt from 'jwt-decode'
 
 // TODO: Add error-specific messages
@@ -38,7 +49,7 @@ export const actions = {
         ).then()
     },
 
-    loginAsync({commit}, {profile, onSuccess = r => r, onFail = r => r} = {}) {
+    loginAsync({commit, dispatch}, {profile, onSuccess = r => r, onFail = r => r} = {}) {
         authenticate(profile,
             r => {
                 if (r.headers['authorization'] === undefined) {
@@ -52,28 +63,20 @@ export const actions = {
                     throw new Error("missing authorization token")
                 }
 
-                user({email: jwt(r.headers.authorization).sub, token: r.headers.authorization},
-                    r => {
-                        if (r['profile'] === undefined) {
-                            commit('setResult', {
-                                resultObject: {
-                                    blame: 'login',
-                                    message: "Server error: missing profile data"
-                                }
-                            })
-                            onFail()
-                            throw new Error("missing profile")
-                        }
-
+                dispatch('userAsync', {
+                    profile: {
+                        email: jwt(r.headers.authorization).sub,
+                        token: r.headers.authorization
+                    },
+                    onSuccess: (r) => {
                         commit('setResult', {resultObject: {blame: 'login', message: "successfully logged in"}})
-                        commit('login', r)
                         return onSuccess(r)
                     },
-                    r => {
+                    onFail: (r) => {
                         commit('setResult', {resultObject: {blame: 'login', message: r.message}})
                         return onFail(r)
                     }
-                ).then()
+                })
             },
             r => {
                 commit('setResult', {resultObject: {blame: 'login', message: r.message}})
@@ -82,23 +85,31 @@ export const actions = {
         ).then()
     },
 
-    userAsync({commit, state}) {
-        user({email: state.profile.email, token: state.profile.token},
+    userAsync({commit, state, dispatch}, {profile = null, onSuccess = r => r, onFail = r => r} = {}) {
+        if (profile === null)
+            profile = {email: state.profile.email, token: state.profile.token}
+
+        user(profile,
             r => {
-                if (r['profile'] === undefined) {
+                if (!('profile' in r)) {
                     commit('addResult', {
                         resultObject: {
                             blame: 'login',
                             message: "Server error: missing profile data"
                         }
                     })
+                    onFail(r)
                     throw new Error("missing profile")
                 }
 
                 commit('login', r)
+                dispatch('athletesAsync', {athleteIds: r.profile.athletes})
+
+                return onSuccess(r)
             },
             r => {
                 commit('addResult', {resultObject: {blame: 'login', message: r.message}})
+                return onFail(r)
             }
         ).then()
     },
@@ -128,6 +139,82 @@ export const actions = {
                 return onFail(r)
             }
         ).then()
+    },
+
+    athleteAsync({commit, state}, {athleteId, onSuccess = r => r, onFail = r => r} = {}) {
+        athlete(
+            {athleteId, token: state.profile.token},
+            r => {
+                commit('setResult', {resultObject: {blame: 'athlete', message: r.message}})
+                commit('athlete', r)
+
+                return onSuccess(r)
+            },
+            r => {
+                commit('setResult', {resultObject: {blame: 'athlete', message: r.message}})
+                return onFail(r)
+            }
+        ).then()
+    },
+
+    athletesAsync({commit, state, dispatch}, {athleteIds, onSuccess = r => r, onFail = r => r} = {}) {
+        athletes(
+            {athleteIds, token: state.profile.token},
+            r => {
+                commit('setResult', {resultObject: {blame: athletes.name, message: r.message}})
+
+                const athletesParsed = []
+                for (const athlete of r.data) {
+                    athlete.first['workoutsMetadata'] = athlete.second
+                    athletesParsed.push(athlete.first)
+                    if (athlete.first.stravaConnected)
+                        dispatch('stravaImport', {
+                            athleteId: athlete.first.id,
+                            from: Math.floor((Date.now() / 1000) - 10 * 24 * 60 * 60),
+                            to: Math.floor(Date.now() / 1000)
+                        })
+                }
+
+                commit('athletes', {athletes: athletesParsed})
+                return onSuccess(r)
+            },
+            r => {
+                commit('setResult', {resultObject: {blame: athletes.name, message: r.message}})
+                return onFail(r)
+            }
+        ).then()
+    },
+
+    addCoachAsync({commit, state}, {coachEmail, onSuccess = r => r, onFail = r => r} = {}) {
+        addCoach(
+            {coachEmail, token: state.profile.token},
+            r => {
+                commit('setResult', {resultObject: {blame: 'addCoach', message: r.message}})
+                return onSuccess(r)
+            },
+            r => {
+                commit('setResult', {resultObject: {blame: 'addCoach', message: r.message}})
+                return onFail(r)
+            }
+        ).then()
+    },
+
+    stravaImport({commit, state}, {athleteId, from, to, onSuccess = r => r, onFail = r => r} = {}) {
+        stravaImport(
+            {athleteId, from, to, token: state.profile.token},
+            r => {
+                commit('setResult', {resultObject: {blame: 'stravaImport', message: r.message}})
+                return onSuccess(r)
+            },
+            r => {
+                commit('setResult', {resultObject: {blame: 'stravaImport', message: r.message}})
+                return onFail(r)
+            }
+        ).then()
+    },
+
+    moveAthleteToFrontAsync({commit}, payload) {
+        commit('moveAthleteToFront', payload)
     },
 
     setResultAsync({commit}, {resultObject}) {
