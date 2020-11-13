@@ -3,7 +3,7 @@ const svg = this.svg
 const athletes = this.athletes
 
 const param = 'distance'
-const training = athletes[0].trainings[0]
+const training = athletes[0].workouts[0]
 
 const data = {
     y: param,

@@ -5,14 +5,14 @@ export default {
         ...mapGetters({
             loggedIn: 'loggedIn',
             profile: 'profile',
-            athletes: 'athletes'
         })
     },
     methods: {
         ...mapActions({
             signup: 'signupAsync',
             login: 'loginAsync',
-            logout: 'logoutAsync'
+            logout: 'logoutAsync',
+            workout: 'workoutAsync'
         }),
 
         fullName: obj => `${obj.firstName} ${obj.lastName}`

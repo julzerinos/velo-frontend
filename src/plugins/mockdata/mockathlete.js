@@ -3,7 +3,8 @@ import mockTraining from "./mocktraining";
 const athletes = [
     {
         name: "athlete1",
-        trainings: [
+        workoutsMetadata: [],
+        workouts: [
             mockTraining,
             mockTraining,
             mockTraining

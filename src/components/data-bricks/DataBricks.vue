@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-container class="grid" fill-height fluid v-if="loggedIn && dataBricks">
+    <v-container class="grid" fill-height fluid v-if="dataBricks.length">
       <v-row :key="i" v-for="(db, i) in dataBricks">
         <v-col :cols="db.brick.cols">
           <v-app-bar
@@ -55,7 +55,6 @@
         data() {
             return {
                 config: this.defaultConfigs()[1],
-                athletes: this.$mockAthletes(),
 
                 dataBrickActions: [
                     {name: "Remove", action: this.removeDataBrick}
