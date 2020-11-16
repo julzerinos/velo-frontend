@@ -84,14 +84,22 @@ export default {
         initDataBrick(container, data) {
             // TODO: check if amount of workouts correspond to workoutsMetadata
 
+            const thinAthletes = this.thinAthletes(data.athletes, data.timeRange)
+
             this.callConfiguration(
                 data.config.code,
                 {
                     d3: d3,
                     svg: d3.select(container).append('svg'),
-                    athletes: this.thinAthletes(data.athletes, data.timeRange)
+                    athletes: thinAthletes
                 }
             )
+
+            const warnings = {
+                athletesNoData: [...data.athletes.map(a => !(a in thinAthletes))]
+            }
+
+            return warnings
         },
 
         getTimeRangeUnion() {
@@ -106,13 +114,24 @@ export default {
                     if (athletes[ath][1] < timeRange.end) athletes[ath][1] = timeRange.end
                 }
             }
+
             return athletes
         },
 
-        refreshWorkouts() {
-            const timeRangeUnion = this.getTimeRangeUnion()
-            for (const [ath, [min, max]] of Object.entries(timeRangeUnion))
-                this.getWorkouts({athleteId: ath, start: min, end: max})
+        refreshWorkouts(onFinish) {
+            if (this.dataBricks === null) {
+                onFinish()
+                return
+            }
+
+            let index = 0
+            const timeRangeUnions = Object.entries(this.getTimeRangeUnion())
+            for (const [ath, [min, max]] of timeRangeUnions) {
+                if (++index === timeRangeUnions.length)
+                    this.getWorkouts({athleteId: ath, start: min, end: max, onSuccess: onFinish, onFail: onFinish})
+                else
+                    this.getWorkouts({athleteId: ath, start: min, end: max})
+            }
         },
     }
 }

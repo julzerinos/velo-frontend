@@ -143,7 +143,7 @@ export const stravaImport = function (
         `/strava/import`,
         {Authorization: token},
         {
-            athleteId, beforeEpoch: end, afterEpoch: start
+            athleteId, beforeEpoch: end, afterEpoch: start,
         },
         {},
         onSuccess,

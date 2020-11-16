@@ -43,8 +43,14 @@ export const workout = function (state, {workout}) {
     // Vue.set(state.athletes[athlete].workouts, index + 1, workout)
 }
 
-export const workouts = function (state, {workouts}) {
-    const athlete = state.athletes.findIndex(x => x.id === workouts[0].athleteId)
+export const workouts = function (state, {workouts, athleteId = null}) {
+    if (workouts === null || workouts.length < 1)
+        return
+
+    if (athleteId === null)
+        athleteId = workouts[0].athleteId
+
+    const athlete = state.athletes.findIndex(x => x.id === athleteId)
     if (athlete === -1)
         return
 

@@ -27,7 +27,6 @@
                             outlined
                             return-object
                             v-model="configSelect"
-
                     />
                   </v-col>
                 </v-row>
@@ -63,7 +62,7 @@
             </v-form>
           </v-card-text>
           <v-card-actions>
-            <v-btn :disabled="!configSelect" @click="submit">
+            <v-btn :disabled="!timeRange || !athleteSelect || !configSelect" @click="submit">
               gotta go fast
             </v-btn>
           </v-card-actions>
@@ -82,7 +81,7 @@
                 dataBrickName: '',
                 configSelect: null,
                 athleteSelect: [],
-                timeRange: null
+                timeRange: null,
             }
         },
         computed: {},

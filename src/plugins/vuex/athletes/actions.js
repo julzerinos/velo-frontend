@@ -73,8 +73,8 @@ export const athletesAsync = function ({commit, state, dispatch}, {athleteIds, o
                 if (athlete.first.stravaConnected)
                     dispatch('stravaImportAsync', {
                         athleteId: athlete.first.id,
-                        from: Math.floor((Date.now() / 1000) - 10 * 24 * 60 * 60),
-                        to: Math.floor(Date.now() / 1000)
+                        start: Math.floor((Date.now() / 1000) - 10 * 24 * 60 * 60),
+                        end: Math.floor(Date.now() / 1000)
                     })
             }
 

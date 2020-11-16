@@ -18,13 +18,29 @@
                 type: Object,
                 required: true
             },
+            loading: {
+                type: Boolean,
+                required: true
+            }
+        },
+        data: function () {
+            return {
+                initialized: false,
+                warnings: {athletesNoData: []}
+            }
         },
         mounted() {
-            this.populate()
+        },
+        watch: {
+            loading: function (loading) {
+                if (!loading && !this.initialized)
+                    this.populate()
+            }
         },
         methods: {
             populate() {
-                this.initDataBrick(this.$refs['container'], this.data)
+                this.warnings = this.initDataBrick(this.$refs['container'], this.data)
+                this.initialized = true
             }
         }
     }
