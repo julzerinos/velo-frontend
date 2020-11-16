@@ -1,6 +1,6 @@
 import {mapActions, mapGetters} from "vuex";
-import simpleBarChart from '!raw-loader!../components/charts/bar-charts/simpleBarChart'
-import multiLineChart from '!raw-loader!../components/charts/line-charts/multiLineChart'
+import simpleBarChart from '!raw-loader!../components/data-bricks/configurations/charts/bar-charts/simpleBarChart'
+import multiLineChart from '!raw-loader!../components/data-bricks/configurations/charts/line-charts/multiLineChart'
 
 const d3 = require("d3")
 
