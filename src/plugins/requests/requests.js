@@ -23,17 +23,20 @@ import axios from "axios";
 // TODO
 // axios.defaults.headers.common['header1'] = 'value' // for all requests
 
+const BASE_URL = 'http://localhost:8081'
+
 export const get = function (
-    url,
+    endPoint,
     headers,
     params,
     onSuccess,
     onFailure,
     retries = 3,
-    retryDelay = 1000
+    retryDelay = 1000,
+    baseURL = BASE_URL
 ) {
     return axios
-        .get(url, {headers, params, retry: retries, retryDelay: retryDelay})
+        .get(baseURL + endPoint, {headers, params, retry: retries, retryDelay: retryDelay})
         .then(
             response => {
                 onSuccess(response);
@@ -47,17 +50,18 @@ export const get = function (
 }
 
 export const post = function (
-    url,
+    endPoint,
     headers,
     params,
     body,
     onSuccess,
     onFailure,
     retries = 3,
-    retryDelay = 1000
+    retryDelay = 1000,
+    baseURL = BASE_URL
 ) {
     return axios
-        .post(url, body, {headers, params, retry: retries, retryDelay: retryDelay})
+        .post(baseURL + endPoint, body, {headers, params, retry: retries, retryDelay: retryDelay})
         .then(
             response => {
                 onSuccess(response);

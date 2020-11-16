@@ -3,7 +3,7 @@ import axios from 'axios'
 
 jest.mock('axios')
 
-describe('vuex/actions', () => {
+describe('vuex/profile/actions', () => {
     test('logoutAsync calls logout and setResult commits on server resolved', () => {
         expect.hasAssertions()
 

@@ -1,6 +1,10 @@
 <template>
   <v-card>
-    <v-container class="grid" fill-height fluid v-if="dataBricks.length">
+    <v-card-title v-if="!loggedIn">You are not logged in!</v-card-title>
+    <v-card-title v-else-if="dataBricks.length < 1">No data bricks defined. Use the above configuration menu to create a
+      data brick.
+    </v-card-title>
+    <v-container class="grid" fill-height fluid v-else>
       <v-row :key="i" v-for="(db, i) in dataBricks">
         <v-col :cols="db.brick.cols">
           <v-app-bar
@@ -37,12 +41,18 @@
           <data-brick
                   :data="db.data"
                   :brick="db.brick"
+                  :loading="dataBricksLoading"
                   style="overflow: hidden"
           />
+          <v-overlay :value="dataBricksLoading" absolute opacity="0.2">
+            <v-progress-circular
+                    indeterminate
+                    size="64"
+            />
+          </v-overlay>
         </v-col>
       </v-row>
     </v-container>
-    <v-card-title v-else>No data bricks created! Use the above configuration menu to add new bricks.</v-card-title>
   </v-card>
 </template>
 
@@ -54,11 +64,27 @@
         components: {DataBrick},
         data() {
             return {
-                config: this.defaultConfigs()[1],
-
                 dataBrickActions: [
                     {name: "Remove", action: this.removeDataBrick}
-                ]
+                ],
+                dataBricksLoading: false
+            }
+        },
+        mounted() {
+            this.onLoad()
+        },
+        watch: {
+            dataBricks: function () {
+                this.onLoad()
+            }
+        },
+        methods: {
+            onLoad: function () {
+                this.dataBricksLoading = true
+                this.refreshWorkouts(this.onFinish)
+            },
+            onFinish: function () {
+                this.dataBricksLoading = false
             }
         }
     }

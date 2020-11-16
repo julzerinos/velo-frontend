@@ -1,36 +1,15 @@
 import {loggedIn} from "../profile/getters";
+import {getWorkoutObjects} from "./athletes";
 
 export const athletes = state => loggedIn(state) ? state.athletes : null
 export const athlete = state => athleteId => athletes(state).find(x => x.id === athleteId)
 
-function getClosestIndices(a, x) {
-    let lo = -1, hi = a.length;
-    while (hi - lo > 1) {
-        let mid = Math.round((lo + hi) / 2);
-        if (a[mid] <= x) {
-            lo = mid;
-        } else {
-            hi = mid;
-        }
-    }
-    if (a[lo] === x) hi = lo;
-
-    return [lo, hi];
-}
-
-function getWorkoutObjects(workoutObjects, athlete, from, to) {
-    const wrkObj = athlete[workoutObjects]
-    const start = getClosestIndices(wrkObj.map(w => w.startDateTime), from, 1)[1]
-    const end = getClosestIndices(wrkObj.map(w => w.startDateTime), to, -1)[0]
-    return wrkObj.slice(start, end > -1 ? end + 1 : 0)
-}
-
-export const workoutsMetadata = state => (athleteId, from, to) => {
+export const workoutsMetadata = state => (athleteId, start = 0, end = Date.now()) => {
     const ath = athlete(state)(athleteId)
-    return getWorkoutObjects('workoutsMetadata', ath, from, to)
+    return getWorkoutObjects('workoutsMetadata', ath, start, end)
 }
 
-export const workouts = state => (athleteId, from, to) => {
+export const workouts = state => (athleteId, start = 0, end = Date.now()) => {
     const ath = athlete(state)(athleteId)
-    return getWorkoutObjects('workouts', ath, from, to)
+    return getWorkoutObjects('workouts', ath, start, end)
 }

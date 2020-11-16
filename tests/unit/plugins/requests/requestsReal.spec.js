@@ -13,7 +13,10 @@ describe("requests real", () => {
                 expect(r.data.headers).toHaveProperty('Jest-Test-Value')
                 expect(r.data.headers['Jest-Test-Value']).toMatch("69")
             },
-            null
+            null,
+            0,
+            0,
+            ''
         )
     });
 
@@ -31,7 +34,10 @@ describe("requests real", () => {
                 expect(r.data.headers).toHaveProperty('Jest-Test-Value')
                 expect(r.data.headers['Jest-Test-Value']).toMatch("69")
             },
-            null
+            null,
+            0,
+            0,
+            ''
         )
     });
 });

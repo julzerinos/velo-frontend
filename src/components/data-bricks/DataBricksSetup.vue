@@ -19,7 +19,7 @@
                     ></v-text-field>
                   </v-col>
                   <v-col>
-                    <v-select
+                    <v-autocomplete
                             :items="configs"
                             append-icon="settings"
                             item-text="name"
@@ -27,7 +27,6 @@
                             outlined
                             return-object
                             v-model="configSelect"
-
                     />
                   </v-col>
                 </v-row>
@@ -35,6 +34,7 @@
                   <v-col>
                     <v-autocomplete
                             :item-text="x => fullName(x)"
+                            item-value="id"
                             :items="athletes"
                             append-icon="directions_bike"
                             chips
@@ -42,7 +42,6 @@
                             label="Athletes"
                             multiple
                             outlined
-                            return-object
                             small-chips
                             v-model="athleteSelect"
                     />
@@ -63,7 +62,7 @@
             </v-form>
           </v-card-text>
           <v-card-actions>
-            <v-btn :disabled="!configSelect" @click="submit">
+            <v-btn :disabled="!timeRange || !athleteSelect || !configSelect" @click="submit">
               gotta go fast
             </v-btn>
           </v-card-actions>
@@ -82,17 +81,10 @@
                 dataBrickName: '',
                 configSelect: null,
                 athleteSelect: [],
-                timeRange: null
+                timeRange: null,
             }
         },
-        computed: {
-            configs() {
-                return [
-                    ...this.defaultConfigs(),
-                    ...(this.loggedIn ? this.dataBrickConfigs : [])
-                ]
-            }
-        },
+        computed: {},
         methods: {
             submit() {
                 this.addDataBrick({

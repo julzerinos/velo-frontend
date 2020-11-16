@@ -1,97 +1,30 @@
 import {mutations} from '@/plugins/vuex/mutations'
 
-describe('vuex/mutations', () => {
-    test('logout sets profile to null', () => {
+describe('vuex/athletes/mutations', () => {
+
+    test('athlete add new athlete', () => {
         const state = {
-            profile: "testProfile"
+            athletes: [
+                {id: '123'}
+            ]
+        }
+        const newAthlete = {
+            id: 'xyz'
         }
 
-        mutations.logout(state)
-        expect(state.profile).toBeNull()
+        mutations.athlete(state, {athlete: newAthlete})
+        expect(state.athletes[1]).toStrictEqual(newAthlete)
     });
 
-    test('login sets profile to profile parameter', () => {
-        const profile = {
-            name: "a",
-            email: "a@b.c"
-        }
+    test('athlete replaces athlete with id', () => {
         const state = {
-            profile: null
+            athletes: [{id: '123', property: 1}]
         }
+        const newAthlete = {id: '123', property: 2}
 
-        mutations.login(state, {profile})
-
-        expect(state.profile).toEqual(profile)
+        mutations.athlete(state, {athlete: newAthlete})
+        expect(state.athletes[0].property).toBe(2)
     });
-
-    test('setResult sets results to results parameter', () => {
-        const resultObject = {
-            blame: "test",
-            message: "testMessage"
-        }
-        const state = {
-            result: null
-        }
-
-        mutations.setResult(state, {resultObject})
-
-        expect(state.result).not.toBeNull()
-        expect(state.result).toEqual(resultObject)
-    });
-
-    test('removeResult sets results to null', () => {
-        const state = {
-            result: {
-                blame: "test",
-                message: "testMessage"
-            }
-        }
-
-        mutations.removeResult(state)
-
-        expect(state.result).toBeNull()
-    });
-
-    test('profileChangeProperty changes profile property if the property exists', () => {
-        const state = {
-            profile: {
-                property: "value"
-            }
-        }
-
-        mutations.profileChangeProperty(state, {property: "property", value: "value2"})
-
-        expect(state.profile.property).toBe("value2")
-    });
-
-    test('profileChangeProperty does not do anything if the property does not exist', () => {
-        const state = {
-            profile: {
-                property1: "value"
-            }
-        }
-
-        mutations.profileChangeProperty(state, {property: "property2", value: "value"})
-
-        expect(state.profile).not.toHaveProperty("property2")
-        expect(Object.keys(state.profile)).toHaveLength(1)
-        expect(Object.keys(state.profile)[0]).toBe("property1")
-        expect(state.profile.property1).toBe("value")
-    });
-
-    // test('addDataBrick pushes a data brick to data-bricks array', () => {
-    //     const state = {
-    //         data-bricks: []
-    //     }
-    //
-    //     mutations.addDataBrick(state, {brickConfig: "brick", dataConfig: "data"})
-    //
-    //     expect(state.data-bricks).toHaveLength(1)
-    //     expect(state.data-bricks[0]).toHaveProperty('brickConfig')
-    //     expect(state.data-bricks[0]).toHaveProperty('dataConfig')
-    //     expect(state.data-bricks[0].brickConfig).toBe('brick')
-    //     expect(state.data-bricks[0].dataConfig).toBe('data')
-    // });
 
     test('workout places workout at proper index - middle', () => {
         const state = {
@@ -185,18 +118,19 @@ describe('vuex/mutations', () => {
         ])
     });
 
-    test('workout adds workouts if workouts do not exist in athlete', () => {
+    test('workout adds workout to empty workouts', () => {
         const state = {
             athletes: [
                 {
                     id: '123',
+                    workouts: []
                 }
             ]
         }
         const workout = {
             id: 'xyz',
             athleteId: '123',
-            startDateTime: 10
+            startDateTime: 7
         }
 
         mutations.workout(state, {workout})
@@ -357,5 +291,95 @@ describe('vuex/mutations', () => {
         mutations.workout(state, {workout})
         expect(state.athletes[0].workouts[0]).toStrictEqual(workout)
         expect(state.athletes[0].workouts.length).toBe(2)
+    });
+
+    test('workouts does nothing if empty workouts parameter', () => {
+        const state = {
+            athletes: [
+                {
+                    id: '123',
+                    workouts: [{
+                        athleteId: '123',
+                        id: 6,
+                        startDateTime: 5
+                    }]
+                }
+            ]
+        }
+
+        mutations.workouts(state, {workouts: []})
+        expect(state.athletes[0].workouts).toStrictEqual([{
+            athleteId: '123',
+            id: 6,
+            startDateTime: 5
+        }])
+        expect(state.athletes[0].workouts.length).toBe(1)
+    });
+
+    test('workouts does nothing if null workouts parameter', () => {
+        const state = {
+            athletes: [
+                {
+                    id: '123',
+                    workouts: [{
+                        athleteId: '123',
+                        id: 6,
+                        startDateTime: Date.now()
+                    }]
+                }
+            ]
+        }
+
+        mutations.workouts(state, {workouts: null})
+        expect(state.athletes[0].workouts[0].id).toBe(6)
+        expect(state.athletes[0].workouts.length).toBe(1)
+    });
+
+    test('workouts correctly selects athleteId if not given as parameter', () => {
+        const state = {
+            athletes: [
+                {
+                    id: '123',
+                    workouts: [{
+                        athleteId: '123',
+                        id: 6,
+                        startDateTime: Date.now()
+                    }]
+                }
+            ]
+        }
+        const workout = {
+            athleteId: '123',
+            id: 5,
+            startDateTime: '2020-11-11T12:44:43'
+        }
+
+        mutations.workouts(state, {workouts: [workout]})
+        expect(state.athletes[0].workouts[0].id).toBe(5)
+        expect(state.athletes[0].workouts.length).toBe(1)
+    });
+
+    test('workouts replaces current workouts', () => {
+        const state = {
+            athletes: [
+                {
+                    id: '123',
+                    workouts: [{
+                        athleteId: '123',
+                        id: 6,
+                        startDateTime: Date.now()
+                    }]
+                }
+            ]
+        }
+        const workout = {
+            athleteId: '123',
+            id: 5,
+            startDateTime: '2020-11-11T12:44:43'
+        }
+
+        mutations.workouts(state, {workouts: [workout]})
+        expect(state.athletes[0].workouts).toStrictEqual([workout])
+        expect(state.athletes[0].workouts.length).toBe(1)
     });
 });

@@ -1,91 +1,26 @@
 import {getters} from "@/plugins/vuex/getters";
 
 describe('vuex/getters', () => {
-    test('loggedIn returns true when profile exists in state', () => {
+    test('athlete returns athlete object when it exists', () => {
         const state = {
-            profile: "testProfile"
+            athletes: [{
+                id: '123',
+                workouts: [{
+                    id: 4,
+                    startDateTime: 4
+                }]
+            }]
         }
 
-        const res = getters.loggedIn(state)
-        expect(res).toBeTruthy()
+        const res = getters.athlete(state)('123')
+        expect(res).toStrictEqual({
+            id: '123',
+            workouts: [{
+                id: 4,
+                startDateTime: 4
+            }]
+        })
     });
-
-    test('loggedIn returns false when profile does not exist in state', () => {
-        const state = {
-            profile: null
-        }
-
-        const res = getters.loggedIn(state)
-        expect(res).toBeFalsy()
-    });
-
-    test('profile returns profile if profile exists', () => {
-        const state = {
-            profile: "testProfile"
-        }
-
-        const res = getters.profile(state)
-        expect(res).toEqual(state.profile)
-    });
-
-    test('profile returns null when profile is null', () => {
-        const state = {
-            profile: null
-        }
-
-        const res = getters.profile(state)
-        expect(res).toBeNull()
-    });
-
-    test('results returns results if results exists', () => {
-        const state = {
-            result: {
-                blame: "test",
-                message: "test"
-            }
-        }
-
-        const res = getters.result(state)
-        expect(res).toHaveProperty('blame')
-        expect(res).toHaveProperty('message')
-        expect(res.blame).toBe("test")
-        expect(res.message).toBe("test")
-    });
-
-    test('results returns null when results is null', () => {
-        const state = {
-            result: null
-        }
-
-        const res = getters.result(state)
-        expect(res).toBeNull()
-    });
-
-    // test('data-bricks returns empty array when no data-bricks are stored', () => {
-    //     const state = {
-    //         data-bricks: []
-    //     }
-    //
-    //     const res = getters.data-bricks(state)
-    //     expect(res).toHaveLength(0)
-    //     expect(res).toEqual([])
-    // });
-    //
-    // test('data-bricks returns array of data-bricks configs when data-bricks are nonempty', () => {
-    //     const state = {
-    //         data-bricks: [{
-    //             brickConfig: "test",
-    //             dataConfig: "test"
-    //         }]
-    //     }
-    //
-    //     const res = getters.data-bricks(state)
-    //     expect(res).toHaveLength(1)
-    //     expect(res[0]).toHaveProperty('brickConfig')
-    //     expect(res[0]).toHaveProperty('dataConfig')
-    //     expect(res[0].brickConfig).toBe('test')
-    //     expect(res[0].dataConfig).toBe('test')
-    // });
 
     test('workouts returns workouts in defined range - intersection', () => {
         const state = {

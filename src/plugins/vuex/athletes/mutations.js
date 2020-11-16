@@ -1,15 +1,16 @@
 import Vue from "vue";
+import {sortedIndex} from "./athletes";
 
-export const athlete = function (state, payload) {
-    const index = state.athletes.findIndex(x => x.id === payload.athlete.id)
+export const athlete = function (state, {athlete}) {
+    const index = state.athletes.findIndex(x => x.id === athlete.id)
     index === -1 ?
-        state.athletes.push(payload.athlete) :
-        Vue.set(state.profile.athletes, index, payload.athlete)
+        state.athletes.push(athlete) :
+        Vue.set(state.athletes, index, athlete)
 }
 
 export const athletes = function (state, payload) {
     for (const ath of payload.athletes)
-        athlete(state, {athlete: ath})
+        athlete(state, {athlete: {...ath, workouts: []}})
 }
 
 export const moveAthleteToFront = function (state, payload) {
@@ -19,35 +20,37 @@ export const moveAthleteToFront = function (state, payload) {
     state.athletes.unshift(athlete[0])
 }
 
-function sortedIndex(array, value) {
-    let low = 0,
-        high = array.length;
-
-    while (low < high) {
-        let mid = (low + high) >>> 1;
-        if (array[mid] < value) low = mid + 1;
-        else high = mid;
-    }
-    return low;
-}
-
 export const workout = function (state, {workout}) {
     const athlete = state.athletes.findIndex(x => x.id === workout.athleteId)
     if (athlete === -1)
         return
 
-    if (!('workouts' in state.athletes[athlete]))
-        state.athletes[athlete]['workouts'] = []
+    if (state.athletes[athlete].workouts.length < 1) {
+        state.athletes[athlete].workouts.push(workout)
+        return
+    }
 
     const date = new Date(workout.startDateTime)
     const index = sortedIndex(state.athletes[athlete].workouts.map(w => w.startDateTime), date)
 
-    if (index < state.athletes[athlete].workouts.length && state.athletes[athlete].workouts[index].id === workout.id)
+    if (state.athletes[athlete].workouts.length !== index && state.athletes[athlete].workouts[index].id === workout.id) {
         Vue.set(state.athletes[athlete].workouts, index, workout)
+        return
+    }
 
-        // else if (index < state.athletes[athlete].workouts.length && state.athletes[athlete].workouts[index + 1].id === workout.id)
-    //     Vue.set(state.athletes[athlete].workouts, index + 1, workout)
+    state.athletes[athlete].workouts.splice(index, 0, workout)
+}
 
-    else
-        state.athletes[athlete].workouts.splice(index, 0, workout)
+export const workouts = function (state, {workouts, athleteId = null}) {
+    if (workouts === null || workouts.length < 1)
+        return
+
+    if (athleteId === null)
+        athleteId = workouts[0].athleteId
+
+    const athlete = state.athletes.findIndex(x => x.id === athleteId)
+    if (athlete === -1)
+        return
+
+    state.athletes[athlete].workouts = workouts
 }

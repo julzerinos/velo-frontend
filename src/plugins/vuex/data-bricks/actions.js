@@ -1,3 +1,13 @@
+export const getWorkoutsForDataBrickAsync = async function ({dispatch, getters}, {athleteId, start, end}) {
+    dispatch('workoutsAsync', {athleteId, start: 0, end})
+
+
+    // const ath = getters.athlete(athleteId)
+    // ath.workouts = getters.workouts(athleteId, start, end)
+
+
+}
+
 export const addDataBrickAsync = function ({commit}, payload) {
     commit('addDataBrick', payload)
 }
