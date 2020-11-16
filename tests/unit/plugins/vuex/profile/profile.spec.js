@@ -99,20 +99,15 @@ describe('vuex/profile', () => {
         });
 
         const token = "123"
-        user({username: "abc", token: token},
+        user({email: "abc", token: token},
             r => {
                 expect(r).toHaveProperty('profile')
-                expect(r.profile).toEqual({
-                    name: {
-                        firstName: "firstName",
-                        lastName: "lastName"
-                    },
-                    email: "email",
-                    athletes: [],
-                    profileImagePath: "profileImg",
-                    isStravaConnected: true,
-                    token: token
+                expect(r.profile.name).toEqual({
+                    firstName: "firstName",
+                    lastName: "lastName"
                 })
+                expect(r.profile.email).toBe("email")
+                expect(r.profile.athletes).toEqual([])
             }, null)
     });
 

@@ -5,7 +5,7 @@ export const athlete = function (state, {athlete}) {
     const index = state.athletes.findIndex(x => x.id === athlete.id)
     index === -1 ?
         state.athletes.push(athlete) :
-        Vue.set(state.profile.athletes, index, athlete)
+        Vue.set(state.athletes, index, athlete)
 }
 
 export const athletes = function (state, payload) {
@@ -21,26 +21,24 @@ export const moveAthleteToFront = function (state, payload) {
 }
 
 export const workout = function (state, {workout}) {
-    // TODO: Fix this
-
     const athlete = state.athletes.findIndex(x => x.id === workout.athleteId)
     if (athlete === -1)
         return
 
+    if (state.athletes[athlete].workouts.length < 1) {
+        state.athletes[athlete].workouts.push(workout)
+        return
+    }
+
     const date = new Date(workout.startDateTime)
     const index = sortedIndex(state.athletes[athlete].workouts.map(w => w.startDateTime), date)
 
-    if (state.athletes[athlete].workouts[index].id === workout.id) {
+    if (state.athletes[athlete].workouts.length !== index && state.athletes[athlete].workouts[index].id === workout.id) {
         Vue.set(state.athletes[athlete].workouts, index, workout)
         return
     }
 
-    Vue.set(state.athletes[athlete].workouts, index + 1, workout)
-    // TODO: use splice
-
-    // TODO: double check if this is needed
-    // else if (index < state.athletes[athlete].workouts.length && state.athletes[athlete].workouts[index + 1].id === workout.id)
-    // Vue.set(state.athletes[athlete].workouts, index + 1, workout)
+    state.athletes[athlete].workouts.splice(index, 0, workout)
 }
 
 export const workouts = function (state, {workouts, athleteId = null}) {
