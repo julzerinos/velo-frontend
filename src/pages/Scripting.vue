@@ -71,7 +71,6 @@
                 openEditor: false,
                 openSave: false,
 
-                // TODO: change saving setting so that these are updated with defaults
                 config: {},
                 code: ''
             }

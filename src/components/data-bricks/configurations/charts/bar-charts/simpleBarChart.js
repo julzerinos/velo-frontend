@@ -5,7 +5,7 @@ const margin = {top: 10, right: 30, bottom: 30, left: 60},
 
 const svg = this.svg
 
-const data = [10, 15, 12],
+const data = [10, 555, 12],
 
     scaleFactor = 10,
     barHeight = 20;

@@ -23,9 +23,9 @@
                             :items="configs"
                             append-icon="settings"
                             item-text="name"
+                            item-value="key"
                             label="Configuration"
                             outlined
-                            return-object
                             v-model="configSelect"
                     />
                   </v-col>

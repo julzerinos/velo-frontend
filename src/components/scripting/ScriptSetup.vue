@@ -5,25 +5,20 @@
     <v-container>
       <v-row>
         <v-col cols="4">
-          Data brick type
-          <v-select :items="types" @change="updateParent"
+          <v-text-field
+                  @change="updateParent"
+                  counter="90"
+                  label="Configuration name"
+                  v-model="currentConfig.name"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="4">
+          <v-select :items="types"
+                    @change="updateParent"
                     item-text="name" item-value="key"
                     label="Type"
-                    v-model="currentConfig.type"/>
-        </v-col>
-
-        <v-col cols="4">
-          Test
-          <v-select @change="updateParent"
-                    label="Type"/>
-
-        </v-col>
-
-        <v-col cols="4">
-          Test
-          <v-select @change="updateParent"
-                    label="Type"/>
-
+                    v-model="currentConfig.type"
+          />
         </v-col>
       </v-row>
     </v-container>
@@ -42,15 +37,19 @@
         },
         data() {
             return {
-                types: [{name: 'Line Chart', key: 'line-chart'}, {name: 'Bar Chart', key: 'bar-chart'}, {
+                types: [{
                     name: 'Custom',
                     key: 'custom'
                 },],
 
                 currentConfig: {
-                    type: ''
+                    name: 'Test configuration',
+                    type: 'custom'
                 }
             }
+        },
+        mounted() {
+            this.updateParent()
         },
         methods: {
             updateParent() {

@@ -26,6 +26,23 @@
         ></v-progress-circular>
       </v-overlay>
     </v-card-actions>
+
+    <v-card-actions style="justify-content: center; width: 100%">
+      <v-card height="100%" tile width="100%">
+        <v-card-actions>
+          <v-btn
+                  @click="runCode"
+                  block
+                  text
+          >
+            Run code
+          </v-btn>
+        </v-card-actions>
+        <v-scroll-x-transition hide-on-leave>
+          <div ref="container"/>
+        </v-scroll-x-transition>
+      </v-card>
+    </v-card-actions>
   </v-card>
 </template>
 <script>
@@ -46,8 +63,11 @@
             editorDarkTheme: 'twilight',
             editorLightTheme: 'dawn',
 
-            loading: true
+            loading: true,
         }),
+        mounted() {
+            this.updateParent()
+        },
         methods: {
             editorInit: async function () {
                 require('brace/ext/language_tools')
@@ -58,6 +78,18 @@
             },
             updateParent() {
                 this.$emit('codeChanged', this.code)
+            },
+            async runCode() {
+                const d3 = require('d3')
+
+                const container = this.$refs['container']
+                container.innerHTML = ''
+
+                this.callConfiguration(this.code, {
+                    d3: d3,
+                    svg: d3.select(container).append('svg'),
+                    athletes: this.$mockAthletes()
+                })
             }
         },
     }

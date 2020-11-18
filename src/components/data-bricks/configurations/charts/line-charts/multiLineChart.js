@@ -2,7 +2,9 @@ const d3 = this.d3
 const svg = this.svg
 const athletes = this.athletes
 
-if (athletes[0].workouts.length < 0) return
+if (athletes[0].workouts.length < 0) { // noinspection JSAnnotator
+    return
+}
 
 const param = 'distance'
 const training = athletes[0].workouts[0]
@@ -21,7 +23,7 @@ const w = 1000, h = 200, margin = ({top: 20, right: 20, bottom: 30, left: 30})
 
 svg
     .attr("viewBox", [0, 0, w, h])
-    .style("overflow", "visible");
+    .style("overflow", "hidden");
 
 const x = d3.scaleLinear()
     .domain(d3.extent(data.dates))

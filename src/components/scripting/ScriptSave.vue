@@ -15,14 +15,12 @@
     export default {
         name: 'ScriptSave',
         props: {
-            // TODO: validation
             config: Object,
             code: String
         },
         methods: {
             submit() {
-                // TODO: Get additional settings from config eg name
-                this.addConfiguration('Test Configuration', this.code)
+                this.addConfiguration(this.config, this.code)
             }
         }
     }
