@@ -13,10 +13,10 @@
         </v-list-item-content>
 
         <v-list-item-action>
-          <v-btn :to="{ name: 'Profile' }" :value="value" @click="$emit('input', $event.target.value)"
+          <v-btn :to="{ name: 'Profile' }" :value="open" @click="$emit('input', $event.target.value)"
                  text>View profile
           </v-btn>
-          <v-btn :value="value" @click="emitInputWrapper($event)"
+          <v-btn :value="open" @click="emitInputWrapper($event)"
                  text>Log out
           </v-btn>
         </v-list-item-action>
@@ -31,9 +31,11 @@
         data: () => ({
             fav: false,
         }),
+        model: {
+            prop: 'open'
+        },
         props: {
-            value: {
-                // `value` is a keyword used to bind with v-model in parent component
+            open: {
                 type: Boolean,
                 required: true,
                 default: false,
