@@ -4,6 +4,9 @@ import multiLineChart from '!raw-loader!../components/data-bricks/configurations
 
 const d3 = require("d3")
 
+const daysAgo = days => Date.now() - days * 24 * 60 * 60 * 1000
+
+
 export default {
     computed: {
         ...mapGetters({
@@ -15,11 +18,11 @@ export default {
 
         timeRanges: () => [{
             text: "Last 10 days",
-            start: Date.now() - 10 * 24 * 60 * 60 * 1000,
+            start: daysAgo(10),
             end: Date.now()
         }, {
             text: "Last 30 days",
-            start: Date.now() - 30 * 24 * 60 * 60 * 1000,
+            start: daysAgo(30),
             end: Date.now()
         }],
 
@@ -28,17 +31,18 @@ export default {
                 {
                     name: 'Simple Bar Chart',
                     code: simpleBarChart,
+                    key: 'bar-chart-simple'
                 },
                 {
                     name: 'Multi Line Chart',
                     code: multiLineChart,
+                    key: 'line-chart-multi'
                 },
                 ...(this.loggedIn ? this.dataBrickConfigs : [])
             ]
         }
     },
     methods: {
-        daysAgo: days => Date.now() - days * 24 * 60 * 60 * 1000,
 
         ...mapActions({
             addDataBrickAsync: 'addDataBrickAsync',
@@ -49,14 +53,16 @@ export default {
 
         addDataBrick(data, brick) {
             this.addDataBrickAsync({
-                data: data, brick: brick
+                data: data,
+                brick: brick
             })
         },
 
-        addConfiguration(name, code) {
+        addConfiguration(config, code) {
             this.addDataBrickConfigAsync({
-                name,
+                name: config.name,
                 code,
+                key: '_' + Math.random().toString(36).substr(2, 9)
             })
         },
 
@@ -79,6 +85,10 @@ export default {
             return thinAthletes
         },
 
+        getConfigByKey(key) {
+            return this.configs.find(x => x.key === key)
+        },
+
         callConfiguration: (code, args) => new Function(code).call(args),
 
         initDataBrick(container, data) {
@@ -86,8 +96,10 @@ export default {
 
             const thinAthletes = this.thinAthletes(data.athletes, data.timeRange)
 
+            const config = this.getConfigByKey(data.config)
+
             this.callConfiguration(
-                data.config.code,
+                config.code,
                 {
                     d3: d3,
                     svg: d3.select(container).append('svg'),
