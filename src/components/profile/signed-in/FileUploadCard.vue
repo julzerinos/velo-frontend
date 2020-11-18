@@ -19,6 +19,7 @@
 </template>
 <script>
     import {mapActions} from "vuex";
+    import {BASE_URL} from "../../../plugins/requests/requests";
 
     export default {
         name: 'FileUploadCard',
@@ -27,7 +28,7 @@
                 stravaConnectButton: require('@/assets/brand-specific/strava/connect_orange.svg'),
                 stravaPoweredButton: require('@/assets/brand-specific/strava/powered_colors.svg'),
 
-                redirectURI: "http://localhost:8081/strava/auth"
+                redirectURI: BASE_URL + "/strava/auth"
             }
         },
         computed: {
