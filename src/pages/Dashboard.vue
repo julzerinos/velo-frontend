@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-bind:value="value" v-on:input="$emit('input', $event)" app>
+  <v-navigation-drawer app v-bind:value="open" v-on:input="$emit('input', $event)">
     <v-list dense>
       <v-subheader>Pages</v-subheader>
 
@@ -33,9 +33,11 @@
 
     export default {
         name: "Dashboard",
+        model: {
+            prop: 'open'
+        },
         props: {
-            value: {
-                // `value` is a keyword used to bind with v-model in parent component
+            open: {
                 type: Boolean,
                 default: false,
             },

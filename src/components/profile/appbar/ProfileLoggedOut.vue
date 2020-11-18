@@ -10,11 +10,11 @@
     <v-card-actions>
 
       <v-btn :to="{ name: 'Profile', params: {redirectType: 1} }"
-             :value="value"
+             :value="open"
              @click="$emit('input', $event.target.value)" text>Sign in
       </v-btn>
       <v-btn :to="{ name: 'Profile', params: {redirectType: 2} }"
-             :value="value"
+             :value="open"
              @click="$emit('input', $event.target.value)" text>Sign up
       </v-btn>
     </v-card-actions>
@@ -25,9 +25,11 @@
 <script>
     export default {
         name: "ProfileLoggedOutVCard",
+        model: {
+            prop: 'open'
+        },
         props: {
-            value: {
-                // `value` is a keyword used to bind with v-model in parent component
+            open: {
                 type: Boolean,
                 required: true,
                 default: false,
