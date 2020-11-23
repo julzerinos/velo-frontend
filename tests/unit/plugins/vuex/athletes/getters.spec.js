@@ -1,6 +1,6 @@
 import {getters} from "@/plugins/vuex/getters";
 
-describe('vuex/getters', () => {
+describe('vuex/athletes/getters', () => {
     test('athlete returns athlete object when it exists', () => {
         const state = {
             athletes: [{

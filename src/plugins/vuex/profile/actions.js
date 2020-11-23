@@ -1,15 +1,16 @@
 import {authenticate, logout, register, reset, user} from "./profile";
 import jwt from "jwt-decode";
+import {formatResult} from "../results/results";
 
 export const signupAsync = function ({commit}, {profile, onSuccess = r => r, onFail = r => r} = {}) {
     register(
         profile,
         r => {
-            commit('setResult', {resultObject: {blame: 'signup', message: r.message}})
+            commit('setResult', {resultObject: formatResult('register', r)})
             return onSuccess(r)
         },
         r => {
-            commit('setResult', {resultObject: {blame: 'signup', message: r.message}})
+            commit('setResult', {resultObject: formatResult('register', r)})
             return onFail(r)
         }
     ).then()
@@ -17,7 +18,7 @@ export const signupAsync = function ({commit}, {profile, onSuccess = r => r, onF
 
 export const logoutAsync = function ({commit, state}, {onSuccess = r => r, onFail = r => r} = {}) {
     const onFinish = function (r) {
-        commit('setResult', {resultObject: {blame: 'logout', message: r.message}})
+        commit('setResult', {resultObject: formatResult('logout', r)})
         commit('logout')
     }
 
@@ -39,12 +40,7 @@ export const loginAsync = function ({commit, dispatch}, {profile, onSuccess = r 
     authenticate(profile,
         r => {
             if (r.headers['authorization'] === undefined) {
-                commit('setResult', {
-                    resultObject: {
-                        blame: 'login',
-                        message: "Server error: missing authorization token"
-                    }
-                })
+                commit('setResult', {resultObject: formatResult('login', r)})
                 onFail()
                 throw new Error("missing authorization token")
             }
@@ -55,17 +51,17 @@ export const loginAsync = function ({commit, dispatch}, {profile, onSuccess = r 
                     token: r.headers.authorization
                 },
                 onSuccess: (r) => {
-                    commit('setResult', {resultObject: {blame: 'login', message: "successfully logged in"}})
+                    commit('setResult', {resultObject: formatResult('login', r)})
                     return onSuccess(r)
                 },
                 onFail: (r) => {
-                    commit('setResult', {resultObject: {blame: 'login', message: r.message}})
+                    commit('setResult', {resultObject: formatResult('login', r)})
                     return onFail(r)
                 }
             })
         },
         r => {
-            commit('setResult', {resultObject: {blame: 'login', message: r.message}})
+            commit('setResult', {resultObject: formatResult('login', r)})
             return onFail(r)
         }
     ).then()
@@ -78,12 +74,7 @@ export const userAsync = function ({commit, state, dispatch}, {profile = null, o
     user(profile,
         r => {
             if (!('profile' in r)) {
-                commit('addResult', {
-                    resultObject: {
-                        blame: 'login',
-                        message: "Server error: missing profile data"
-                    }
-                })
+                commit('setResult', {resultObject: formatResult('user', r)})
                 onFail(r)
                 throw new Error("missing profile")
             }
@@ -94,7 +85,7 @@ export const userAsync = function ({commit, state, dispatch}, {profile = null, o
             return onSuccess(r)
         },
         r => {
-            commit('addResult', {resultObject: {blame: 'login', message: r.message}})
+            commit('setResult', {resultObject: formatResult('user', r)})
             return onFail(r)
         }
     ).then()
@@ -103,11 +94,11 @@ export const userAsync = function ({commit, state, dispatch}, {profile = null, o
 export const resetPasswordAsync = function ({commit}, {email, onSuccess = r => r, onFail = r => r} = {}) {
     reset({email},
         r => {
-            commit('setResult', {resultObject: {blame: 'reset', message: r.message}})
+            commit('setResult', {resultObject: formatResult('reset', r)})
             return onSuccess(r)
         },
         r => {
-            commit('setResult', {resultObject: {blame: 'reset', message: r.message}})
+            commit('setResult', {resultObject: formatResult('reset', r)})
             return onFail(r)
         }
     ).then()

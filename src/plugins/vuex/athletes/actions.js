@@ -1,14 +1,15 @@
 import {addCoach, athlete, athletes, stravaImport, workout, workouts, workoutsMetadata} from "./athletes";
+import {formatResult} from "../results/results";
 
 export const workoutsMetadataAsync = function ({commit, state}, {athleteId, onSuccess = r => r, onFail = r => r} = {}) {
     workoutsMetadata(
         {athleteId, token: state.profile.token},
         r => {
-            commit('setResult', {resultObject: {blame: 'workoutsMetadata', message: r.message}})
+            commit('setResult', {resultObject: formatResult('workoutsMetadata', r)})
             return onSuccess(r)
         },
         r => {
-            commit('setResult', {resultObject: {blame: 'workoutsMetadata', message: r.message}})
+            commit('setResult', {resultObject: formatResult('workoutsMetadata', r)})
             return onFail(r)
         }
     ).then()
@@ -18,12 +19,12 @@ export const workoutsAsync = function ({commit, state}, {athleteId, start, end, 
     workouts(
         {athleteId, start, end, token: state.profile.token},
         r => {
-            commit('setResult', {resultObject: {blame: 'workouts', message: r.message}})
+            commit('setResult', {resultObject: formatResult('workouts', r)})
             commit('workouts', {workouts: r.data})
             return onSuccess(r)
         },
         r => {
-            commit('setResult', {resultObject: {blame: 'workouts', message: r.message}})
+            commit('setResult', {resultObject: formatResult('workouts', r)})
             return onFail(r)
         }
     ).then()
@@ -33,12 +34,12 @@ export const workoutAsync = function ({commit, state}, {workoutId, onSuccess = r
     workout(
         {workoutId, token: state.profile.token},
         r => {
-            commit('setResult', {resultObject: {blame: 'workout', message: r.message}})
+            commit('setResult', {resultObject: formatResult('workout', r)})
             commit('workout', {workout: r.data})
             return onSuccess(r)
         },
         r => {
-            commit('setResult', {resultObject: {blame: 'workout', message: r.message}})
+            commit('setResult', {resultObject: formatResult('workout', r)})
             return onFail(r)
         }
     ).then()
@@ -48,13 +49,12 @@ export const athleteAsync = function ({commit, state}, {athleteId, onSuccess = r
     athlete(
         {athleteId, token: state.profile.token},
         r => {
-            commit('setResult', {resultObject: {blame: 'athlete', message: r.message}})
+            commit('setResult', {resultObject: formatResult('athlete', r)})
             commit('athlete', {athlete: r.data})
-
             return onSuccess(r)
         },
         r => {
-            commit('setResult', {resultObject: {blame: 'athlete', message: r.message}})
+            commit('setResult', {resultObject: formatResult('athlete', r)})
             return onFail(r)
         }
     ).then()
@@ -64,7 +64,7 @@ export const athletesAsync = function ({commit, state, dispatch}, {athleteIds, o
     athletes(
         {athleteIds, token: state.profile.token},
         r => {
-            commit('setResult', {resultObject: {blame: 'athletes', message: r.message}})
+            commit('setResult', {resultObject: formatResult('athletes', r)})
 
             const athletesParsed = []
             for (const athlete of r.data) {
@@ -82,7 +82,7 @@ export const athletesAsync = function ({commit, state, dispatch}, {athleteIds, o
             return onSuccess(r)
         },
         r => {
-            commit('setResult', {resultObject: {blame: 'athletes', message: r.message}})
+            commit('setResult', {resultObject: formatResult('athletes', r)})
             return onFail(r)
         }
     ).then()
@@ -92,11 +92,11 @@ export const addCoachAsync = function ({commit, state}, {coachEmail, onSuccess =
     addCoach(
         {coachEmail, token: state.profile.token},
         r => {
-            commit('setResult', {resultObject: {blame: 'addCoach', message: r.message}})
+            commit('setResult', {resultObject: formatResult('addCoach', r)})
             return onSuccess(r)
         },
         r => {
-            commit('setResult', {resultObject: {blame: 'addCoach', message: r.message}})
+            commit('setResult', {resultObject: formatResult('addCoach', r)})
             return onFail(r)
         }
     ).then()
@@ -106,11 +106,12 @@ export const stravaImportAsync = function ({commit, state}, {athleteId, start, e
     stravaImport(
         {athleteId, start, end, token: state.profile.token},
         r => {
-            commit('setResult', {resultObject: {blame: 'stravaImport', message: r.message}})
+            commit('setResult', {resultObject: formatResult('stravaImport', r)})
+
             return onSuccess(r)
         },
         r => {
-            commit('setResult', {resultObject: {blame: 'stravaImport', message: r.message}})
+            commit('setResult', {resultObject: formatResult('stravaImport', r)})
             return onFail(r)
         }
     ).then()

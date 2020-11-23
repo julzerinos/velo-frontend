@@ -1,6 +1,6 @@
 import {getters} from "@/plugins/vuex/getters";
 
-describe('vuex/getters', () => {
+describe('vuex/profile/getters', () => {
     test('loggedIn returns true when profile exists in state', () => {
         const state = {
             profile: "testProfile"
