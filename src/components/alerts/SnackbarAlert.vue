@@ -10,7 +10,8 @@
               absolute
               bottom
               buffer-value="100"
-              color="pink" height="5"
+              :color="color"
+              height="5"
               v-model="snackbarTimer"
       ></v-progress-linear>
 
@@ -19,7 +20,7 @@
       <template v-slot:action="{ attrs }">
         <v-btn
                 @click="remove"
-                color="pink"
+                :color="color"
                 icon
                 v-bind="attrs"
         >
@@ -40,6 +41,10 @@
             ...mapGetters({
                 result: 'result'
             }),
+            color() {
+                if (this.result === null) return 'black'
+                return {error: 'pink', success: 'green', warning: 'yellow'}[this.result.type]
+            },
             compBoolResult: {
                 get() {
                     return this.result !== null
