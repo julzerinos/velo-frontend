@@ -23,7 +23,7 @@ import axios from "axios";
 // TODO
 // axios.defaults.headers.common['header1'] = 'value' // for all requests
 
-export const BASE_URL = 'http://localhost:8081'
+export const BASE_URL = process.env.VUE_APP_API_URI
 
 export const get = function (
     endPoint,
