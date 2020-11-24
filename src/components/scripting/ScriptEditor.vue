@@ -2,16 +2,29 @@
   <v-card flex>
     <v-card-title>Script creation</v-card-title>
 
-    <v-card-text>
-      Use the power of D3 and Javascript to craft your own data visualization.
-    </v-card-text>
+    <v-container class="grid" fill-height fluid>
+      <v-row>
+        <v-col>
+          <v-card-text>
+            Use the power of D3 and Javascript to craft your own data visualization objects.
+          </v-card-text>
+        </v-col>
+        <v-col>
+          <v-card-actions>
+            <v-autocomplete :items="templates"
+                            hint="Changing the template will overwrite any changes you have made below."
+                            item-text="name"
+                            item-value="code" label="Template" persistent-hint
+                            v-model="template"
+            />
+          </v-card-actions>
+        </v-col>
+      </v-row>
+    </v-container>
 
     <v-card-actions>
-      <editor :options="{
-                        cursorStyle: 'smooth',
-                        readOnly: false,
-                        printMargin: false,
-                    }"
+      <editor
+              ref="editor"
               :theme="$vuetify.theme.isDark ? editorDarkTheme : editorLightTheme" @init="editorInit"
               @input="updateParent" height="400px"
               lang="javascript" style="z-index: 0"
@@ -19,7 +32,7 @@
               width="100%"
 
       />
-      <v-overlay :absolute="true" :value="loading">
+      <v-overlay :absolute="true" :value="loading" z-index="2">
         <v-progress-circular
                 indeterminate
                 size="64"
@@ -58,15 +71,35 @@
         props: {
             _: String
         },
-        data: () => ({
-            code: '// Multiline Chart Template\n\nreturn {\n    label: "Example multiline chart",\n    x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],\n    series: [\n        {\n            name: "Series 1",\n            values: [10, 15, 17, 18, 19, 20, 57, 100, 80, 64]\n        },\n        {\n            name: "Series 2",\n            values: [15, 14, 17, 21, 19, 24, 58, 101, 50, 42]\n        }\n    ]\n}',
-            editorDarkTheme: 'twilight',
-            editorLightTheme: 'dawn',
+        data: function () {
+            return {
+                code: '/* jshint asi:true */\n\nconst d3 = this.d3\nconst svg = this.svg\nconst athletes = this.athletes',
+                template: null,
 
-            loading: true,
-        }),
+                editorDarkTheme: 'twilight',
+                editorLightTheme: 'dawn',
+
+                loading: true,
+            }
+        },
+        computed: {
+            templates: function () {
+                return [
+                    {
+                        name: "None",
+                        code: '/* jshint asi:true */\n\nconst d3 = this.d3\nconst svg = this.svg\nconst athletes = this.athletes\n\n'
+                    },
+                    ...this.configs
+                ]
+            }
+        },
         mounted() {
             this.updateParent()
+        },
+        watch: {
+            template: function (val) {
+                this.code = val
+            }
         },
         methods: {
             editorInit: async function () {
@@ -74,6 +107,22 @@
                 require('brace/mode/javascript')
                 require(`brace/theme/${this.editorLightTheme}`)
                 require(`brace/theme/${this.editorDarkTheme}`)
+
+                const editor = this.$refs.editor.editor
+
+                editor.setOptions({
+                    cursorStyle: 'smooth',
+                    readOnly: false,
+                    printMargin: false,
+
+                    fontSize: '80%',
+                    showGutter: true,
+                    fixedWidthGutter: true,
+
+                    wrap: true,
+                    tabSize: 4,
+                })
+
                 this.loading = false
             },
             updateParent() {
