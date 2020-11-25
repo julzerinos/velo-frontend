@@ -14,17 +14,24 @@ const maxTime = athletes[0].workouts.reduce((a, b) => d3.max([a, d3.max(b.dataSe
 const indices = powers.map(() => 0)
 
 const powerCurve = Array.from({length: maxTime}, function (x, i) {
-    let avgPower = 0
+    let powerSum = 0
+    let factor = powers.length
+
     for (const [ix, power] of powers.entries()) {
+        if (indices[ix] >= power.power.length) {
+            factor--
+            continue
+        }
+
         if (power.time[indices[ix]] === i)
-            avgPower += (power.power[indices[ix]++] / powers.length)
+            powerSum += power.power[indices[ix]++]
         else
-            avgPower += ((power.power[indices[ix] + 1] + power.power[indices[ix]]) / (2 * powers.length))
+            powerSum += (power.power[indices[ix] + 1] + power.power[indices[ix]]) / 2
     }
 
     return {
         time: i,
-        power: avgPower
+        power: powerSum / factor
     }
 })
 
@@ -32,13 +39,13 @@ svg
     .attr("viewBox", [0, 0, width, height])
 
 const x = d3.scalePow()
-    .exponent(.4)
+    .exponent(.45)
     .domain([0, maxTime])
     .range([margin.left, width - margin.right])
 
 const xAxis = g => g
     .attr("transform", `translate(0,${height - margin.bottom})`)
-    .call(d3.axisBottom(x).ticks(8).tickSizeOuter(0))
+    .call(d3.axisBottom(x).ticks(8).tickSizeOuter(0).tickFormat(t => Math.floor(t / 60)))
 
 svg
     .append('g')
@@ -74,3 +81,57 @@ const path = svg
     .attr("stroke", "steelblue")
     .attr("stroke-width", 2)
     .attr("fill", "none")
+
+const hover = function (svg, path) {
+    if ("ontouchstart" in document) svg
+        .style("-webkit-tap-highlight-color", "transparent")
+        .on("touchmove", moved)
+        .on("touchstart", entered)
+        .on("touchend", left)
+    else svg
+        .on("mousemove", moved)
+        .on("mouseenter", entered)
+        .on("mouseleave", left);
+
+    const dot = svg.append("g")
+        .attr("display", "none");
+
+    dot.append("circle")
+        .attr("r", 2.5);
+
+    dot.append("text")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", 10)
+        .attr("text-anchor", "middle")
+        .attr("y", -8)
+
+    function moved(event) {
+        event.preventDefault();
+        const pointer = d3.pointer(event);
+        const xm = x.invert(pointer[0]);
+        const ym = y.invert(pointer[1]);
+
+        const i = d3.bisectLeft(powerCurve.map(d => d.time), xm);
+
+        // const s = d3.least(data.series, d => Math.abs(d.values[i] - ym));
+        // path.attr("stroke", d => d === s ? null : "#ddd").filter(d => d === s).raise();
+
+        const xval = powerCurve[i].time
+        const yval = powerCurve[i].power
+
+        dot.attr("transform", `translate(${x(xval)},${y(yval)})`);
+        dot.select("text").text(`${xval.toFixed(2)}, ${yval.toFixed(2)}`);
+    }
+
+    function entered() {
+        // path.style("mix-blend-mode", null).attr("stroke", "#ddd");
+        dot.attr("display", null);
+    }
+
+    function left() {
+        // path.style("mix-blend-mode", "multiply").attr("stroke", null);
+        dot.attr("display", "none");
+    }
+}
+
+svg.call(hover, path);
