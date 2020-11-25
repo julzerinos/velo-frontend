@@ -33,6 +33,13 @@ const zoom2 = d3
     .extent([[0, 0], [chart_width, chart_height]])
     .on("zoom", zoomed2);
 
+const rule = svg
+    .append("g")
+    .append("line")
+    .attr("y0", 0)
+    .attr("y1", height - 120)
+    .attr("stroke", "steelblue");
+
 svg
     .attr("viewBox", [0, 0, width, height])
     .property("value", [])
@@ -46,12 +53,6 @@ svg
     .attr("pointer-events", "none")
     .call(zoom2);
 
-const rule = svg
-    .append("g")
-    .append("line")
-    .attr("y0", 0)
-    .attr("y1", height - 120)
-    .attr("stroke", "steelblue");
 
 const today = new Date();
 const startExt = new Date();
@@ -63,7 +64,7 @@ endExt.setDate(today.getDate() + 1);
 const brush = d3
     .brushX()
     .extent([[0, 0], [chart_width, context_height]])
-    .on("brush start", brushed);
+    .on("brush", brushed);
 
 let myVariables = {};
 let myLines = {};
