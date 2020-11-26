@@ -2,6 +2,7 @@ import {mapActions, mapGetters} from "vuex";
 import simpleBarChart from '!raw-loader!../components/data-bricks/configurations/charts/bar-charts/simpleBarChart'
 import multiLineChart from '!raw-loader!../components/data-bricks/configurations/charts/line-charts/multiLineChart'
 import workout from '!raw-loader!../components/data-bricks/configurations/charts/line-charts/workout'
+import averagePower from '!raw-loader!../components/data-bricks/configurations/charts/line-charts/averagePower'
 import powerCurve from '!raw-loader!../components/data-bricks/configurations/charts/line-charts/powerCurve'
 
 const d3 = require("d3")
@@ -44,6 +45,11 @@ export default {
                     name: 'Workout Time Series Line Chart',
                     code: workout,
                     key: 'workout-time-series-line-chart'
+                },
+                {
+                    name: 'Average Power x trainings',
+                    code: averagePower,
+                    key: 'average-power'
                 },
                 {
                     name: 'Power Curve',
@@ -101,7 +107,7 @@ export default {
             return this.configs.find(x => x.key === key)
         },
 
-        callConfiguration: (code, args) => new Function(code).call(args),
+        callConfiguration: (code, args) => new Function(`(async () => {${code}})()`).call(args),
 
         initDataBrick(container, data) {
             // TODO: check if amount of workouts correspond to workoutsMetadata
