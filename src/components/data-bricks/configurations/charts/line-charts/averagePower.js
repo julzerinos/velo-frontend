@@ -63,7 +63,7 @@ const yAxis = g => g
         .attr("x", 3)
         .attr("text-anchor", "start")
         .attr("font-weight", "bold")
-        .text("Power curve"))
+        .text("Average Power vs Time"))
 
 svg
     .append('g')

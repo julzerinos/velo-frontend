@@ -8,7 +8,9 @@ if (athletes[0]['workouts'].length < 1)
     return
 
 const workout = athletes[0].workouts[0].dataSeries
-const vars = ['cadence', 'heartrate', 'power']
+const exclude = ['time', 'latlng', 'distance']
+const vars = Object.keys(workout).filter(m => !exclude.includes(m) && (workout[m] || {length: 0}).length !== 0)
+console.log(vars)
 const n = vars.length
 
 const colour = d3.scaleOrdinal(d3.schemeCategory10)
@@ -247,16 +249,16 @@ context
 function brushed(event) {
     // console.log("brushed", event)
 
-    if (!event.sourceEvent || event.type === "zoom") return; // ignore brush-by-zoom
-    let s = event.selection || x2.range();
-
-    x.domain(s.map(x2.invert), x2);
-
-    // update each plot
-    svg.call(
-        zoom2.transform,
-        d3.zoomIdentity.scale(chart_width / (s[1] - s[0])).translate(-s[0], 0)
-    );
+    // if (!event.sourceEvent || event.type === "zoom") return; // ignore brush-by-zoom
+    // let s = event.selection || x2.range();
+    //
+    // x.domain(s.map(x2.invert), x2);
+    //
+    // // update each plot
+    // svg.call(
+    //     zoom2.transform,
+    //     d3.zoomIdentity.scale(chart_width / (s[1] - s[0])).translate(-s[0], 0)
+    // );
 }
 
 function zoomed2(event) {
