@@ -102,6 +102,11 @@
                 }
             }
         },
+        watch: {
+            redirected: function (val) {
+                this.openSignIn = val
+            }
+        },
         methods: {
             submit: function () {
                 const onFinish = () => this.loading = false

@@ -17,7 +17,7 @@
           <sign-in :redirected="redirectTypeCheck === '1'"/>
         </v-col>
         <v-col id="sign-up">
-          <sign-up :redirected="redirectTypeCheck === '2'"/>
+          <sign-up :redirected="redirectTypeCheck === '2'" @change="signedUp = true"/>
         </v-col>
       </v-row>
     </v-container>
@@ -43,8 +43,15 @@
                 default: 0
             }
         },
+        data() {
+            return {
+                signedUp: false
+            }
+        },
         computed: {
             redirectTypeCheck() {
+                if (this.signedUp)
+                    return "1"
                 if ('redirectType' in this.$route.query)
                     return this.$route.query.redirectType;
                 else
