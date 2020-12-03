@@ -147,6 +147,7 @@
                 }
                 const onSuccess = () => {
                     onFail()
+                    this.openSignUp = false
                     this.$emit('change')
                 }
 
