@@ -13,7 +13,7 @@
           ></v-text-field>
         </v-col>
         <v-col cols="4">
-          <v-select :items="types"
+          <v-select :items="configTypes"
                     @change="updateParent"
                     item-text="name" item-value="key"
                     label="Type"
@@ -37,14 +37,9 @@
         },
         data() {
             return {
-                types: [{
-                    name: 'Custom',
-                    key: 'custom'
-                },],
-
                 currentConfig: {
                     name: 'Test configuration',
-                    type: 'custom'
+                    type: 'other'
                 }
             }
         },

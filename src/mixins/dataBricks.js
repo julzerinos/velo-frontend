@@ -3,12 +3,13 @@ import simpleBarChart from '!raw-loader!../components/data-bricks/configurations
 import multiLineChart from '!raw-loader!../components/data-bricks/configurations/charts/line-charts/multiLineChart'
 import workout from '!raw-loader!../components/data-bricks/configurations/charts/line-charts/workout'
 import averagePower from '!raw-loader!../components/data-bricks/configurations/charts/line-charts/averagePower'
-import powerCurve from '!raw-loader!../components/data-bricks/configurations/charts/line-charts/powerCurve'
+import powerCurveSingleWorkout
+    from '!raw-loader!../components/data-bricks/configurations/charts/line-charts/powerCurveSingleWorkout'
+import powerCurveAgg from '!raw-loader!../components/data-bricks/configurations/charts/line-charts/powerCurveAggregated'
+import powerCurveMulti
+    from '!raw-loader!../components/data-bricks/configurations/charts/line-charts/powerCurveMultiAthlete'
 
 const d3 = require("d3")
-
-const daysAgo = days => Date.now() - days * 24 * 60 * 60 * 1000
-
 
 export default {
     computed: {
@@ -19,46 +20,68 @@ export default {
             workouts: 'workouts',
         }),
 
-        timeRanges: () => [{
-            text: "Last 10 days",
-            start: daysAgo(10),
-            end: Date.now()
-        }, {
-            text: "Last 30 days",
-            start: daysAgo(30),
-            end: Date.now()
-        }],
+        configTypes: () => [
+            {
+                name: 'Other',
+                key: 'other'
+            },
+            {
+                name: 'Single workout',
+                key: 'single'
+            },
+            {
+                name: 'Aggregated',
+                key: 'aggregated'
+            }
+        ],
 
         configs() {
             return [
                 {
                     name: 'Simple Bar Chart',
                     code: simpleBarChart,
-                    key: 'bar-chart-simple'
+                    key: 'bar-chart-simple',
+                    type: 'other'
                 },
                 {
                     name: 'Multi Line Chart',
                     code: multiLineChart,
-                    key: 'line-chart-multi'
+                    key: 'line-chart-multi',
+                    type: 'single'
                 },
                 {
                     name: 'Workout Time Series Line Chart',
                     code: workout,
-                    key: 'workout-time-series-line-chart'
+                    key: 'workout-time-series-line-chart',
+                    type: 'single'
                 },
                 {
-                    name: 'Average Power x trainings',
+                    name: 'Average Power x time',
                     code: averagePower,
-                    key: 'average-power'
+                    key: 'average-power',
+                    type: 'aggregated'
                 },
                 {
-                    name: 'Power Curve',
-                    code: powerCurve,
-                    key: 'power-curve'
+                    name: 'Power Curve - Workout',
+                    code: powerCurveSingleWorkout,
+                    key: 'power-curve-single',
+                    type: 'single'
+                },
+                {
+                    name: 'Power Curve - Aggregated',
+                    code: powerCurveAgg,
+                    key: 'power-curve-agg',
+                    type: 'aggregated'
+                },
+                {
+                    name: 'Power Curve - Multiple athletes',
+                    code: powerCurveMulti,
+                    key: 'power-curve-multi',
+                    type: 'aggregated'
                 },
                 ...(this.loggedIn ? this.dataBrickConfigs : [])
             ]
-        }
+        },
     },
     methods: {
 
@@ -80,7 +103,8 @@ export default {
             this.addDataBrickConfigAsync({
                 name: config.name,
                 code,
-                key: '_' + Math.random().toString(36).substr(2, 9)
+                key: '_' + Math.random().toString(36).substr(2, 9),
+                type: config.type
             })
         },
 

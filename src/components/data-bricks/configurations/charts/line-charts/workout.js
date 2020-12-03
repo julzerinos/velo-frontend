@@ -10,7 +10,6 @@ if (athletes[0]['workouts'].length < 1)
 const workout = athletes[0].workouts[0].dataSeries
 const exclude = ['time', 'latlng', 'distance']
 const vars = Object.keys(workout).filter(m => !exclude.includes(m) && (workout[m] || {length: 0}).length !== 0)
-console.log(vars)
 const n = vars.length
 
 const colour = d3.scaleOrdinal(d3.schemeCategory10)
@@ -27,6 +26,14 @@ const chart_height = height - margin1.top - margin1.bottom
 
 const context_height = height - margin2.top - margin2.bottom;
 let margin_others;
+
+svg.append("text")
+    .attr("x", (width / 2))
+    .attr("y", 0 - height / 2)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .style("text-decoration", "underline")
+    .text(`workout: ${athletes[0].workouts[0].name}`);
 
 const zoom2 = d3
     .zoom()

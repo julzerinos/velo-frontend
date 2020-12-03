@@ -1,33 +1,59 @@
+/* jshint asi:true */
+
 const d3 = this.d3
 const svg = this.svg
 const athletes = this.athletes
 
-const param = 'distance'
-const training = athletes[0].workouts[0]
+const height = 400
+const width = 1000
+const margin = ({top: 20, right: 30, bottom: 30, left: 40})
 
-const data = {
-    y: param,
-    dates: training.dataSeries.time,
-    series: [{
-        name: athletes[0],
-        values: training.dataSeries[param]
-    }]
+let commonLongestTimes = []
+const series = []
+
+for (const athlete of athletes) {
+    const powers = athlete.workouts.map(w => w.metrics.powerCurve)
+    const longestTimes = powers.reduce((a, b) => a.length > b.times.length ? a : b.times, [])
+    if (longestTimes.length > commonLongestTimes.length)
+        commonLongestTimes = longestTimes
+    const aggregatedPowers = Array.from({length: longestTimes.length}, (x, i) => {
+        let maxPower = 0
+
+        for (const power of powers) {
+            if (i >= power.powers.length)
+                continue
+
+            if (power.powers[i] > maxPower)
+                maxPower = power.powers[i]
+        }
+
+        return maxPower
+    })
+
+    series.push({
+        name: athlete.id,
+        values: aggregatedPowers
+    })
 }
 
-const width = 1000, height = 200, margin = ({top: 20, right: 20, bottom: 30, left: 30})
-
+const data = {
+    y: "Power Curve",
+    dates: commonLongestTimes,
+    series: series
+}
 
 svg
     .attr("viewBox", [0, 0, width, height])
     .style("overflow", "hidden");
 
-const x = d3.scaleLinear()
+const x = d3.scalePow()
+    .exponent(.45)
     .domain(d3.extent(data.dates))
     .range([margin.left, width - margin.right])
 
 const xAxis = g => g
     .attr("transform", `translate(0,${height - margin.bottom})`)
-    .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
+    .call(d3.axisBottom(x).ticks(8).tickSizeOuter(0).tickFormat(t => Math.round(t / 60) + "min"))
 
 svg.append("g")
     .call(xAxis);
@@ -56,7 +82,7 @@ const line = d3.line()
 
 const path = svg.append("g")
     .attr("fill", "none")
-    .attr("stroke", "black")
+    .attr("stroke", "steelblue")
     .attr("stroke-width", 1.5)
     .attr("stroke-linejoin", "round")
     .attr("stroke-linecap", "round")
