@@ -18,9 +18,22 @@
                             v-model="dataBrickName"
                     ></v-text-field>
                   </v-col>
+
                   <v-col>
                     <v-autocomplete
-                            :items="configs"
+                            :items="configTypes"
+                            append-icon="category"
+                            item-text="name"
+                            item-value="key"
+                            label="Type"
+                            outlined
+                            v-model="configTypeSelect"
+                    />
+                  </v-col>
+
+                  <v-col>
+                    <v-autocomplete
+                            :items="configsByType"
                             append-icon="settings"
                             item-text="name"
                             item-value="key"
@@ -62,7 +75,7 @@
             </v-form>
           </v-card-text>
           <v-card-actions>
-            <v-btn :disabled="!timeRange || !athleteSelect || !configSelect" @click="submit">
+            <v-btn :disabled="!timeRange || !athleteSelect || !athleteSelect.length || !configSelect" @click="submit">
               gotta go fast
             </v-btn>
           </v-card-actions>
@@ -74,17 +87,35 @@
 
 <script>
 
+    const daysAgo = days => Date.now() - days * 24 * 60 * 60 * 1000
+
     export default {
         name: "DataBricksSetup",
         data() {
             return {
                 dataBrickName: '',
+                configTypeSelect: null,
                 configSelect: null,
                 athleteSelect: [],
                 timeRange: null,
             }
         },
-        computed: {},
+        computed: {
+            configsByType() {
+                if (this.configTypeSelect === null)
+                    return []
+                return this.configs.filter(c => c.type === this.configTypeSelect)
+            },
+            timeRanges: () => [{
+                text: "Last 10 days",
+                start: daysAgo(10),
+                end: Date.now()
+            }, {
+                text: "Last 30 days",
+                start: daysAgo(30),
+                end: Date.now()
+            }],
+        },
         methods: {
             submit() {
                 this.addDataBrick({

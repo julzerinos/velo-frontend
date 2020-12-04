@@ -37,6 +37,8 @@ const athletes = [
         "stravaConnected": true,
         workouts: [
             mockTraining3,
+            mockTraining2,
+            mockTraining2,
             mockTraining2
         ]
     },
@@ -53,7 +55,7 @@ const athletes = [
         "ftps": {},
         "thresholdHeartRates": {},
         "stravaConnected": true,
-        "workouts": [mockTraining1, mockTraining1, mockTraining2],
+        "workouts": [mockTraining1, mockTraining1, mockTraining1, mockTraining3],
     }
 ]
 
