@@ -73,7 +73,7 @@
             <v-row>
               <v-col>
                 <v-fade-transition>
-                  <captcha @verify="captchaVerified" v-show="valid"/>
+                  <captcha :refresh-trigger="captchaTrigger" @verify="captchaVerified" v-show="valid"/>
                 </v-fade-transition>
               </v-col>
             </v-row>
@@ -113,7 +113,9 @@
             return {
                 openSignUp: this.redirected,
 
+                captchaTrigger: 0,
                 captcha: false,
+
                 valid: false,
                 loading: false,
 
@@ -128,20 +130,33 @@
                 },
             }
         },
+        watch: {
+            redirected: function (val) {
+                this.openSignUp = val
+            }
+        },
         methods: {
             captchaVerified: function (response) {
                 this.captcha = true
                 this.signupProfile.captcha = response
             },
             submit: function () {
-                const onFinish = () => this.loading = false
+                const onFail = () => {
+                    this.loading = false
+                    this.captchaTrigger++
+                }
+                const onSuccess = () => {
+                    onFail()
+                    this.openSignUp = false
+                    this.$emit('change')
+                }
 
                 this.loading = true
 
                 this.signup({
                     profile: this.signupProfile,
-                    onSuccess: onFinish.bind(this),
-                    onFail: onFinish.bind(this)
+                    onSuccess: onSuccess.bind(this),
+                    onFail: onFail.bind(this)
                 })
             }
         }

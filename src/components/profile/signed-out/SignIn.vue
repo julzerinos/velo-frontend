@@ -44,6 +44,7 @@
                         type="password"
                         v-model="loginProfile.password"
                 ></v-text-field>
+
                 <pass-reset-modal/>
 
               </v-col>
@@ -100,6 +101,11 @@
                     email: '',
                     password: '',
                 }
+            }
+        },
+        watch: {
+            redirected: function (val) {
+                this.openSignIn = val
             }
         },
         methods: {

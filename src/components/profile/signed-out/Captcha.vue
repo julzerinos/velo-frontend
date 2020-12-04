@@ -9,6 +9,12 @@
 <script>
     export default {
         name: "Captcha",
+        props: {
+            refreshTrigger: {
+                type: Number,
+                default: 0
+            }
+        },
         data() {
             return {
                 sitekey: '6Lf6Ft8ZAAAAAOnVa7yuTynm62gKBBlwegcGSIU2',
@@ -17,7 +23,11 @@
         },
         methods: {
             initReCaptcha: function () {
-                const self = this;
+                // TODO: Disable Captcha for dev environment
+                // if (process.env.NODE_ENV === 'development')
+                //     return
+
+                const self = this
                 setTimeout(function () {
                     window.grecaptcha.render('recaptcha', {
                         'sitekey': '6Lf6Ft8ZAAAAAOnVa7yuTynm62gKBBlwegcGSIU2',
@@ -32,6 +42,11 @@
         created() {
             this.initReCaptcha()
         },
+        watch: {
+            refreshTrigger: function () {
+                window.grecaptcha.reset()
+            }
+        }
     }
 
 </script>
