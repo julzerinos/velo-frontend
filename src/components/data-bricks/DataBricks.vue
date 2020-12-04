@@ -41,15 +41,9 @@
           <data-brick
                   :data="db.data"
                   :brick="db.brick"
-                  :loading="dataBricksLoading"
+                  :global-loading="dataBricksLoading"
                   style="overflow: hidden"
           />
-          <v-overlay :value="dataBricksLoading" absolute opacity="0.2">
-            <v-progress-circular
-                    indeterminate
-                    size="64"
-            />
-          </v-overlay>
         </v-col>
       </v-row>
     </v-container>
@@ -67,21 +61,28 @@
                 dataBrickActions: [
                     {name: "Remove", action: this.removeDataBrick}
                 ],
-                dataBricksLoading: false
+                dataBricksLoading: true,
+                latestTimeRangeUnion: {}
             }
         },
         mounted() {
-            this.onLoad()
+            this.loadWorkouts()
         },
         watch: {
             dataBricks: function () {
-                this.onLoad()
+                this.loadWorkouts()
             }
         },
         methods: {
-            onLoad: function () {
+            loadWorkouts: function () {
+                const newTimeRangeUnion = this.getTimeRangeUnion()
+                if (this.timeRangeUnionsEqual(this.latestTimeRangeUnion, newTimeRangeUnion))
+                    return
+
+                this.latestTimeRangeUnion = newTimeRangeUnion
+
                 this.dataBricksLoading = true
-                this.refreshWorkouts(this.onFinish)
+                this.refreshWorkouts(newTimeRangeUnion, this.onFinish)
             },
             onFinish: function () {
                 this.dataBricksLoading = false

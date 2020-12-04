@@ -1,9 +1,11 @@
-const d3 = this.d3
+/* eslint-disable no-undef */
+
+const d3 = args.d3
 const margin = {top: 10, right: 30, bottom: 30, left: 60},
     width = 460 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
-const svg = this.svg
+const svg = args.svg
 
 const data = [10, 555, 12],
 

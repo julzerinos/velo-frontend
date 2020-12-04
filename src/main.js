@@ -10,6 +10,7 @@ import mockData from "./plugins/mockdata/mockdata";
 import requests from "./plugins/requests/requests";
 import statistics from "./plugins/maths/statistics";
 
+import time from "./mixins/time";
 import profile from "./mixins/profile";
 import dataBricks from "./mixins/dataBricks";
 import validationRuleset from "./mixins/validationRuleset";
@@ -22,6 +23,7 @@ Vue.use(requests);
 Vue.use(mockData);
 Vue.use(statistics);
 
+Vue.mixin(time);
 Vue.mixin(profile);
 Vue.mixin(dataBricks);
 Vue.mixin(validationRuleset);

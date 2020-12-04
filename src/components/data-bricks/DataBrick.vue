@@ -2,6 +2,12 @@
   <v-card class="pa-2" outlined tile>
     <div ref="container">
     </div>
+    <v-overlay :value="loading" absolute opacity="0.2">
+      <v-progress-circular
+              indeterminate
+              size="64"
+      />
+    </v-overlay>
   </v-card>
 </template>
 
@@ -18,28 +24,37 @@
                 type: Object,
                 required: true
             },
-            loading: {
+            globalLoading: {
                 type: Boolean,
-                required: true
+                required: true,
             }
         },
         data: function () {
             return {
                 initialized: false,
-                warnings: {athletesNoData: []}
+                loading: this.globalLoading
             }
         },
         mounted() {
+            if (this.dataBrickCheck(this.data))
+                this.populate()
         },
         watch: {
-            loading: function (loading) {
-                if (!loading && !this.initialized)
-                    this.populate()
+            globalLoading: {
+                immediate: true,
+                handler(loading) {
+                    if (this.initialized)
+                        return
+
+                    if (!loading)
+                        this.populate()
+                }
             }
         },
         methods: {
             populate() {
-                this.warnings = this.initDataBrick(this.$refs['container'], this.data)
+                this.loading = false
+                this.initDataBrick(this.$refs['container'], this.data)
                 this.initialized = true
             }
         }
