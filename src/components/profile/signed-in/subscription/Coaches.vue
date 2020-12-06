@@ -80,18 +80,6 @@
 
                 coaches: [
                     {
-                        name: "Coach Coachiński",
-                        email: 'coach@inski.pl',
-                        since: new Date(),
-                        status: "connected"
-                    },
-                    {
-                        name: "Coacharita",
-                        email: 'coach@arita.brazila',
-                        since: new Date(),
-                        status: "pending"
-                    },
-                    {
                         placeholder: ''
                     }
                 ]

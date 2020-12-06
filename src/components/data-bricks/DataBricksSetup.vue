@@ -76,7 +76,7 @@
           </v-card-text>
           <v-card-actions>
             <v-btn :disabled="!timeRange || !athleteSelect || !athleteSelect.length || !configSelect" @click="submit">
-              gotta go fast
+              Generate
             </v-btn>
           </v-card-actions>
         </v-col>
