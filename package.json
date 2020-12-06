@@ -18,6 +18,7 @@
     "jwt-decode": "^3.0.0-beta.2",
     "leaflet": "^1.7.1",
     "material-design-icons-iconfont": "^6.1.0",
+    "moment": "^2.29.1",
     "vue": "^2.6.11",
     "vue-router": "^3.4.3",
     "vue2-ace-editor": "0.0.15",

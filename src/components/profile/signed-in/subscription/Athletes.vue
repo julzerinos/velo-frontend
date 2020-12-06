@@ -66,7 +66,7 @@
           <!-- TODO: buffering list on scroll -->
           <v-virtual-scroll
                   :height="height"
-                  :items="athlete.workoutsMetadata"
+                  :items="workoutsMetadataSort(athlete.id, (a, b) => new Date(a.startDateTime) <= new Date(b.startDateTime) ? 1 : -1)"
                   bench="5"
                   item-height="100"
           >
@@ -79,7 +79,7 @@
                 <v-list-item-action-text>
                   <span style="white-space: pre;">
                   Total kilometers: {{(item.totalDistance/1000).toFixed(2)}} <br/>
-                  Total time: {{item.totalTime.replace(/PT(\d+)H(\d+)M(\d+)S/, "$1:$2")}}
+                  Total time: {{formatTotalDuration(item.totalTime)}}
                   </span>
                 </v-list-item-action-text>
               </v-list-item>
@@ -91,7 +91,8 @@
   </v-card>
 </template>
 <script>
-    import {mapActions} from "vuex";
+    import {mapActions, mapGetters} from "vuex"
+    import moment from 'moment'
 
     export default {
         name: 'Athletes',
@@ -107,16 +108,20 @@
             },
             more() {
                 return this.athletes.slice(2)
-            }
+            },
+            ...mapGetters({
+                workoutsMetadataSort: 'workoutsMetadataSortable'
+            }),
         },
         methods: {
             swap(athlete) {
                 this.moveAthleteToFront({athlete})
             },
             ...mapActions({
-                workoutsMetadata: 'workoutsMetadataAsync',
+                // workoutsMetadata: 'workoutsMetadataAsync',
                 moveAthleteToFront: 'moveAthleteToFrontAsync'
-            })
+            }),
+            formatTotalDuration: (duration) => moment.utc(moment.duration(duration, moment.ISO_8601).asMilliseconds()).format('hh:mm:ss')
         }
     }
 </script>
