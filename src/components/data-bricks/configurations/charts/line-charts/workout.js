@@ -1,11 +1,12 @@
-/* jshint asi:true */
+/* eslint-disable */
 
-const d3 = this.d3
-const svg = this.svg
-const athletes = this.athletes
+const d3 = args.d3
+const svg = args.svg
+const athletes = args.athletes
 
-if (athletes[0]['workouts'].length < 1)
+if (athletes[0]['workouts'].length < 1) { // noinspection JSAnnotator
     return
+}
 
 const workout = athletes[0].workouts[0].dataSeries
 const exclude = ['time', 'latlng', 'distance']

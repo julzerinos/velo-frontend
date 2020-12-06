@@ -9,6 +9,11 @@ export const workoutsMetadata = state => (athleteId, start = 0, end = Date.now()
     return getWorkoutObjects('workoutsMetadata', ath, start, end)
 }
 
+export const workoutsMetadataSortable = state => (athleteId, sortFunction, start = 0, end = Date.now()) => {
+    const ath = athlete(state)(athleteId)
+    return getWorkoutObjects('workoutsMetadata', ath, start, end).sort(sortFunction)
+}
+
 export const workouts = state => (athleteId, start = 0, end = Date.now()) => {
     const ath = athlete(state)(athleteId)
     return getWorkoutObjects('workouts', ath, start, end)

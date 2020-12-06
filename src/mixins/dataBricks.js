@@ -18,6 +18,7 @@ export default {
             dataBrickConfigs: 'dataBrickConfigs',
             athletes: 'athletes',
             workouts: 'workouts',
+            workoutsMetadata: 'workoutsMetadata'
         }),
 
         configTypes: () => [
@@ -108,6 +109,14 @@ export default {
             })
         },
 
+        dataBrickCheck(data) {
+            for (const athlete of data.athletes)
+                if (this.workoutsMetadata(athlete, data.timeRange.start, data.timeRange.end).length !== this.workouts(athlete, data.timeRange.start, data.timeRange.end).length)
+                    return false
+
+            return true
+        },
+
         thinAthletes(athleteIds, timeRange) {
             const thinAthletes = []
             for (const athlete of this.athletes) {
@@ -131,11 +140,9 @@ export default {
             return this.configs.find(x => x.key === key)
         },
 
-        callConfiguration: (code, args) => new Function(`(async () => {${code}})()`).call(args),
+        callConfiguration: (code, args) => new Function('args', code)(args),
 
-        initDataBrick(container, data) {
-            // TODO: check if amount of workouts correspond to workoutsMetadata
-
+        async initDataBrick(container, data) {
             const thinAthletes = this.thinAthletes(data.athletes, data.timeRange)
 
             const config = this.getConfigByKey(data.config)
@@ -149,11 +156,25 @@ export default {
                 }
             )
 
-            const warnings = {
-                athletesNoData: [...data.athletes.map(a => !(a in thinAthletes))]
-            }
+            // TODO: Add warnings based on data or config results
+            // const warnings = {
+            //     athletesNoData: [...data.athletes.map(a => !(a in thinAthletes))]
+            // }
+            //
+            // return warnings
+        },
 
-            return warnings
+        timeRangeUnionsEqual(a, b) {
+            const entries = Object.entries(a)
+
+            if (entries.length !== Object.entries(b).length)
+                return false
+
+            for (const [key, [min, max]] of entries)
+                if (!(key in b) || min !== b[key][0] || max !== b[key][1])
+                    return false
+
+            return true
         },
 
         getTimeRangeUnion() {
@@ -172,14 +193,14 @@ export default {
             return athletes
         },
 
-        refreshWorkouts(onFinish) {
+        async refreshWorkouts(timeRangeUnion, onFinish) {
             if (this.dataBricks === null) {
                 onFinish()
                 return
             }
 
             let index = 0
-            const timeRangeUnions = Object.entries(this.getTimeRangeUnion())
+            const timeRangeUnions = Object.entries(timeRangeUnion)
             for (const [ath, [min, max]] of timeRangeUnions) {
                 if (++index === timeRangeUnions.length)
                     this.getWorkouts({athleteId: ath, start: min, end: max, onSuccess: onFinish, onFail: onFinish})

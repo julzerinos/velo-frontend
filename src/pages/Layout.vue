@@ -22,11 +22,18 @@
     </v-app-bar>
 
     <v-main>
-      <router-view/>
+      <keep-alive>
+        <router-view/>
+      </keep-alive>
     </v-main>
 
     <v-footer app>
       <span>App in development</span>
+
+      <v-spacer/>
+      <small>
+        {{hash}}
+      </small>
     </v-footer>
   </div>
 </template>
@@ -49,9 +56,18 @@
         data() {
             return {
                 drawer: false,
-            };
+                hash: ""
+            }
         },
-    };
+        mounted() {
+            try {
+                const m = require("@/assets/hash.json");
+                this.hash = m
+            } catch (ex) {
+                this.hash = ""
+            }
+        },
+    }
 </script>
 
 <style scoped>

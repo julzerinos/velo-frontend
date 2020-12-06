@@ -12,7 +12,6 @@ export default {
             signup: 'signupAsync',
             login: 'loginAsync',
             logout: 'logoutAsync',
-            workout: 'workoutAsync'
         }),
 
         fullName: obj => `${obj.firstName} ${obj.lastName}`

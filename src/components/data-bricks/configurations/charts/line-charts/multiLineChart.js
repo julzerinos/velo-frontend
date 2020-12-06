@@ -1,6 +1,8 @@
-const d3 = this.d3
-const svg = this.svg
-const athletes = this.athletes
+/* eslint-disable no-undef */
+
+const d3 = args.d3
+const svg = args.svg
+const athletes = args.athletes
 
 const param = 'distance'
 const training = athletes[0].workouts[0]

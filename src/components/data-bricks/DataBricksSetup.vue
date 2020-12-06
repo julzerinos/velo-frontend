@@ -76,7 +76,7 @@
           </v-card-text>
           <v-card-actions>
             <v-btn :disabled="!timeRange || !athleteSelect || !athleteSelect.length || !configSelect" @click="submit">
-              gotta go fast
+              Generate
             </v-btn>
           </v-card-actions>
         </v-col>
@@ -87,7 +87,6 @@
 
 <script>
 
-    const daysAgo = days => Date.now() - days * 24 * 60 * 60 * 1000
 
     export default {
         name: "DataBricksSetup",
@@ -106,15 +105,6 @@
                     return []
                 return this.configs.filter(c => c.type === this.configTypeSelect)
             },
-            timeRanges: () => [{
-                text: "Last 10 days",
-                start: daysAgo(10),
-                end: Date.now()
-            }, {
-                text: "Last 30 days",
-                start: daysAgo(30),
-                end: Date.now()
-            }],
         },
         methods: {
             submit() {

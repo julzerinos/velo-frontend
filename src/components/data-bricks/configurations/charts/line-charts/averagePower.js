@@ -1,8 +1,8 @@
-/* jshint asi:true */
+/* eslint-disable no-undef */
 
-const d3 = this.d3
-const svg = this.svg
-const athletes = this.athletes
+const d3 = args.d3
+const svg = args.svg
+const athletes = args.athletes
 
 const height = 400
 const width = 1000
