@@ -8,9 +8,6 @@ const password_regex = {
 }
 
 const checkPassword = function (p) {
-    console.log(p)
-
-    //"The password must satisfy the following: "
     const messages = []
 
     if (p.length < 8)
@@ -39,12 +36,6 @@ export default {
         passRules: [
             v => !!v || "Required",
             v => checkPassword(v),
-            // v => v.length >= 8 || "Password is too short",
-            // v => v.length <= 30 || "Password is too long",
-            // v => /(?=.*[a-z])/.test(String(v)) || "Must contain lowercase letter",
-            // v => /(?=.*[A-Z])/.test(String(v)) || "Must contain uppercase letter",
-            // v => /(?=.*[0-9])/.test(String(v)) || "Must contain number",
-            // v => /(?=.*[!@#$%^&*])/.test(String(v)) || "Must contain special character"
         ]
     })
 }
