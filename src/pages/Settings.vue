@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>Tutaj nic nie ma, ponieważ to jest strona pusta.</h1>
+    <h1>Test page.</h1>
+  </div>
 </template>
 
 <script>

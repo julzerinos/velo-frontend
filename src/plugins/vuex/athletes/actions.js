@@ -15,6 +15,21 @@ export const workoutsMetadataAsync = function ({commit, state}, {athleteId, onSu
     ).then()
 }
 
+export const workoutsReturnAsync = function ({commit, state}, {athleteId, start, end, onSuccess = r => r, onFail = r => r} = {}) {
+    return workouts(
+        {athleteId, start, end, token: state.profile.token},
+        r => {
+            commit('setResult', {resultObject: formatResult('workouts', r)})
+            // commit('workouts', {workouts: r.data})
+            return onSuccess(r)
+        },
+        r => {
+            commit('setResult', {resultObject: formatResult('workouts', r)})
+            return onFail(r)
+        }
+    )
+}
+
 export const workoutsAsync = function ({commit, state}, {athleteId, start, end, onSuccess = r => r, onFail = r => r} = {}) {
     workouts(
         {athleteId, start, end, token: state.profile.token},
