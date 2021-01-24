@@ -29,7 +29,7 @@
 </template>
 
 <script>
-    import {mainAppRoutes} from "../plugins/router/routes";
+    import {menuAppRoutes} from "../plugins/router/routes";
 
     export default {
         name: "Dashboard",
@@ -43,7 +43,7 @@
             },
         },
         computed: {
-            mainAppRoutes: () => mainAppRoutes
+            mainAppRoutes: () => menuAppRoutes
         },
         data() {
             return {

@@ -1,4 +1,4 @@
-import {authenticate, logout, register, reset, user} from "./profile";
+import {authenticate, logout, newPassword, register, reset, user} from "./profile";
 import jwt from "jwt-decode";
 import {formatResult} from "../results/results";
 
@@ -99,6 +99,19 @@ export const resetPasswordAsync = function ({commit}, {email, onSuccess = r => r
         },
         r => {
             commit('setResult', {resultObject: formatResult('reset', r)})
+            return onFail(r)
+        }
+    ).then()
+}
+
+export const newPasswordAsync = function ({commit}, {tokenId, password, onSuccess = r => r, onFail = r => r} = {}) {
+    newPassword({tokenId, password},
+        r => {
+            commit('setResult', {resultObject: formatResult('newPassword', r)})
+            return onSuccess(r)
+        },
+        r => {
+            commit('setResult', {resultObject: formatResult('newPassword', r)})
             return onFail(r)
         }
     ).then()
