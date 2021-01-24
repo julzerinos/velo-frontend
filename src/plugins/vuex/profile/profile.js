@@ -113,3 +113,21 @@ export const reset = function (
     )
 }
 
+export const newPassword = function (
+    {tokenId, password},
+    onSuccess = r => r,
+    onFail = r => r
+) {
+    return post(
+        `/new-password`,
+        {
+            tokenId: tokenId,
+            newPassword: password
+        },
+        {},
+        {},
+        onSuccess,
+        onFail
+    )
+}
+

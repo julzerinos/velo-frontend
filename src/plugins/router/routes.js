@@ -8,10 +8,11 @@ import MainContent from "../../pages/DataBricksLayout";
 import Settings from "../../pages/Settings";
 import Profile from "../../pages/Profile";
 import Scripting from "../../pages/Scripting";
+import PasswordReset from "../../pages/PasswordReset";
 
 Vue.use(VueRouter)
 
-export const mainAppRoutes = [
+export const menuAppRoutes = [
     {
         path: '/databricks',
         name: 'Data Bricks',
@@ -39,6 +40,14 @@ export const mainAppRoutes = [
     },
 ]
 
+const otherRoutes = [
+    {
+        path: '/confirm-password',
+        name: 'Reset Password',
+        component: PasswordReset
+    }
+]
+
 export default new VueRouter(
     {
         mode: 'history',
@@ -53,7 +62,8 @@ export default new VueRouter(
                 name: 'main',
                 component: Layout,
                 children: [
-                    ...mainAppRoutes,
+                    ...menuAppRoutes,
+                    ...otherRoutes,
                     {
                         path: '*',
                         redirect: '/databricks'
