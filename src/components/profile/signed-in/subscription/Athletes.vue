@@ -5,10 +5,14 @@
             dark
             flat
     >
-      <v-spacer/>
       <v-toolbar-title>Available Athletes</v-toolbar-title>
       <v-spacer/>
-
+      <v-btn
+              :loading="loading"
+              @click="refresh"
+      >
+        Refresh data
+      </v-btn>
       <template v-slot:extension>
         <v-tabs
                 fixed-tabs
@@ -100,6 +104,7 @@
             return {
                 height: 500,
                 currentItem: null,
+                loading: false,
             }
         },
         computed: {
@@ -119,9 +124,22 @@
             },
             ...mapActions({
                 // workoutsMetadata: 'workoutsMetadataAsync',
-                moveAthleteToFront: 'moveAthleteToFrontAsync'
+                moveAthleteToFront: 'moveAthleteToFrontAsync',
+                athletesRefresh: 'athletesAsync'
             }),
-            formatTotalDuration: (duration) => moment.utc(moment.duration(duration, moment.ISO_8601).asMilliseconds()).format('hh:mm:ss')
+            formatTotalDuration: (duration) => moment.utc(moment.duration(duration, moment.ISO_8601).asMilliseconds()).format('hh:mm:ss'),
+            refresh: function () {
+                const onFinish = () => {
+                    this.loading = false
+                }
+
+                this.loading = true
+                this.athletesRefresh({
+                    athleteIds: this.athletes.map(a => a.id),
+                    onSuccess: onFinish.bind(this),
+                    onFail: onFinish.bind(this)
+                })
+            }
         }
     }
 </script>
