@@ -31,7 +31,7 @@ for (const athlete of athletes) {
     })
 
     series.push({
-        name: athlete.id,
+        name: athlete.firstName + ' ' + athlete.lastName,
         values: aggregatedPowers
     })
 }
@@ -118,6 +118,18 @@ const hover = function (svg, path) {
         .attr("text-anchor", "middle")
         .attr("y", -8);
 
+    var toHHMMSS = (secs) => {
+        var sec_num = parseInt(secs, 10)
+        var hours = Math.floor(sec_num / 3600)
+        var minutes = Math.floor(sec_num / 60) % 60
+        var seconds = sec_num % 60
+
+        return [hours, minutes, seconds]
+            .map(v => v < 10 ? "0" + v : v)
+            .filter((v, i) => v !== "00" || i > 0)
+            .join(":")
+    }
+
     function moved(event) {
         event.preventDefault();
         const pointer = d3.pointer(event, this);
@@ -127,7 +139,7 @@ const hover = function (svg, path) {
         const s = d3.least(data.series, d => Math.abs(d.values[i] - ym));
         path.attr("stroke", d => d === s ? null : "#ddd").filter(d => d === s).raise();
         dot.attr("transform", `translate(${x(data.dates[i])},${y(s.values[i])})`);
-        dot.select("text").text(s.name);
+        dot.select("text").text(`${s.name} | ${ym.toFixed(0)}W / ${toHHMMSS(xm)}s`);
     }
 
     function entered() {

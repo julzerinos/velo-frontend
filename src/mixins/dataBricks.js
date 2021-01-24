@@ -18,7 +18,8 @@ export default {
             dataBrickConfigs: 'dataBrickConfigs',
             athletes: 'athletes',
             workouts: 'workouts',
-            workoutsMetadata: 'workoutsMetadata'
+            workoutsMetadata: 'workoutsMetadata',
+            athlete: 'athlete'
         }),
 
         configTypes: () => [
@@ -91,7 +92,8 @@ export default {
             addDataBrickConfigAsync: 'addDataBrickConfigAsync',
             removeDataBrick: 'removeDataBrickAsync',
             getWorkouts: 'workoutsAsync',
-            getWorkoutsInPlace: 'workoutsReturnAsync'
+            getWorkoutsInPlace: 'workoutsReturnAsync',
+
         }),
 
         addDataBrick(data, brick) {
@@ -225,29 +227,25 @@ export default {
 
             let index = 0
             const timeRangeUnions = Object.entries(timeRangeUnion)
-            const athletes = []
+            const promises = []
 
             for (const [ath, [min, max]] of timeRangeUnions) {
-                athletes[ath] = []
-                if (++index === timeRangeUnions.length)
-                    athletes.push({
-                        id: ath, workouts: (await this.getWorkoutsInPlace({
-                            athleteId: ath,
-                            start: min,
-                            end: max,
-                            onSuccess: onFinish,
-                            onFail: onFinish
-                        })).data
+                promises.push(
+                    this.getWorkoutsInPlace({
+                        athleteId: ath,
+                        start: min,
+                        end: max,
                     })
-                else
-                    athletes.push({
-                        id: ath,
-                        workouts: (await this.getWorkoutsInPlace({
-                            athleteId: ath,
-                            start: min,
-                            end: max
-                        })).data
-                    })
+                )
+            }
+
+            const res = await Promise.all(promises)
+
+            const athletes = []
+            for (let i = 0; i < timeRangeUnions.length; i++) {
+                const ath = this.athlete(timeRangeUnions[i][0])
+                ath.workouts = res[i].data
+                athletes.push(ath)
             }
 
             return athletes
