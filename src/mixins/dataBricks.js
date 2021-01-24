@@ -90,7 +90,8 @@ export default {
             addDataBrickAsync: 'addDataBrickAsync',
             addDataBrickConfigAsync: 'addDataBrickConfigAsync',
             removeDataBrick: 'removeDataBrickAsync',
-            getWorkouts: 'workoutsAsync'
+            getWorkouts: 'workoutsAsync',
+            getWorkoutsInPlace: 'workoutsReturnAsync'
         }),
 
         addDataBrick(data, brick) {
@@ -142,8 +143,9 @@ export default {
 
         callConfiguration: (code, args) => new Function('args', code)(args),
 
-        async initDataBrick(container, data) {
-            const thinAthletes = this.thinAthletes(data.athletes, data.timeRange)
+        async initDataBrick(container, data, workouts = null) {
+            if (workouts === null)
+                workouts = this.thinAthletes(data.athletes, data.timeRange)
 
             const config = this.getConfigByKey(data.config)
 
@@ -152,7 +154,7 @@ export default {
                 {
                     d3: d3,
                     svg: d3.select(container).append('svg'),
-                    athletes: thinAthletes
+                    athletes: workouts
                 }
             )
 
@@ -203,10 +205,52 @@ export default {
             const timeRangeUnions = Object.entries(timeRangeUnion)
             for (const [ath, [min, max]] of timeRangeUnions) {
                 if (++index === timeRangeUnions.length)
-                    this.getWorkouts({athleteId: ath, start: min, end: max, onSuccess: onFinish, onFail: onFinish})
+                    return await this.getWorkouts({
+                        athleteId: ath,
+                        start: min,
+                        end: max,
+                        onSuccess: onFinish,
+                        onFail: onFinish
+                    })
                 else
                     this.getWorkouts({athleteId: ath, start: min, end: max})
             }
+        },
+
+        async refreshWorkoutsInMemory(timeRangeUnion, onFinish) {
+            if (this.dataBricks === null) {
+                onFinish()
+                return
+            }
+
+            let index = 0
+            const timeRangeUnions = Object.entries(timeRangeUnion)
+            const athletes = []
+
+            for (const [ath, [min, max]] of timeRangeUnions) {
+                athletes[ath] = []
+                if (++index === timeRangeUnions.length)
+                    athletes.push({
+                        id: ath, workouts: (await this.getWorkoutsInPlace({
+                            athleteId: ath,
+                            start: min,
+                            end: max,
+                            onSuccess: onFinish,
+                            onFail: onFinish
+                        })).data
+                    })
+                else
+                    athletes.push({
+                        id: ath,
+                        workouts: (await this.getWorkoutsInPlace({
+                            athleteId: ath,
+                            start: min,
+                            end: max
+                        })).data
+                    })
+            }
+
+            return athletes
         },
     }
 }

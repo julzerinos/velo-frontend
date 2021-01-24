@@ -43,6 +43,7 @@
                   :brick="db.brick"
                   :global-loading="dataBricksLoading"
                   style="overflow: hidden"
+                  :ref="`db${i}`"
           />
         </v-col>
       </v-row>
@@ -76,13 +77,20 @@
         methods: {
             loadWorkouts: function () {
                 const newTimeRangeUnion = this.getTimeRangeUnion()
-                if (this.timeRangeUnionsEqual(this.latestTimeRangeUnion, newTimeRangeUnion))
-                    return
-
-                this.latestTimeRangeUnion = newTimeRangeUnion
+                // if (this.timeRangeUnionsEqual(this.latestTimeRangeUnion, newTimeRangeUnion))
+                //     return
+                // this.latestTimeRangeUnion = newTimeRangeUnion
 
                 this.dataBricksLoading = true
-                this.refreshWorkouts(newTimeRangeUnion, this.onFinish)
+                // this.refreshWorkouts(newTimeRangeUnion, this.onFinish)
+                ////
+
+                this.refreshWorkoutsInMemory(newTimeRangeUnion, this.onFinish).then(
+                    r => {
+                        for (const ref of Object.values(this.$refs))
+                            ref[0].populate(r)
+                    }
+                )
             },
             onFinish: function () {
                 this.dataBricksLoading = false

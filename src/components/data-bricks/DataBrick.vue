@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pa-2" outlined tile>
+  <v-card class="pa-2" min-height="100" outlined tile>
     <div ref="container">
     </div>
     <v-overlay :value="loading" absolute opacity="0.2">
@@ -36,25 +36,29 @@
             }
         },
         mounted() {
-            if (this.dataBrickCheck(this.data))
-                this.populate()
+            // if (this.dataBrickCheck(this.data))
+            //     this.populate()
         },
         watch: {
-            globalLoading: {
-                immediate: true,
-                handler(loading) {
-                    if (this.initialized)
-                        return
-
-                    if (!loading)
-                        this.populate()
-                }
-            }
+            // globalLoading: {
+            //     immediate: true,
+            //     handler(loading) {
+            //         if (this.initialized)
+            //             return
+            //
+            //         if (!loading)
+            //             this.populate()
+            //     }
+            // }
         },
         methods: {
-            populate() {
+            populate(workouts = null) {
+                if (this.initialized)
+                    return
+
+                this.initDataBrick(this.$refs['container'], this.data, workouts)
+
                 this.loading = false
-                this.initDataBrick(this.$refs['container'], this.data)
                 this.initialized = true
             }
         }
