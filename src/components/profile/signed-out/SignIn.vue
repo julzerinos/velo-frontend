@@ -38,7 +38,7 @@
                       md="6"
               >
                 <v-text-field
-                        :rules="passRules"
+                        :rules="[v=>!!v || 'Required']"
                         label="Password"
                         required
                         type="password"
