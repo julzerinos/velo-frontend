@@ -9,6 +9,8 @@
         name: "App",
         mounted() {
             document.title = 'Velo'
+
+            this.loadFromToken()
         },
     };
 </script>

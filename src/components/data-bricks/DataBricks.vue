@@ -87,8 +87,6 @@
 
                 this.refreshWorkoutsInMemory(newTimeRangeUnion, this.onFinish).then(
                     r => {
-                        console.log(r)
-
                         for (const ref of Object.values(this.$refs))
                             ref[0].populate(r)
 
