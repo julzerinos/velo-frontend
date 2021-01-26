@@ -21,6 +21,7 @@ export const replaceDataBrickAsync = function ({commit}, payload) {
 }
 
 export const addDataBrickConfigAsync = function ({commit}, payload) {
+    commit('setResult', {resultObject: {blame: "Scripting", message: "Successfully saved script", type: 'success'}})
     commit('addDataBrickConfig', payload)
 }
 
