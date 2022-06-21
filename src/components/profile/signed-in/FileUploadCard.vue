@@ -35,7 +35,7 @@
             stravaURL() {
                 return `
 https://www.strava.com/oauth/authorize
-?client_id=***REMOVED***
+?client_id=${CLIENT_ID}
 &redirect_uri=${this.redirectURI}
 &response_type=code
 &scope=profile:read_all,activity:read_all
