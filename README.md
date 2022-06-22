@@ -57,7 +57,7 @@ The views described in the following sections are made accessible to the user. T
 
 This is the centerpiece of the entire application, although it is unavailable until a user logs in. Once there is a user logged in (assuming they are subscribed to an athlete/themselves with available data), they may interact with the creation menu.
 
-![databricks]()
+![databricks](https://raw.githubusercontent.com/julzerinos/velo-frontend/assets/data%20brick.png)
 
 The vue structure for this component is
 
@@ -95,7 +95,7 @@ Layout.vue
     ScriptSave.vue
 ```
 
-![scripts]()
+![scripts](https://raw.githubusercontent.com/julzerinos/velo-frontend/assets/scripting.png)
 
 In the first section, ScriptSetup.vue, the user supplies the name and type of the script, whereas the last section, ScriptSave.vue, is only used for committing the created script to the repository. The middle section, ScriptEditor.vue, is the core of the module. 
 
@@ -169,7 +169,7 @@ Layout.vue
       Captcha.vue
 ```
 
-![profile]()
+![profile](https://raw.githubusercontent.com/julzerinos/velo-frontend/assets/profile.png)
 
 The Profile page after logging in (i.e. when a profile is successfully loaded from server and
 stored in local state) is more complex. The tree structure is displayed below.
@@ -196,7 +196,7 @@ positive feedback via a web application alert.
 
 #### Alerts Module
 
-![alert]()
+![alert](https://raw.githubusercontent.com/julzerinos/velo-frontend/assets/alert-success.png)
 
 There is an alert module present in the web application. The
 error message displays the "blame" (in which component/pro-
